@@ -1,0 +1,148 @@
+@import "compass/css3";
+@import "compass/utilities";
+
+
+$default-text-shadow-color: rgba(#000, 1);
+$default-text-shadow-blur: 5px;
+$default-text-shadow-v-offset: 5px;
+
+
+
+body{
+    background: #333;
+    background: 
+      url("../images/starfield.png") repeat-x fixed;
+}
+
+
+// Hacks, because I don't understand CSS specificity
+
+@mixin text{
+  color:#fff;
+  font-size: 14px;
+}
+
+body.bp{
+  
+  .asdf{
+    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+    font-size: 70px;
+    color:#fff;
+    @include single-text-shadow;
+    -webkit-text-stroke: 1px black;
+    
+      
+  }
+  
+  #title{
+    padding-top:100px;
+    text-align: center;
+  }
+  
+  
+  #register{
+     @include text;
+     padding-top: 10px;
+  }
+  
+  #login_form{
+  }
+  
+  #register_form{
+     display:none;
+  }
+  
+  a:link, a:hover, a:visited{
+    @include text;
+  }
+  
+   
+}
+
+input, textarea {  
+    padding: 9px;  
+    border: solid 1px #E5E5E5;  
+    outline: 0;  
+    font: normal 13px/100% Verdana, Tahoma, sans-serif;  
+    width: 200px;  
+    background: #FFFFFF url('bg_form.png') left top repeat-x;  
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));  
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);  
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;  
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;  
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    @include border-radius(8px);
+    }    
+  
+input:hover, textarea:hover,  
+input:focus, textarea:focus {  
+    border-color: #C9C9C9;  
+    -webkit-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px;  
+    }  
+
+  
+.form label {  
+    margin-left: 10px;  
+    color: #ddd;
+    font-size: 15px;
+    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+}
+
+
+button.slick-black {
+  background: #111;
+  background: -moz-linear-gradient(top,
+              rgba(50, 50, 50, 0.9) 0%,
+              rgba(30, 30, 30, 0.9) 50%,
+              rgba(20, 20, 20, 0.9) 50%,
+              rgba(0, 0, 0, 0.9) 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%,
+              color-stop(0, rgba(50, 50, 50, 0.9)),
+              color-stop(0.5, rgba(30, 30, 30, 0.9)),
+              color-stop(0.5, rgba(20, 20, 20, 0.9)),
+              color-stop(1, rgba(0, 0, 0, 0.9)));
+  border: 0;
+  
+  @include border-radius(4px);
+  
+  -moz-box-shadow: inset 1px 1px 1px 0px rgba(135, 135, 135, 0.1), inset -1px -1px 1px 0px rgba(135, 135, 135, 0.1);
+  -webkit-box-shadow: inset 1px 1px 1px 0px rgba(135, 135, 135, 0.1), inset -1px -1px 1px 0px rgba(135, 135, 135, 0.1);
+  box-shadow: inset 1px 1px 1px 0px rgba(135, 135, 135, 0.1), inset -1px -1px 1px 0px rgba(135, 135, 135, 0.1);
+  color: #fff;
+  font-family: "helvetica neue", helvetica, arial, sans-serif;
+  font-size: 22px;
+  font-weight: lighter;
+  line-height: 1;
+  padding: 12px 0;
+  text-shadow: 0px -1px 1px rgba(0, 0, 0, .8), 0 1px 1px rgba(255, 255, 255, 0.3);
+  width: 150px;
+}
+
+button.slick-black:hover {
+  background: #222;
+  background: -moz-linear-gradient(top,
+              rgba(70, 70, 70, 0.9) 0%,
+              rgba(50, 50, 50, 0.9) 50%,
+              rgba(40, 40, 40, 0.9) 50%,
+              rgba(20, 20, 20, 0.9) 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%,
+              color-stop(0, rgba(70, 70, 70, 0.9)),
+              color-stop(0.5, rgba(50, 50, 50, 0.9)),
+              color-stop(0.5, rgba(40, 40, 40, 0.9)),
+              color-stop(1, rgba(20, 20, 20, 0.9)));
+  cursor: pointer;
+}
+
+button.slick-black:active {
+  background: #000;
+  background: -moz-linear-gradient(top,
+              rgba(30, 30, 30, 0.9) 0%,
+              rgba(20, 20, 20, 0.9) 50%,
+              rgba(10, 10, 10, 0.9) 50%,
+              rgba(0, 0, 0, 0.9) 100%);
+  background: -webkit-gradient(linear, 0 0, 0 100%,
+              color-stop(0, rgba(30, 30, 30, 0.9)),
+              color-stop(0.5, rgba(20, 20, 20, 0.9)),
+              color-stop(0.5, rgba(10, 10, 10, 0.9)),
+              color-stop(1, rgba(0, 0, 0, 0.9)));
+}

@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html>
+    <head>
+    	  
+        <link rel="stylesheet" href="stylesheets/print.css" type="text/css" media="print">
+        <link rel="stylesheet" href="stylesheets/screen.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="stylesheets/app.css" type="text/css" media="screen, projection">   
+
+		<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+    	<script type="text/javascript">
+         	google.load("jquery", "1.6.1");
+    	</script>
+
+        <title>Awesome Web Game 3.0</title>     
+        
+    </head>
+    
+    <body class="bp">
+    
+    	<div class="container">
+    		
+    		
+    		<div id="title">
+    			<h1 class="asdf">AwesomeGame</h1>
+    		</div>
+    		
+<!--     		Login Div -->
+
+    		<div id="login_form" class="prepend-8">
+    			<form class="form" name="login_form">  
+      
+			        <p class="name">  
+			            <input type="text" name="nick" id="nick" />  
+			            <label for="name">nickname</label>  
+			        </p>  
+			      
+			        <p class="password">  
+			            <input type="password" name="password" id="password" />  
+			            <label for="password">password</label>  
+			        </p>
+        
+    			</form>
+    			
+    			<button type="submit" form="login_form" value="Submit" class="slick-black">login</button>
+    			
+    			<h3 id="register">Don't have an account? <a href="" id="register_button">Register</a> now!</h3>
+    			
+    		</div>
+    		
+<!-- 			Registering Div -->
+
+    		<div id="register_form" class="prepend-8">
+    			<form class="form" name="login_form">  
+      
+			        <p class="name">  
+			            <input type="text" name="nick" id="nick" />  
+			            <label for="name">nickname</label>  
+			        </p>  
+			      
+			        <p class="password">  
+			            <input type="password" name="password" id="password" />  
+			            <label for="password">password</label>  
+			        </p>
+			        
+			       	<p class="email">  
+			            <input type="text" name="email" id="email" />  
+			            <label for="email">email</label>  
+			        </p>
+        
+    			</form>
+    			
+    			<button type="submit" form="login_form" value="Submit" class="slick-black">login</button>
+    			
+    			<h3 id="register">Have an account? <a href="" id="login_button">Register</a> now!</h3>
+    			
+    		</div>
+    		
+    		
+    		
+    		
+    	</div>
+    
+  
+  		<script>
+        	$("#register_button").click(function(event) {
+        		event.preventDefault();
+        		
+    			$("#login_form").hide("slow", function(){
+    				$("#register_form").show("slow");
+    			});
+    		});
+    		
+    		$("#login_button").click(function(event) {
+        		event.preventDefault();
+    			$("#register_form").hide("slow", function(){
+    				$("#login_form").show("slow");
+    			});
+    		});		
+        </script>
+    	    		
+    		
+    		
+
+    	
+    	
+        
+        
+    
+    </body>
+    
+</html>
+    
