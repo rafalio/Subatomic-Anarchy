@@ -1,0 +1,36 @@
+#title
+  h1.title AwesomeGame
+  
+#login_form.prepend-8  
+  form.form(method="post", action="/login")
+    !{login_form}
+    button(type="submit", class="slick-black") Login!
+    
+  h3#register 
+    |Don't Have an account? 
+    a(href='', id="register_button") Register 
+  
+#register_form.prepend-8
+  form.form
+    !{register_form}
+    button(type="submit", class="slick-black") Register!
+    
+  h3#register 
+    |Already have an account ?
+    a(href='', id="login_button") Login
+
+
+script
+  $("#register_button").click(function(event) {
+    event.preventDefault();
+    $("#login_form").hide("slow", function(){
+      $("#register_form").show("slow");
+    });
+  });
+
+  $("#login_button").click(function(event) {
+    event.preventDefault();
+    $("#register_form").hide("slow", function(){
+      $("#login_form").show("slow");
+    });
+  });
