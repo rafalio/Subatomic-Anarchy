@@ -1,11 +1,15 @@
 var sys = require('sys');
 
+var logged_in = {};
+
 // Routes
 
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Awesome Web Game 3.0 | index',
-  });
+  if(!req.session.user) {
+    simpleWrite(res, "You're not logged in!");
+  } else {
+    simpleWrite(res, "You're logged in as %s!", req.session.user.username);
+  }
 });
 
 app.get('/init', function(req,res){
@@ -36,6 +40,7 @@ app.post('/login', function(req,res){
               simpleWrite(res,"No user with that username found!");
             }
             else if(user.password == data.password){
+              req.session.user = user;
               simpleWrite(res,"Authentication succesfull!");
             }
             else{
