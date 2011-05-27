@@ -8,7 +8,7 @@ app.get('/', function(req, res){
   if(!req.session.user) {
     simpleWrite(res, "You're not logged in!");
   } else {
-    simpleWrite(res, "You're logged in as %s!", req.session.user.username);
+    simpleWrite(res, "You're logged in as " + req.session.user.username);
   }
 });
 
@@ -40,7 +40,7 @@ app.post('/login', function(req,res){
               simpleWrite(res,"No user with that username found!");
             }
             else if(user.password == data.password){
-              req.session.user = user;
+              req.session.user = fetchAttributes(user);
               simpleWrite(res,"Authentication succesfull!");
             }
             else{
