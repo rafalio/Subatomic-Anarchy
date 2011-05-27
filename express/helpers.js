@@ -1,6 +1,3 @@
-nodemailer = require("nodemailer");
-nodemailer.sendmail = true;
-
 // Call this to flush database and synchronize tables
 initDb = function() {	
 	sequelize.sync({force: true}).on("success", function(){
