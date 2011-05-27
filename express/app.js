@@ -1,9 +1,5 @@
 // Note, the includes are a mess now...
-
 require('./helpers.js');
-require('./db.js');
-require('./models/forms.js');
-require('./models/models.js');
 
 // Express init
 
@@ -18,7 +14,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'your secret here' }));
+  app.use(express.session({ secret: 'tlj4F6sUSfESeL9oMX0S' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -32,7 +28,7 @@ app.configure('production', function(){
 });
 
 // Routing information
-require('./routes.js');
+require('./controlers/route.js');
 
 app.listen(3000);
 console.log("Express server listening on port %d", app.address().port);

@@ -16,18 +16,6 @@ simpleWrite =  function(res,data){
   res.end(data);
 }
 
-// Emails rec
-email = function(rec){
-  nodemailer.send_mail({
-    sender: "awesomegame@awesome.com",
-    to:rec,
-    subject:"Thanks for registering with our awesome game!",
-    body:"Thanks for registering with our awesome game!"},
-    function(error, success){
-        console.log("Message "+ ( success? "sent" : "failed" ));
-    });
-}
-
 // Fetches out just the attributes out of a Sequelize Datastructure.
 fetchAttributes = function(obj){
   var ret = {};

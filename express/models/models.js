@@ -1,4 +1,6 @@
-User = sequelize.define('User',{
+require('./db.js');
+
+var User = sequelize.define('User',{
 	username: {
 	  type: Sequelize.STRING,
 	  allowNull: false,
@@ -15,7 +17,9 @@ User = sequelize.define('User',{
 	  type: Sequelize.STRING,
 	  allowNull: false 
 	}
-})
+});
+
+exports.User = User;
 
 
 
