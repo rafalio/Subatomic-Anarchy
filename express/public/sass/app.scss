@@ -13,12 +13,15 @@ $default-text-shadow-v-offset: 5px;
 }
 
 
-
 body{
     background: #333;
     background: 
       url("../images/starfield.png") repeat-x fixed;
     @include text;
+}
+
+h1{
+    color: #fff;
 }
 
   

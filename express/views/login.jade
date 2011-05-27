@@ -2,27 +2,29 @@
   h1.title AwesomeGame
   
 #login_form.prepend-8  
-  form.form(method="post", action="/login")
+  form.form(method="post", action="/login", id="loginForm")
     !{login_form}
     button(type="submit", class="slick-black") Login!
     
   h3#register 
     |Don't Have an account? 
-    a(href='', id="register_button") Register 
+    a(href='#', id="register_button") Register 
   
 #register_form.prepend-8
-  form.form
+  form.form(method="post", action="/register", id="registerForm")
     !{register_form}
     button(type="submit", class="slick-black") Register!
     
   h3#register 
     |Already have an account ?
-    a(href='', id="login_button") Login
+    a(href='#', id="login_button") Login
 
+#result.prepend-8
 
 script
   $("#register_button").click(function(event) {
     event.preventDefault();
+    $("#result").html('');
     $("#login_form").hide("slow", function(){
       $("#register_form").show("slow");
     });
@@ -30,7 +32,22 @@ script
 
   $("#login_button").click(function(event) {
     event.preventDefault();
+    $("#result").html('');
     $("#register_form").hide("slow", function(){
       $("#login_form").show("slow");
+    });
+  });
+  
+  $("#loginForm").submit(function(event){
+    event.preventDefault();
+    $.post("/login", $("#loginForm").serialize(), function(data){
+      $("#result").html(data);
+    });
+  });
+  
+  $("#registerForm").submit(function(event){
+    event.preventDefault();
+    $.post("/register", $("#registerForm").serialize(), function(data){
+      $("#result").html(data);
     });
   });
