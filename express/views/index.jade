@@ -1,1 +1,6 @@
 h1= title
+
+- if(session.user)
+  #user!= "Logged in as " + session.user.username
+  #logout
+    a(href='/logout') Logout

@@ -8,10 +8,9 @@ require('./mail.js');
 
 
 function index(req,res) {
-  if(!req.session.user)
-    simpleWrite(res, "You're not logged in!");
-  else
-    simpleWrite(res, "You're logged in as " + req.session.user.username);
+  res.render('index', {
+    title: "Welcome to our awesome game!"
+  })
 }
 
 function register(req,res) {
@@ -64,7 +63,13 @@ function login(req,res) {
 	});
 }
 
+function logout(req,res){
+  delete req.session.user;
+  res.redirect('/login');
+}
+
 exports.index = index;
 exports.login_register_f = login_register_f;
 exports.login = login;
 exports.register = register;
+exports.logout = logout;

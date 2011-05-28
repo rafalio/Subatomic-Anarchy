@@ -28,6 +28,14 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+
+app.dynamicHelpers({
+  session: function(req, res){
+    return req.session;
+  }
+})
+
+
 // Routing information
 require('./controllers/route.js');
 
