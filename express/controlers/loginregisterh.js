@@ -33,13 +33,15 @@ function register(req,res) {
             new_user.save().on('success', function(){
               email(data.email,
                     "Thanks for registering with our awesome game!",
-                    "Thanks for registering with our awesome game!");
-              simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
+                    "Thanks for registering with our awesome game!",
+                    function(error,success){
+                      if(error)
+                        simpleWrite(res,"Registration succesful! But unfortunately the email server broke.");
+                      else
+                        simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
+                    });
             });
-            // I'm pretty sure all of this (so first save, then email) has to be in that nested shit
-            // So we utilize the whole nonblocking stuff. As in pass the rest as a function. I don't
-            // know how to do it for email yet. I think he talks about it in that introductory node.js talk.
-        }
+          }
         })
       },
       other : function(form){

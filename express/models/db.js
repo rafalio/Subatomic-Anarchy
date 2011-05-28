@@ -1,7 +1,7 @@
 var dbconfig = {
   db: "game",
   user: "root",
-  pass: "dupa"
+  pass: "root"
 }
 
 Sequelize = require("sequelize");

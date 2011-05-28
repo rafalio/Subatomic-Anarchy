@@ -20,7 +20,3 @@ var User = sequelize.define('User',{
 });
 
 exports.User = User;
-
-
-
-
