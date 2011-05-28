@@ -9,7 +9,8 @@ require('./mail.js');
 
 function index(req,res) {
   res.render('index', {
-    title: "Welcome to our awesome game!"
+    layout: 'game',
+    title: "Welcome to our awesome game!",
   })
 }
 

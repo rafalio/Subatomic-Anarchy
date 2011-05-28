@@ -1,0 +1,17 @@
+!!! 5
+html(lang="en")
+  head
+    title= title
+    link(rel="stylesheet", href="stylesheets/print.css")
+    link(rel="stylesheet", href="stylesheets/screen.css")
+    link(rel="stylesheet", href="stylesheets/app.css")
+    
+    script(src="http://www.google.com/jsapi")
+    script(src="scripts/easel.js")
+    
+    script
+      google.load("jquery", "1.6.1")
+    
+    body(onload = "init();")
+      .container
+        !{body}
