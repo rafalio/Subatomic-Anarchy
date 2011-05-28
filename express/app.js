@@ -29,7 +29,7 @@ app.configure('production', function(){
 });
 
 // Routing information
-require('./controlers/route.js');
+require('./controllers/route.js');
 
 app.listen(3000);
 console.log("Express server listening on port %d", app.address().port);
