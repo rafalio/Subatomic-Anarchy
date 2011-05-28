@@ -34,8 +34,13 @@ function register(req,res) {
               if(!err){
                 email(data.email,
                       "Thanks for registering with our awesome game!",
-                      "Thanks for registering with our awesome game!");
-                simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
+                      "Thanks for registering with our awesome game!",
+                      function(error,success){
+                        if(error)
+                          simpleWrite(res,"Registration succesful! But unfortunately the email server broke.");
+                        else
+                          simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
+                      });
               }
               else{
                 console.log("ERROR occured");
