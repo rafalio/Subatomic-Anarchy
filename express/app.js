@@ -20,6 +20,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
+  app.use(express.logger());
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 

@@ -1,26 +1,12 @@
 require('./db.js');
 
-var User = sequelize.define('User',{
-	username: {
-	  type: Sequelize.STRING,
-	  allowNull: false,
-	  unique: true,
-	  primaryKey: true
-  },
-  
-	password: {
-	  type: Sequelize.STRING,
-	  allowNull: false
-	},
-	
-	email: { 
-	  type: Sequelize.STRING,
-	  allowNull: false 
-	}
-});
+var User = new Schema({
+  username: {type: String, unique: true},
+  password: String,
+  email: String,
+  joined: {type: Date, default: Date.now}
+})
 
-exports.User = User;
+mongoose.model('User', User);
 
-
-
-
+exports.User = mongoose.model('User');

@@ -18,28 +18,30 @@ function register(req,res) {
   forms.register_form.handle(req, {
       success : function(form){
         var data = form.data;
-        console.log(data);    
-
-        models.User.count({
-          where : {
-            username : data.username
+        console.log(data);
+        
+        models.User.findOne( {username: data.username} , function(err, r){
+          if(err){
+            console.log("DB error occured");
           }
-        }).on("success", function(count){
-          if(count > 0){
+          if(r){
             simpleWrite(res,"Sorry, that username is already taken! Please select a different username!");
           }
           else{
-            var new_user = models.User.build(data);
-            new_user.save().on('success', function(){
-              email(data.email,
-                    "Thanks for registering with our awesome game!",
-                    "Thanks for registering with our awesome game!");
-              simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
-            });
-            // I'm pretty sure all of this (so first save, then email) has to be in that nested shit
-            // So we utilize the whole nonblocking stuff. As in pass the rest as a function. I don't
-            // know how to do it for email yet. I think he talks about it in that introductory node.js talk.
-        }
+            var new_user = new models.User(data);
+            
+            new_user.save(function(err){
+              if(!err){
+                email(data.email,
+                      "Thanks for registering with our awesome game!",
+                      "Thanks for registering with our awesome game!");
+                simpleWrite(res,"Registration succesful! A confirmation email has been sent to you!");
+              }
+              else{
+                console.log("ERROR occured");
+              }
+            })
+          }
         })
       },
       other : function(form){
@@ -63,18 +65,19 @@ function login(req,res) {
 	    success: function(form){
           var data = form.data;
           
-          models.User.find({ where: {username : data.username}}).on("success",function(user){
+          models.User.findOne({username: data.username}, function(err, user){
             if(!user){
               simpleWrite(res,"No user with that username found!");
             }
             else if(user.password == data.password){
-              req.session.user = fetchAttributes(user);
               simpleWrite(res,"Authentication succesfull!");
+              req.session.user = user;
             }
             else{
               simpleWrite(res,"Authentication failed, passwords don't match!");
             }
           })
+          
 	    },
 	    other : function(form){
 	        simpleWrite(res,"There was an error with the form, please check it! ");
