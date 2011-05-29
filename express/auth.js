@@ -7,8 +7,8 @@ exports.authUser = function(data, callback){
       console.log("DB error...");
       callback(null);
     }
-    else if(user.password == data.password) callback(user);
-    else callback(null);
+    else if(!user || user.password != data.password) callback(null);
+    else callback(user);
   })
 }
 
