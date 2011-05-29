@@ -1,15 +1,13 @@
-h1= title
-
-#user!= "Logged in as " + session.user.username
-
-#logout
-  a(href='/logout') Logout
-  
 script(src="scripts/ship.js")
 script(src="scripts/socket_handler.js")
 
+#header
+  #logout
+    |Logged in as #{session.user.username}
+    a(href='/logout') Logout
+    
 script
   console.log(socket);
 
-
-canvas(id="canvas", width="900", height="900")
+#canv
+  canvas(id="canvas", width="1100", height="650")

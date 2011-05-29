@@ -1,0 +1,21 @@
+@import "mixins.scss";
+
+body{
+  @include body_setup;
+}
+
+canvas{
+  // For testing where the canvas is.
+  border: 2px solid white;
+}
+
+#header{
+  height: 50px;
+  
+  @include text;
+  
+ #logout{
+   float: right;
+ }
+ 
+}

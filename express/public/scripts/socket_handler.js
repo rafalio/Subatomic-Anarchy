@@ -17,7 +17,7 @@ Object.keys(socket_events).forEach( function(event, index, arr){
 })
 
 function connectHandler(){
-  console.log("i've connected!!")
+  console.log("i've connected!!");
 }
 
 function disconnectHandler(){

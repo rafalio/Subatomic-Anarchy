@@ -35,37 +35,38 @@ function init() {
         document.addEventListener("keydown",
         function(e) {
 
-            var d = 5;
+            var d = 20;
             var rot = 7;
 
             switch (e.keyCode) {
             case KEY['ARROW_RIGHT']:
+                e.preventDefault();
                 bitmap.rotation += rot;
                 break;
             case KEY['ARROW_LEFT']:
+                e.preventDefault();
                 bitmap.rotation -= rot;
                 break;
             case KEY['ARROW_UP']:
+                e.preventDefault();
                 var r = bitmap.rotation;
                 bitmap.x += Math.cos(r * Math.PI / 180) * d;
                 bitmap.y += Math.sin(r * Math.PI / 180) * d;
 
                 txt.x = bitmap.x;
                 txt.y = bitmap.y - 70;
+                break;
+            case KEY['ARROW_DOWN']:
+              e.preventDefault();
             }
         },
         true);
-
-        bitmap.onkeypress = function(evt) {
-            if (e.keyCode == KEY['ARROW_RIGHT']) {
-                bitmap.x += 10;
-            }
-        }
 
     }
 
     ship.src = "images/spaceship.png";
     Ticker.addListener(window);
+    
 }
 
 

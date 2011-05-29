@@ -1,0 +1,18 @@
+@import "compass/css3";
+@import "compass/utilities";
+
+$default-text-shadow-color: rgba(#000, 1);
+$default-text-shadow-blur: 5px;
+$default-text-shadow-v-offset: 5px;
+
+@mixin text{
+  color:#fff;
+  font-size: 14px;
+}
+
+@mixin body_setup{
+  background: #333;
+  background: 
+    url("../images/starfield.png") repeat-x fixed;
+  @include text;
+}
