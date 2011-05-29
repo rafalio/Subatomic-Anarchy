@@ -6,6 +6,8 @@ require('./helpers.js');
 var express = require('express');
 app = module.exports = express.createServer();
 
+var io = require('socket.io')
+
 // App Configuration
 
 app.configure(function(){
@@ -20,7 +22,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.logger());
+  //app.use(express.logger());
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
@@ -41,3 +43,18 @@ require('./controllers/route.js');
 
 app.listen(3000);
 console.log("Express server listening on port %d", app.address().port);
+
+
+// Socket.IO
+
+var socket = io.listen(app);
+
+socket.on('connection', function(client){ 
+  // new client is here! 
+  client.on('message', function(){
+    console.log("new person connected!");
+  }) 
+  client.on('disconnect', function(){
+    console.log("person disconnected!");
+  })
+});
