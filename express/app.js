@@ -1,5 +1,6 @@
 // Note, the includes are a mess now...
 require('./helpers.js');
+var sys = require('sys');
 
 // Express init
 
@@ -7,6 +8,10 @@ var express = require('express');
 app = module.exports = express.createServer();
 
 var io = require('socket.io')
+
+var connect = require('connect'),
+    MemoryStore = express.session.MemoryStore;
+    session_store = new MemoryStore();
 
 // App Configuration
 
@@ -16,7 +21,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser());
-  app.use(express.session({ secret: 'tlj4F6sUSfESeL9oMX0S' }));
+  app.use(express.session({store: session_store, secret: 'tlj4F6sUSfESeL9oMX0S' }));
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
@@ -47,14 +52,28 @@ console.log("Express server listening on port %d", app.address().port);
 
 // Socket.IO
 
-var socket = io.listen(app);
+var io = io.listen(app);
 
-socket.on('connection', function(client){ 
+io.on('connection', function(client){ 
+  
+  var cookie_string = client.request.headers.cookie;
+  var parsed_cookies = connect.utils.parseCookie(cookie_string);
+  var connect_sid = parsed_cookies['connect.sid'];
+  
+  if (connect_sid) {
+    session_store.get(connect_sid, function (error, session) {
+      console.log(sys.inspect(session));
+    });
+  }
+
   // new client is here! 
   client.on('message', function(){
-    console.log("new person connected!");
-  }) 
+    console.log("message received!");
+  })
+  
   client.on('disconnect', function(){
     console.log("person disconnected!");
   })
+  
+  
 });

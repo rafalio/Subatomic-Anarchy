@@ -10,7 +10,6 @@ var socket_events = {
  ,'message' : messageHandler
 }
  
-
 Object.keys(socket_events).forEach( function(event, index, arr){
   var f = socket_events[event];
   if(!f) console.log("Cannot find " + fname + 'function. Please create it!' );
