@@ -1,0 +1,8 @@
+#title
+  h1.title Admin Panel
+
+#users
+  | List of currently registered users:
+  ul
+    - for(var l in users)
+      li= users[l].username

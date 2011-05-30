@@ -24,20 +24,18 @@ exports.registerUser = function(data, callback){
     else{
       var new_user = new models.User(data);
      
+     
+      // Note: I belive the 'err' over here does strictly originate as a DB saving error. It's an error
+      // that we can define and propagate through middleware. Although probably, it could also come
+      // from the database saving layer.
+      
       new_user.save(function(err){
+        
         if(!err){
-          email(data.email,
-                "Thanks for registering with our awesome game!",
-                "Thanks for registering with our awesome game!",
-                function(error,success){
-                  if(error)
-                    callback("Registration succesful! But unfortunately the email server broke.");
-                  else
-                    callback("Registration succesful! A confirmation email has been sent to you!");
-                });
+          callback("Registration succesful! A confirmation email has been sent to you!");
         }
         else{
-          console.log("DB error occured");
+          callback("fail: " + err);
         }
       })
     }

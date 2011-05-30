@@ -8,19 +8,16 @@ require('./mail.js');
 
 
 function index(req,res) {
-  res.render('index', {
-    layout: 'game',
+  res.render('game', {
+    layout: 'game_layout',
     title: "Welcome to our awesome game!",
   })
 }
 
 function register(req,res) {
-  console.log("Trying to register...");
-  
   forms.register_form.handle(req, {
       success : function(form){
         var data = form.data;
-        console.log(data);
         
         auth.registerUser(data, function(result){
           simpleWrite(res,result);
@@ -67,7 +64,8 @@ function login(req,res) {
 function logout(req,res){
   delete req.session.user;
   res.redirect('/login');
-}
+} 
+
 
 exports.index = index;
 exports.login_register_f = login_register_f;

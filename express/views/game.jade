@@ -1,18 +1,13 @@
-// Layout for the game
+script(src="scripts/ship.js")
+script(src="scripts/socket_handler.js")
 
-!!! 5
-html(lang="en")
-  head
-    title= title
-    link(rel="stylesheet", href="stylesheets/game.css")
-    link(rel="stylesheet", href="stylesheets/app.css")
+#header
+  #logout
+    |Logged in as #{session.user.username}
+    a(href='/logout') Logout
     
-    script(src="http://www.google.com/jsapi")
-    script(src="scripts/easel.js")
-    script(src="scripts/socket.io.min.js")
-    
-    script
-      google.load("jquery", "1.6.1")
-    
-    body(onload = "init();")
-        !{body}
+script
+  console.log(socket);
+
+#canv
+  canvas(id="canvas", width="1100", height="650")
