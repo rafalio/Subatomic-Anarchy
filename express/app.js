@@ -52,28 +52,78 @@ console.log("Express server listening on port %d", app.address().port);
 
 // Socket.IO
 
-var io = io.listen(app);
+var io = io.listen(app, {
+  transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling','jsonp-polling']
+});
+
+// Array to keep players. Synchronizes with client side
+var players = {};
 
 io.on('connection', function(client){ 
   
+  console.log("lol wat");
+  
   var cookie_string = client.request.headers.cookie;
   var parsed_cookies = connect.utils.parseCookie(cookie_string);
-  var connect_sid = parsed_cookies['connect.sid'];
+  var connect_sid = parsed_cookies['connect.sid'];  
   
   if (connect_sid) {
     session_store.get(connect_sid, function (error, session) {
-      console.log(sys.inspect(session));
+      if(error){
+        console.log("ERROR FETCHING SESSION!");
+      }
+      //console.log(sys.inspect(session));
+      
+      //console.log(players);
+      
+      var u = session.user.username;
+      
+      // Add current player to playing users.
+      if(!players[u])
+        players[u] = session.user;
+      
+      console.log(players);
+      
+      // Synchronize the client
+      
+      client.send(
+          { 
+            type:     'onNewConnect',
+            me:       session.user,
+            everyone: players
+          }
+      );
+      
+      
+      // Tell everyone a new guy arrived
+      client.broadcast({
+        type: 'newArrival',
+        player: players[u]
+      })
+      
     });
   }
-
-  // new client is here! 
-  client.on('message', function(){
+  
+  client.on('message', function(msg){
     console.log("message received!");
+    
+    switch(msg.type){
+      case 'playerUpdate':
+        updatePlayerArray(msg);
+        client.broadcast(msg);
+        break;
+    }
+    
   })
   
   client.on('disconnect', function(){
     console.log("person disconnected!");
   })
   
-  
 });
+
+function updatePlayerArray(msg){
+  var p = players[msg.name];
+  p.position = msg.pos;
+  p.rotation = msg.rot;
+}

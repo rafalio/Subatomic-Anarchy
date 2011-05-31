@@ -6,11 +6,15 @@ var UserSchema = new Schema({
   password: String,
   email: String,
   joined: {type: Date, default: Date.now},
-  admin: {type: Boolean, default: false}
+  admin: {type: Boolean, default: false},
+  position:{
+    x : {type: Number, default: 100},
+    y : {type: Number, default: 100}
+  },
+  rotation: {type: Number, default: 0}
 })
 
 mongoose.model('User', UserSchema);
-
 
 // Middleware
 
