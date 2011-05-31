@@ -1,11 +1,17 @@
 // Note, the includes are a mess now...
 require('./helpers.js');
+var sys = require('sys');
 
-var express = require('express'),
-    io = require('socket.io'),
-    session_store = new express.session.MemoryStore();
+// Express init
 
+var express = require('express');
 app = module.exports = express.createServer();
+
+var io = require('socket.io')
+
+var connect = require('connect'),
+    MemoryStore = express.session.MemoryStore;
+    session_store = new MemoryStore();
 
 // App Configuration
 
@@ -58,7 +64,7 @@ io.on('connection', function(client){
   console.log("lol wat");
   
   var cookie_string = client.request.headers.cookie;
-  var parsed_cookies = express.utils.parseCookie(cookie_string);
+  var parsed_cookies = connect.utils.parseCookie(cookie_string);
   var connect_sid = parsed_cookies['connect.sid'];  
   
   if (connect_sid) {
@@ -66,6 +72,7 @@ io.on('connection', function(client){
       if(error){
         console.log("ERROR FETCHING SESSION!");
       }
+      //console.log(sys.inspect(session));
       
       //console.log(players);
       
