@@ -1,6 +1,5 @@
 var models = require('./models/models.js')
-  , bcrypt = require('bcrypt')
-  , salt1 = "3200";
+  , bcrypt = require('bcrypt');
   
 require('./controllers/mail.js');
 
@@ -12,11 +11,11 @@ exports.authUser = function(data, callback){
     } else if (!user) {
       callback(null);
     } else {
-      bcrypt.gen_salt(10, function(err, salt) {
-        bcrypt.encrypt(data.password, salt1, function(err, hash){
-          if(user.password != hash) callback(null);
-          else callback(user);
-        });
+      bcrypt.compare(data.password, user.password, function(err,res) {
+        if(err || !res)
+          callback(null);
+        else
+          callback(user);
       });
     }});
 }
@@ -34,19 +33,17 @@ exports.registerUser = function(data, callback){
         if(err)
           callback("fail: " + err);
         else
-          bcrypt.encrypt(data.password, salt1, function(err, hash) {
+          bcrypt.encrypt(data.password, salt, function(err, hash) {
             data.password = hash;
             var new_user = new models.User(data);
             // Note: I belive the 'err' over here does strictly originate as a DB saving error. It's an error
             // that we can define and propagate through middleware. Although probably, it could also come
             // from the database saving layer.
             new_user.save(function(err){
-              if(!err){
+              if(!err)
                 callback("Registration succesful! A confirmation email has been sent to you!");
-              }
-              else {
+              else
                 callback("fail: " + err);
-              }
             });
           });
       });
