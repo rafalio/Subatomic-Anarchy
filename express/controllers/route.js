@@ -1,4 +1,5 @@
 var lr    = require('./loginregisterh.js');
+var msg   = require('./messaging.js');
 var admin = require('./admin.js');
 
 // Routing information:
@@ -9,12 +10,14 @@ var routes = {
   post : {
     '/login' : [lr.login],
     '/register' : [lr.register],
+    '/sendMessage' : [msg.sendMessage]
   },
   get : {
     '/' : [requireLogin, lr.index],
     '/login' : [loggedIn, lr.login_register_f],
     '/logout' : [lr.logout],
-    '/admin' : [requireAdmin, admin.admin]
+    '/admin' : [requireAdmin, admin.admin],
+    '/inbox' : [requireLogin, msg.inbox]
   }
 }
 
@@ -37,15 +40,23 @@ Object.keys(routes).forEach( function(type, index, array) {
 })
 
 
+
+// If the user is logged in, redirect to home
+// Use for places which require person to be NOT logged in.
+
 function loggedIn(req,res,next){
   if(req.session.user) res.redirect('/');
   else next();
 }
 
+// If user is not logged in, redirect to login page
+
 function requireLogin(req,res,next){
   if(req.session.user) next();
   else res.redirect('/login');
 }
+
+// If user is not an admin, redirect to home page
 
 function requireAdmin(req,res,next){
   var u = req.session.user;

@@ -50,7 +50,17 @@ app.listen(3000);
 console.log("Express server listening on port %d", app.address().port);
 
 
-// Socket.IO
+
+
+
+
+
+
+
+
+
+// ----------- Socket.IO Stuff ---------------- //
+
 
 var io = io.listen(app, {
   transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling','jsonp-polling']

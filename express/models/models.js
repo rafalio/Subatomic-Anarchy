@@ -16,6 +16,26 @@ var UserSchema = new Schema({
 
 mongoose.model('User', UserSchema);
 
+/*
+Due to some immense stupidity, only collections of Schemas are allowed as types in Mongoose.
+This is discussed a bit here: https://github.com/LearnBoost/mongoose/issues/188
+
+What this means, is that any type of has-a relationship that's one-to-one will have to be done
+using ObjectId. Why this is the case, is beyond me....
+*/
+
+
+var MessageSchema = new Schema({
+  from: ObjectId,
+  to: ObjectId,
+  date: {type: Date, default: Date.now},
+  read: {type: Boolean, default: false},
+  content: String
+})
+
+mongoose.model('Message', MessageSchema);
+
+
 // Middleware
 
 UserSchema.pre('save', function(next){
@@ -37,4 +57,5 @@ UserSchema.pre('save', function(next){
   
 })
 
-exports.User = mongoose.model('User');
+exports.User    = mongoose.model('User');
+exports.Message = mongoose.model('Message');

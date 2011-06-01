@@ -3,7 +3,8 @@
 
 var forms = require('forms');
 var fields = forms.fields
-  , validators = forms.validators;
+  , validators = forms.validators
+  , widgets = forms.widgets;
     
 forms.render.setOrdering("after");
 
@@ -18,5 +19,16 @@ var register_form = forms.create({
     email: fields.email({required: true})
 });
 
-exports.login_form = login_form;
-exports.register_form = register_form;
+
+var message_form = forms.create({
+  to: fields.string({required:true}),
+  message: fields.string({
+        widget: widgets.textarea({rows: 6}),
+        required: true
+    })
+})
+
+exports.login_form      = login_form;
+exports.register_form   = register_form;
+exports.message_form    = message_form;
+

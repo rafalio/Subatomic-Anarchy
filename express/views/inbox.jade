@@ -1,0 +1,24 @@
+#title
+  h1.title Your Inbox!
+  
+form.form(method="post", action="/sendMessage", id="messageForm")
+  !{message_form}
+  button(type="submit", class="slick-black") Send Message!
+  
+#result
+
+#messages
+  | Your messages:
+  ul
+    - for(var l in messages)
+      li
+        h3= "From: " + messages[l].from
+        p= messages[l].content
+  
+script
+  $("#messageForm").submit(function(event){
+    event.preventDefault();
+    $.post("/sendMessage", $("#messageForm").serialize(), function(data){
+      $("#result").html(data);
+    });
+  });
