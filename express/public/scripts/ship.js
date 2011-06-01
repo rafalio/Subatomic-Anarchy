@@ -139,7 +139,7 @@ function notifyServer(){
   })
 }
 
-var ship, ctx, bitmap, txt
+var ship, ctx, bitmap
 
 stage = null;
 
@@ -155,23 +155,59 @@ function tick() {
 }
 
 function init() {
-    
     canvas = document.getElementById('canvas');
+    
+    var map = {
+      grid_size : 100,
+      dim : {width: 5000, height: 5000},
+      grid_num : {
+        x : 50,
+        y : 50
+      }
+    }
+    
     stage = new Stage(canvas)
     ship = new Image();
 
     var g = new Shape();
     stage.addChild(g);
+    
+    // console.log("stagex :" + stage.x);
+    // console.log("stagey :" + stage.y);
+    // console.log(stage);
   	
-  	var diff = 100;
+    // stage.x = -50;
+    // stage.y = -50;
+  	
   	
   	var color = Graphics.getRGB(0xFF,0xFF,0xFF,0.2)
   	
-  	// Very simple grid (assume width > height)
-  	for(var i = 0; i < canvas.width; i += diff ){
-  	  g.graphics.beginStroke(color).moveTo(i,0).lineTo(i, canvas.height).endStroke()
-  	  g.graphics.beginStroke(color).moveTo(0,i).lineTo(canvas.width, i).endStroke()		
+  	// Vertical lines
+  	for(var i = 0; i < map.dim.width; i += map.grid_size ){
+  	  g.graphics.beginStroke(color).moveTo(i,0).lineTo(i, map.dim.height).endStroke();
   	}
+  	// Horizontal lines
+  	for(var i = 0; i < map.dim.height; i += map.grid_size ){
+  	  g.graphics.beginStroke(color).moveTo(0,i).lineTo(map.dim.width,i).endStroke();
+  	}
+
+  	
+    var labels = new Container();
+  	
+    for(var i = 0; i < map.grid_num.x; i++){
+      for(var j = 0; j < map.grid_num.y; j++){
+        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
+        txt.x = i * map.grid_size + map.grid_size/2;
+        txt.y = j * map.grid_size + map.grid_size/2;
+        labels.addChild(txt);
+      }
+    }
+  	
+  	stage.addChild(labels);
+  	
+  
+    console.log("gridx " + map.grid_num.x);
+  	
 
     ship.onload = function() {
       
