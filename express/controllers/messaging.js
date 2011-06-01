@@ -3,14 +3,17 @@ var Forms   = require('forms')
   , models  = require('../models/models.js')
   
 
+var sys = require('sys');
+  
+
 
 // GET
 
 function inbox(req,res){
   
-  models.Message.find({to: req.session.user._id}, function(err,result){
+  models.Message.find({to: req.session.user._id}).sort('date', -1).find({},function(err,result){
     
-    console.log("messages: " + result);
+    console.log("messages: " + sys.inspect(result));
     
     res.render('inbox',{
       layout: 'game_layout',
@@ -20,8 +23,6 @@ function inbox(req,res){
     })
     
   })
-  
-  
 
 }
 
