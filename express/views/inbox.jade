@@ -12,7 +12,7 @@ form.form(method="post", action="/sendMessage", id="messageForm")
   ul
     - for(var l in messages)
       li
-        h3= "From: " + messages[l].from
+        h3= "From: " + messages[l].sender
         p= messages[l].content
   
 script

@@ -11,17 +11,25 @@ var sys = require('sys');
 
 function inbox(req,res){
   
-  models.Message.find({to: req.session.user._id}).sort('date', -1).find({},function(err,result){
-    
-    console.log("messages: " + sys.inspect(result));
-    
-    res.render('inbox',{
-      layout: 'game_layout',
-      title: 'Your inbox!',
-      message_form: forms.message_form.toHTML(Forms.render.p),
-      messages: result
-    })
-    
+  var msgBuf = [];
+  
+  // call 'next' to advance the Mongo streaming cursor manually
+  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+    if(msg){
+      models.User.findOne({_id: msg.from}, function(err, result){
+        msg.sender = result.username;
+        msgBuf.push(msg);
+        next();
+      })
+    }
+    else{
+      res.render('inbox',{
+        layout: 'game_layout',
+        title: 'Your inbox!',
+        message_form: forms.message_form.toHTML(Forms.render.p),
+        messages: msgBuf
+      }) 
+    }
   })
 
 }
