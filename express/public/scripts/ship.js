@@ -158,8 +158,20 @@ function init() {
     
     canvas = document.getElementById('canvas');
     stage = new Stage(canvas)
-
     ship = new Image();
+
+    var g = new Shape();
+    stage.addChild(g);
+  	
+  	var diff = 100;
+  	
+  	var color = Graphics.getRGB(0xFF,0xFF,0xFF,0.2)
+  	
+  	// Very simple grid (assume width > height)
+  	for(var i = 0; i < canvas.width; i += diff ){
+  	  g.graphics.beginStroke(color).moveTo(i,0).lineTo(i, canvas.height).endStroke()
+  	  g.graphics.beginStroke(color).moveTo(0,i).lineTo(canvas.width, i).endStroke()		
+  	}
 
     ship.onload = function() {
       
