@@ -194,16 +194,17 @@ function init() {
   	
     var labels = new Container();
   	
-    for(var i = 0; i < map.grid_num.x; i++){
-      for(var j = 0; j < map.grid_num.y; j++){
-        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
-        txt.x = i * map.grid_size + map.grid_size/2;
-        txt.y = j * map.grid_size + map.grid_size/2;
-        labels.addChild(txt);
-      }
-    }
-  	
-  	stage.addChild(labels);
+        for(var i = 0; i < map.grid_num.x; i++){
+          for(var j = 0; j < map.grid_num.y; j++){
+            var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
+            txt.x = i * map.grid_size + map.grid_size/2;
+            txt.y = j * map.grid_size + map.grid_size/2;
+            labels.addChild(txt);
+          }
+        }
+    
+    labels.cache(0,0,map.dim.width,map.dim.height);
+    stage.addChild(labels);
   	
   
     console.log("gridx " + map.grid_num.x);

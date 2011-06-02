@@ -2,3 +2,5 @@ psd/
 .sass-cache/
 .project
 .monitor
+node_modules
+.DS_Store
