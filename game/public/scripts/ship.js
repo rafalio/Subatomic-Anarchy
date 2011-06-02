@@ -139,7 +139,7 @@ function notifyServer(){
   })
 }
 
-var ship, ctx, bitmap
+var ship, ctx, bitmap, map
 
 stage = null;
 
@@ -157,7 +157,7 @@ function tick() {
 function init() {
     canvas = document.getElementById('canvas');
     
-    var map = {
+    map = {
       grid_size : 100,
       dim : {width: 5000, height: 5000},
       grid_num : {
@@ -171,14 +171,6 @@ function init() {
 
     var g = new Shape();
     stage.addChild(g);
-    
-    // console.log("stagex :" + stage.x);
-    // console.log("stagey :" + stage.y);
-    // console.log(stage);
-  	
-    // stage.x = -50;
-    // stage.y = -50;
-  	
   	
   	var color = Graphics.getRGB(0xFF,0xFF,0xFF,0.2)
   	
@@ -194,21 +186,58 @@ function init() {
   	
     var labels = new Container();
   	
-        for(var i = 0; i < map.grid_num.x; i++){
-          for(var j = 0; j < map.grid_num.y; j++){
-            var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
-            txt.x = i * map.grid_size + map.grid_size/2;
-            txt.y = j * map.grid_size + map.grid_size/2;
-            labels.addChild(txt);
-          }
-        }
+    for(var i = 0; i < map.grid_num.x; i++){
+      for(var j = 0; j < map.grid_num.y; j++){
+        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
+        txt.x = i * map.grid_size + map.grid_size/2;
+        txt.y = j * map.grid_size + map.grid_size/2;
+        labels.addChild(txt);
+      }
+    }
     
     labels.cache(0,0,map.dim.width,map.dim.height);
     stage.addChild(labels);
-  	
-  
-    console.log("gridx " + map.grid_num.x);
-  	
+    
+    var scroll_listener;
+    
+    canvas.addEventListener("mousedown", function(evt){
+      var off_x = evt.offsetX;
+      var off_y = evt.offsetY;
+      
+      var st = {
+        x: stage.x,
+        y: stage.y
+      }
+      
+      scroll_listener = function(e){
+        
+        var newCoords = {
+          x: st.x - (off_x - e.offsetX),
+          y: st.y - (off_y - e.offsetY)
+        }
+        
+        //TODO: Add checking for out-of-bounds on the other end
+        // That's a function of grid_size, map dimensions, and canvas size.
+        
+        if(newCoords.x < 0){
+          stage.x = newCoords.x;
+        }
+        if(newCoords.y < 0){
+          stage.y = newCoords.y;
+        }
+        
+      }
+      
+      document.addEventListener("mousemove", scroll_listener);
+      
+    })
+    
+    canvas.addEventListener("mouseup", function(evt){
+      document.removeEventListener("mousemove",scroll_listener);
+    })
+    
+
+    
 
     ship.onload = function() {
       
