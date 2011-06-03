@@ -118,8 +118,12 @@ function synchronizePlayers(){
 
 // Synchronizes the ship/text with the position/rotation of the player.
 function synchronizePlayer(p){
-  p.shipBitmap.x = p.position.x;
-  p.shipBitmap.y = p.position.y;
+  var newpos = gridToStage(p.position);
+  
+  console.log(newpos);
+  
+  p.shipBitmap.x = newpos.x;
+  p.shipBitmap.y = newpos.y;
   p.shipBitmap.rotation = p.rotation;
   p.mapTxt.x = p.position.x;
   p.mapTxt.y = p.position.y - 70;
@@ -139,25 +143,10 @@ function notifyServer(){
   })
 }
 
-var ship, ctx, bitmap, map
-
+var ship, ctx, bitmap, labels
 stage = null;
 
-// Array to keep all the players and their positions
-// Additionaly, extend everything to have  Bitmap and txt
-
-var players = [];
-var me; // don't touch
-
-
-function tick() {
-    stage.update();
-}
-
-function init() {
-    canvas = document.getElementById('canvas');
-    
-    map = {
+var map = {
       grid_size : 100,
       dim : {width: 5000, height: 5000},
       grid_num : {
@@ -165,6 +154,39 @@ function init() {
         y : 50
       }
     }
+
+// Array to keep all the players and their positions
+// Additionaly, extend everything to have  Bitmap and txt
+
+var players = [];
+var me; // don't touch
+
+// Don't update if no need
+var update = true;
+
+function tick() {
+  stage.update();
+}
+
+
+// Converts a grid positition (ie (3,5) ), to a stage coordinate position in pixels.
+// Places it in the center of the grid.
+
+function gridToStage(pos){
+  return {
+    x: (pos.x + 0.5)*map.grid_size,
+    y: (pos.y + 0.5)*map.grid_size
+  }
+}
+
+
+function setStageScale(s){
+  stage.scaleX = s;
+  stage.scaleY = s;
+}
+
+function init() {
+    canvas = document.getElementById('canvas');
     
     stage = new Stage(canvas)
     ship = new Image();
@@ -183,8 +205,10 @@ function init() {
   	  g.graphics.beginStroke(color).moveTo(0,i).lineTo(map.dim.width,i).endStroke();
   	}
 
+    g.cache(0,0,map.dim.width,map.dim.height);
+    
   	
-    var labels = new Container();
+    labels = new Container();
   	
     for(var i = 0; i < map.grid_num.x; i++){
       for(var j = 0; j < map.grid_num.y; j++){
@@ -236,8 +260,11 @@ function init() {
       document.removeEventListener("mousemove",scroll_listener);
     })
     
-
-    
+    canvas.addEventListener("mousewheel", function(evt){
+      evt.preventDefault();
+      var delta = evt.wheelDeltaY;      
+      setStageScale(stage.scaleX + delta/500);
+    })
 
     ship.onload = function() {
       
@@ -246,7 +273,7 @@ function init() {
         document.addEventListener("keydown", function(e) {
             
             var d = 20;
-            var rot = 7;
+            var rot = 90;
             
             var bitmap = players[me].shipBitmap;
             var txt = players[me].mapTxt;
@@ -255,24 +282,26 @@ function init() {
             switch (e.keyCode) {
               case KEY['ARROW_RIGHT']:
                   e.preventDefault();
-                  p.rotation += rot;
+                  p.position.x += 1;
                   synchronizePlayer(p);
+
                   break;
               case KEY['ARROW_LEFT']:
                   e.preventDefault();
-                  p.rotation -= rot;
+                  p.position.x -= 1;
                   synchronizePlayer(p);
                   
                   break;
               case KEY['ARROW_UP']:
                   e.preventDefault();
-                  var r = p.rotation;
-                  p.position.x += Math.cos(r * Math.PI / 180) * d;
-                  p.position.y += Math.sin(r * Math.PI / 180) * d;
+                  p.position.y -= 1;
                   synchronizePlayer(p);
                   break;
               case KEY['ARROW_DOWN']:
-                e.preventDefault();
+                  e.preventDefault();
+                  p.position.y += 1;
+                  synchronizePlayer(p);
+                  break;
             }
             
             notifyServer();
