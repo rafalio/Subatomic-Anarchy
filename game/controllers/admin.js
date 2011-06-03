@@ -5,8 +5,14 @@ function admin(req,res){
     res.render('admin', {
       title: 'Admin Panel',
       users: result
-    })
-  })
+    });
+  });
+}
+
+function mapgen(req,res){
+  res.render('mapgen', {
+    title: 'Map Generator'
+  });
 }
 
 exports.admin = admin;

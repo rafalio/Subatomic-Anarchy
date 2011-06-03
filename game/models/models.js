@@ -1,6 +1,12 @@
 require('./db.js');
 require('../controllers/mail.js');
 
+var resources = {
+  deuterium: {type: Number, min:0},
+  food:      {type: Number, min:0},
+  gold:      {type: Number, min:0}
+}
+
 var UserSchema = new Schema({
   username: {type: String, unique: true},
   password: String,
@@ -8,10 +14,12 @@ var UserSchema = new Schema({
   joined: {type: Date, default: Date.now},
   admin: {type: Boolean, default: false},
   position:{
-    x : {type: Number, default: 3},
-    y : {type: Number, default: 3}
+    x: {type: Number, default: 3},
+    y: {type: Number, default: 3}
   },
-  rotation: {type: Number, default: 0}
+  rotation: {type: Number, default: 0},
+  resources: resources,
+  capacity: {type: Number}
 })
 
 mongoose.model('User', UserSchema);
@@ -24,7 +32,6 @@ What this means, is that any type of has-a relationship that's one-to-one will h
 using ObjectId. Why this is the case, is beyond me....
 */
 
-
 var MessageSchema = new Schema({
   from: ObjectId,
   to: ObjectId,
@@ -35,6 +42,15 @@ var MessageSchema = new Schema({
 
 mongoose.model('Message', MessageSchema);
 
+var PlanetSchema = new Schema({
+  name: {type: String, unique: true},
+  position:{
+    x: Number,
+    y: Number
+  },
+  type: String,
+  resources: resources
+});
 
 // Middleware
 
