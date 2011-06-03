@@ -8,8 +8,8 @@ var UserSchema = new Schema({
   joined: {type: Date, default: Date.now},
   admin: {type: Boolean, default: false},
   position:{
-    x : {type: Number, default: 100},
-    y : {type: Number, default: 100}
+    x : {type: Number, default: 3},
+    y : {type: Number, default: 3}
   },
   rotation: {type: Number, default: 0}
 })
