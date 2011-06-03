@@ -1,5 +1,6 @@
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
+var index = require('./index.js');
 var admin = require('./admin.js');
 var models = require('../models/models');
 var data = require('../data.js');
@@ -15,7 +16,7 @@ var routes = {
     '/sendMessage' : [msg.sendMessage]
   },
   get : {
-    '/' : [requireLogin, lr.index],
+    '/' : [requireLogin, index.index],
     '/login' : [loggedIn, lr.login_register_f],
     '/logout' : [writeData, lr.logout],
     '/admin' : [requireAdmin, admin.admin],

@@ -6,14 +6,6 @@ var Forms   = require('forms')
   
 require('./mail.js');
 
-
-function index(req,res) {
-  res.render('game', {
-    layout: 'game_layout',
-    title: "Welcome to our awesome game!",
-  })
-}
-
 function register(req,res) {
   forms.register_form.handle(req, {
       success : function(form){
@@ -66,8 +58,6 @@ function logout(req,res){
   res.redirect('/login');
 } 
 
-
-exports.index = index;
 exports.login_register_f = login_register_f;
 exports.login = login;
 exports.register = register;
