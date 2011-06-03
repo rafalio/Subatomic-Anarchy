@@ -15,6 +15,7 @@ function inbox(req,res){
   var sentBuf = [];
   
   // call 'next' to advance the Mongo streaming cursor manually
+  
   models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
     if(msg){
       models.User.findOne({_id: msg.from}, function(err, result){

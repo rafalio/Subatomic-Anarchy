@@ -1,6 +1,8 @@
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
 var admin = require('./admin.js');
+var models = require('../models/models');
+var data = require('../data.js');
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
@@ -15,7 +17,7 @@ var routes = {
   get : {
     '/' : [requireLogin, lr.index],
     '/login' : [loggedIn, lr.login_register_f],
-    '/logout' : [lr.logout],
+    '/logout' : [writeData, lr.logout],
     '/admin' : [requireAdmin, admin.admin],
     '/inbox' : [requireLogin, msg.inbox]
   }
@@ -25,7 +27,8 @@ var routes = {
 
 var funcs = {
   post : app.post,
-  get : app.get
+  get : app.get,
+  all : app.all
 }
 
 // Call the appropriate methods...
@@ -62,4 +65,14 @@ function requireAdmin(req,res,next){
   var u = req.session.user;
   if(u && u.admin) next();
   else res.redirect('/');
+}
+
+
+// Writes player data back to backing store
+function writeData(req,res,next){
+  models.User.findById(req.session.user._id, function(err, user){
+    var p = data.players[user.username];
+    user.position = p.position;
+  })
+  next();
 }

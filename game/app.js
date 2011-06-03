@@ -2,6 +2,8 @@
 require('./helpers.js');
 var sys = require('sys');
 
+var data = require('./data.js');
+
 // Express init
 
 var express = require('express');
@@ -53,12 +55,6 @@ console.log("Express server listening on port %d", app.address().port);
 
 
 
-
-
-
-
-
-
 // ----------- Socket.IO Stuff ---------------- //
 
 
@@ -66,8 +62,6 @@ var io = io.listen(app, {
   transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling','jsonp-polling']
 });
 
-// Array to keep players. Synchronizes with client side
-var players = {};
 
 io.on('connection', function(client){ 
   
@@ -89,10 +83,10 @@ io.on('connection', function(client){
       var u = session.user.username;
       
       // Add current player to playing users.
-      if(!players[u])
-        players[u] = session.user;
+      if(!data.players[u])
+        data.players[u] = session.user;
       
-      console.log(players);
+      console.log(data.players);
       
       // Synchronize the client
       
@@ -100,7 +94,7 @@ io.on('connection', function(client){
           { 
             type:     'onNewConnect',
             me:       session.user,
-            everyone: players
+            everyone: data.players
           }
       );
       
@@ -108,7 +102,7 @@ io.on('connection', function(client){
       // Tell everyone a new guy arrived
       client.broadcast({
         type: 'newArrival',
-        player: players[u]
+        player: data.players[u]
       })
       
     });
@@ -133,7 +127,7 @@ io.on('connection', function(client){
 });
 
 function updatePlayerArray(msg){
-  var p = players[msg.name];
+  var p = data.players[msg.name];
   p.position = msg.pos;
   p.rotation = msg.rot;
 }
