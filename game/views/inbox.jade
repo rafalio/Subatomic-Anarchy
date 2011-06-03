@@ -8,12 +8,22 @@ form.form(method="post", action="/sendMessage", id="messageForm")
 #result
 
 #messages
-  | Your messages:
+  | Inbox:
   ul
     - for(var l in messages)
       li
         h3= "From: " + messages[l].sender
+        h5= "Date Received: " + messages[l].date
         p= messages[l].content
+        
+#sent_messages
+  | Sent Messages:
+  ul
+    - for(var l in sent_messages)
+      li
+        h3= "To: " + sent_messages[l].receiver
+        h5= "Date Sent: " + sent_messages[l].date
+        p= sent_messages[l].content
   
 script
   $("#messageForm").submit(function(event){

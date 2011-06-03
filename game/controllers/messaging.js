@@ -12,6 +12,7 @@ var sys = require('sys');
 function inbox(req,res){
   
   var msgBuf = [];
+  var sentBuf = [];
   
   // call 'next' to advance the Mongo streaming cursor manually
   models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
@@ -23,15 +24,26 @@ function inbox(req,res){
       })
     }
     else{
-      res.render('inbox',{
-        layout: 'game_layout',
-        title: 'Your inbox!',
-        message_form: forms.message_form.toHTML(Forms.render.p),
-        messages: msgBuf
+      models.Message.find({from: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+        if(msg){
+          models.User.findOne({_id: msg.to}, function(err, result){
+            msg.receiver = result.username;
+            sentBuf.push(msg);
+            next();
+          })
+        }
+        else{
+          res.render('inbox',{
+            layout: 'game_layout',
+            title: 'Your inbox!',
+            message_form: forms.message_form.toHTML(Forms.render.p),
+            messages: msgBuf,
+            sent_messages: sentBuf
+          })
+        }
       }) 
     }
   })
-
 }
 
 // POST
