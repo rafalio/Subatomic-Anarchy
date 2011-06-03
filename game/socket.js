@@ -1,4 +1,4 @@
-function start(server, session_store, data) {
+exports.start = function(data, server, session_store) {
   var connect = require('connect')
     , io = require('socket.io');
     
@@ -72,5 +72,3 @@ function start(server, session_store, data) {
     p.rotation = msg.rot;
   }
 }
-
-exports.start = start;

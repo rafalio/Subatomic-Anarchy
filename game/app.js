@@ -1,9 +1,8 @@
 require('./helpers.js');
-var auth = require('./auth.js')
-  , data = require('./data.js')
+var data = require('./data.js')
   , express = require('express')
-  , forms = require('./models/forms.js')
-  , models = require('./models/models.js')
+//  , forms = require('./models/forms.js')
+//  , models = require('./models/models.js')
 //  , route = require('./controllers/route.js')
   , session_store = new express.session.MemoryStore()
   , sys = require('sys')
@@ -45,4 +44,4 @@ require('./controllers/route.js');
 app.listen(3000);
 console.log("Express server listening on port %d", app.address().port);
 
-socket.start(app,session_store,data);
+socket.start(data, app, session_store);
