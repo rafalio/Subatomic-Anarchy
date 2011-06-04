@@ -1,4 +1,17 @@
+script(src="scripts/helpers.js")
+script(src="scripts/socket_handler.js")
 script(src="scripts/ship.js")
+script(src="scripts/dynamic_messenger.js")
+
+
+// Fuck, this took me over 2 hours to figure out... Using
+// these namespaces means EaselJs couldn't find the tick function,
+// and hence couldn't draw, FUCK. Oh well, sacrifices.... !
+
+script
+  var tick = namespace.game.drawing.tick
 
 #canv
   canvas(id="canvas", width="1100", height="600")
+
+#notification
