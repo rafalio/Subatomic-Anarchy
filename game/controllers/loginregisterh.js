@@ -39,16 +39,22 @@ function login(req,res) {
           
           auth.authUser(data, function(user){
             if(!user){
-              simpleWrite(res,"Authentication failed. Check username/password");
+              res.send({
+                type: "fail",
+                data: "Authentication failed. Check username/password"
+              })
             }
             else{
-              simpleWrite(res,"Authentication succesfull!");
+              res.send({
+                type: "success",
+                data: "Authentication succesfull!"
+              })
               req.session.user = user;
             }
           })
 	    },
 	    other : function(form){
-	        simpleWrite(res,"There was an error with the form, please check it! ");
+	        res.send("There was an error with the form, please check it! ");
 	    }
 	});
 }

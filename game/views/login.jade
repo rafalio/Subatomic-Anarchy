@@ -41,7 +41,9 @@ script
   $("#loginForm").submit(function(event){
     event.preventDefault();
     $.post("/login", $("#loginForm").serialize(), function(data){
-      $("#result").html(data);
+      $("#result").html(data.data);
+      if(data.type == "success")
+        $(location).attr('href','/');
     });
   });
   

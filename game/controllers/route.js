@@ -74,6 +74,7 @@ function writeData(req,res,next){
   models.User.findById(req.session.user._id, function(err, user){
     var p = data.players[user.username];
     user.position = p.position;
+    user.save(function(err){});
   })
   next();
 }

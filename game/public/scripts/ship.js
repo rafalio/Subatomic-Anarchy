@@ -242,7 +242,6 @@ function init() {
         
         //TODO: Add checking for out-of-bounds on the other end
         // That's a function of grid_size, map dimensions, and canvas size.
-        
         if(newCoords.x < 0){
           stage.x = newCoords.x;
         }
