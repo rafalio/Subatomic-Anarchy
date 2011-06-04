@@ -256,7 +256,7 @@ function init() {
       
     })
     
-    canvas.addEventListener("mouseup", function(evt){
+    document.addEventListener("mouseup", function(evt){
       document.removeEventListener("mousemove",scroll_listener);
     })
     
