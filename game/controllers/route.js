@@ -1,9 +1,9 @@
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
-var index = require('./index.js');
 var admin = require('./admin.js');
 var models = require('../models/models');
 var data = require('../data.js');
+var index = require('./index.js');
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
@@ -74,6 +74,7 @@ function writeData(req,res,next){
   models.User.findById(req.session.user._id, function(err, user){
     var p = data.players[user.username];
     user.position = p.position;
+    user.save(function(err){});
   })
   next();
 }
