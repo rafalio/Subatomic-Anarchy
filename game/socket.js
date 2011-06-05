@@ -7,7 +7,6 @@ exports.start = function(data, server, session_store) {
   });
   
   io.on('connection', function(client){
-    console.log("lol wat");
   
     var cookie_string = client.request.headers.cookie;
     var parsed_cookies = connect.utils.parseCookie(cookie_string);
@@ -18,15 +17,17 @@ exports.start = function(data, server, session_store) {
         if(error){
           console.log("ERROR FETCHING SESSION!");
         }
-        //console.log(sys.inspect(session));
-      
-        //console.log(players);
       
         var u = session.user.username;
+        
+        var clients = {};
       
         // Add current player to playing users.
-        if(!data.players[u])
+        if(!data.players[u]){
           data.players[u] = session.user;
+          data.clients[u] = client;
+        }
+          
       
         console.log(data.players);
       
@@ -64,6 +65,7 @@ exports.start = function(data, server, session_store) {
     client.on('disconnect', function(){
       console.log("person disconnected!");
     });
+    
   });
   
   function updatePlayerArray(msg){

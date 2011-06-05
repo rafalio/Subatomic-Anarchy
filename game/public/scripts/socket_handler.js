@@ -1,6 +1,7 @@
 namespace.module('game.socket', function(exports, require){
   
-  var game = require('game.drawing')
+  var game              = require('game.drawing')
+  var dynamic_messenger = require('game.dynamic_messenger');
   
   socket = new io.Socket(null, {port: 3000, rememberTransport: false});
   socket.connect();
@@ -63,6 +64,11 @@ namespace.module('game.socket', function(exports, require){
     else if(msg.type == 'playerUpdate'){
       console.log("hurray, server notified us!");
       game.updatePlayer(msg);
+    }
+    
+    else if(msg.type == 'notification'){
+      console.log("notification received! " + msg.content);
+      dynamic_messenger.createNotification(msg.content);
     }
     
   }

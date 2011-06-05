@@ -1,7 +1,7 @@
 var Forms   = require('forms')
   , forms   = require('../models/forms.js')
   , models  = require('../models/models.js')
-  
+  , pdata  = require('../data.js')
 
 var sys = require('sys');
   
@@ -53,14 +53,11 @@ function sendMessage(req,res){
   forms.message_form.handle(req, {
 	    success: function(form){
 	      
-	        console.log(req.session.user);
-	        
           var data = form.data;
-          console.log(data);
           
           models.User.findOne({username: data.to}, function(err, result){
             if(!result){
-              simpleWrite(res,"Sorry, no user with that username found, try again!");
+              res.send("Sorry, no user with that username found, try again!");
             }
             else{
               var to_id = result._id;
@@ -72,9 +69,21 @@ function sendMessage(req,res){
               
               msg.save(function(err){
                 if(!err){
-                  simpleWrite(res,"Message has been sent succesfuly!");
+                  
+                  var to_client = pdata.clients[data.to]
+                  console.log(to_client);
+                  
+                  if(to_client){
+                    to_client.send({
+                      type: "notification",
+                      content: "New message from " + req.session.user.username
+                    })
+                  }
+
+                  
+                  res.send("Message has been sent succesfuly!");
                 } else{
-                  simpleWrite(res,"There has been an error sending your message. Try again later!");
+                  res.send("There has been an error sending your message. Try again later!");
                 }
               })
               
@@ -82,7 +91,7 @@ function sendMessage(req,res){
           })       
 	    },
 	    other : function(form){
-	        simpleWrite(res,"There was an error with the form, please check it! ");
+	        res.send("There was an error with the form, please check it! ");
 	    }
   })
 }
