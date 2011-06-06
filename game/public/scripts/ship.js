@@ -8,6 +8,7 @@ namespace.module('game.drawing', function(exports, require){
   var pressed = true;
   
   
+  
   function hookEvent(target, evt, fn){
     target.addEventListener(evt, fn)
   }
@@ -21,7 +22,16 @@ namespace.module('game.drawing', function(exports, require){
     Object.keys(obj).forEach(fn);
   }
   
+  // Given an (x,y) stage pixel, snaps to nearest grid
+  
   function snapToGrid(position){
+    // Note, scaleX should always be equal to scaleY;
+    var scale = stage.scaleX;
+    console.log(stage);
+    return {
+      x: Math.floor( (position.x - stage.x) / (map.grid_size*scale)),
+      y: Math.floor( (position.y - stage.y) / (map.grid_size*scale))
+    }    
     
   }
 
@@ -48,10 +58,9 @@ namespace.module('game.drawing', function(exports, require){
         stage.onMouseDown = function(e){
           var m = players[me];
           
-          console.log(e);
+          console.log(e);  
           
-          m.position.x = Math.floor(e.stageX / map.grid_size);
-          m.position.y = Math.floor(e.stageY / map.grid_size);
+          m.position = snapToGrid({x: e.stageX, y: e.stageY});
           
           me_bitmap.scaleX = 1.0;
           me_bitmap.scaleY = 1.0;
@@ -185,6 +194,7 @@ namespace.module('game.drawing', function(exports, require){
       stage = new Stage(canvas)
       ship = new Image();
 
+
       var g = new Shape();
       stage.addChild(g);
 
@@ -255,10 +265,10 @@ namespace.module('game.drawing', function(exports, require){
       })
       
       canvas.addEventListener("mousewheel", function(evt){
-        evt.preventDefault();
-        var delta = evt.wheelDeltaY;      
-        setStageScale(stage.scaleX + delta/500);
-      })
+              evt.preventDefault();
+              var delta = evt.wheelDeltaY;      
+              setStageScale(stage.scaleX + delta/500);
+            })
       
       ship.onload = function() {
       
