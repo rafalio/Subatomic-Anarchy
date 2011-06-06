@@ -1,55 +1,31 @@
-#title
-  h1.title AwesomeGame
-  
-#login_form.prepend-8  
-  form.form(method="post", action="/login", id="loginForm")
-    !{login_form}
-    button(type="submit", class="slick-black") Login!
+.container
+  #title
+    h1.title AwesomeGame
+
+  #errors.prepend-8
+    - if (flash.error)
+      ul
+        - for(var e in flash.error)
+          li= flash.error[e]
+        
+  #login_form.prepend-8  
+    form.form(method="post", action="/login", id="loginForm")
+      !{login_form}
+      button(type="submit", class="slick-black") Login
     
-  h3#register 
-    |Don't Have an account? 
-    a(href='#', id="register_button") Register 
+    h3#register 
+      |Don't have an account? 
+      a(href='#', id="register_button") Register 
   
-#register_form.prepend-8
-  form.form(method="post", action="/register", id="registerForm")
-    !{register_form}
-    button(type="submit", class="slick-black") Register!
+  #register_form.prepend-8
+    form.form(method="post", action="/register", id="registerForm")
+      !{register_form}
+      button(type="submit", class="slick-black") Register
     
-  h3#register 
-    |Already have an account ?
-    a(href='#', id="login_button") Login
+    h3#register 
+      |Already have an account ?
+      a(href='#', id="login_button") Login
 
-#result.prepend-8
+  #success.prepend-8
 
-script
-  $("#register_button").click(function(event) {
-    event.preventDefault();
-    $("#result").html('');
-    $("#login_form").hide("slow", function(){
-      $("#register_form").show("slow");
-    });
-  });
-
-  $("#login_button").click(function(event) {
-    event.preventDefault();
-    $("#result").html('');
-    $("#register_form").hide("slow", function(){
-      $("#login_form").show("slow");
-    });
-  });
-  
-  $("#loginForm").submit(function(event){
-    event.preventDefault();
-    $.post("/login", $("#loginForm").serialize(), function(data){
-      $("#result").html(data.data);
-      if(data.type == "success")
-        $(location).attr('href','/');
-    });
-  });
-  
-  $("#registerForm").submit(function(event){
-    event.preventDefault();
-    $.post("/register", $("#registerForm").serialize(), function(data){
-      $("#result").html(data);
-    });
-  });
+  script(src="scripts/loginregister_jquery.js")

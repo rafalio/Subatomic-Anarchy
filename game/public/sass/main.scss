@@ -1,0 +1,11 @@
+@import "mixins.scss";
+
+#header {
+  height: 50px;
+
+  @include text;
+
+  #logout {
+    float: right;
+  }
+}

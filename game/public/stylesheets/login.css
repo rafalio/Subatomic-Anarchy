@@ -1,5 +1,4 @@
-@charset "UTF-8";
-/* line 4, ../sass/login.scss */
+/* line 3, ../sass/login.scss */
 body {
   background: #333;
   background: url("../images/starfield.png") repeat-x fixed;
@@ -7,12 +6,12 @@ body {
   font-size: 14px;
 }
 
-/* line 8, ../sass/login.scss */
+/* line 7, ../sass/login.scss */
 h1 {
   color: #fff;
 }
 
-/* line 12, ../sass/login.scss */
+/* line 11, ../sass/login.scss */
 .title {
   font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: 70px;
@@ -20,31 +19,54 @@ h1 {
   -webkit-text-stroke: 1px black;
 }
 
-/* line 19, ../sass/login.scss */
+/* line 18, ../sass/login.scss */
 #title {
   padding-top: 100px;
   text-align: center;
 }
 
-/* line 25, ../sass/login.scss */
+/* line 23, ../sass/login.scss */
+#errors ul {
+  -webkit-opacity: .5;
+  -moz-opacity: .5;
+  /* mozilla */
+  background: #545454;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  width: 285px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -o-border-radius: 6px;
+  -ms-border-radius: 6px;
+  -khtml-border-radius: 6px;
+  border-radius: 6px;
+}
+
+/* line 33, ../sass/login.scss */
+#errors li {
+  list-style-type: none;
+  color: #f00;
+}
+
+/* line 38, ../sass/login.scss */
 #register {
   color: #fff;
   font-size: 14px;
   padding-top: 10px;
 }
 
-/* line 33, ../sass/login.scss */
+/* line 46, ../sass/login.scss */
 #register_form {
   display: none;
 }
 
-/* line 37, ../sass/login.scss */
+/* line 50, ../sass/login.scss */
 a:link, a:hover, a:visited {
   color: #fff;
   font-size: 14px;
 }
 
-/* line 42, ../sass/login.scss */
+/* line 55, ../sass/login.scss */
 .form input, textarea {
   padding: 9px;
   border: solid 1px #E5E5E5;
@@ -65,14 +87,14 @@ a:link, a:hover, a:visited {
   border-radius: 8px;
 }
 
-/* line 59, ../sass/login.scss */
+/* line 72, ../sass/login.scss */
 input:hover, textarea:hover,
 input:focus, textarea:focus {
   border-color: #C9C9C9;
   -webkit-box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 8px;
 }
 
-/* line 65, ../sass/login.scss */
+/* line 78, ../sass/login.scss */
 .form label {
   margin-left: 10px;
   color: #ddd;
@@ -81,7 +103,7 @@ input:focus, textarea:focus {
 }
 
 /*Button Stuff */
-/* line 76, ../sass/login.scss */
+/* line 89, ../sass/login.scss */
 button.slick-black {
   background: #111;
   background: -moz-linear-gradient(top, rgba(50, 50, 50, 0.9) 0%, rgba(30, 30, 30, 0.9) 50%, rgba(20, 20, 20, 0.9) 50%, rgba(0, 0, 0, 0.9) 100%);
@@ -106,7 +128,7 @@ button.slick-black {
   width: 150px;
 }
 
-/* line 105, ../sass/login.scss */
+/* line 118, ../sass/login.scss */
 button.slick-black:hover {
   background: #222;
   background: -moz-linear-gradient(top, rgba(70, 70, 70, 0.9) 0%, rgba(50, 50, 50, 0.9) 50%, rgba(40, 40, 40, 0.9) 50%, rgba(20, 20, 20, 0.9) 100%);
@@ -114,7 +136,7 @@ button.slick-black:hover {
   cursor: pointer;
 }
 
-/* line 121, ../sass/login.scss */
+/* line 134, ../sass/login.scss */
 button.slick-black:active {
   background: #000;
   background: -moz-linear-gradient(top, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.9) 50%, rgba(10, 10, 10, 0.9) 50%, rgba(0, 0, 0, 0.9) 100%);

@@ -1,5 +1,6 @@
 @import "mixins.scss";
 
+@charset "UTF-8";
 body{
   @include body_setup;
 }
@@ -7,15 +8,4 @@ body{
 canvas{
   // For testing where the canvas is.
   border: 2px solid white;
-}
-
-#header{
-  height: 50px;
-  
-  @include text;
-  
- #logout{
-   float: right;
- }
- 
 }

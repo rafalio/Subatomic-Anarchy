@@ -35,8 +35,5 @@ namespace.module('game.dynamic_messenger', function(exports, require){
     }, 8000)
      
   }
-  
-  
-
-})
+});
 

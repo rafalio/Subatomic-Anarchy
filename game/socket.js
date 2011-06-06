@@ -1,7 +1,8 @@
-exports.start = function(data, server, session_store) {
-  var connect = require('connect')
-    , io = require('socket.io');
-    
+var connect = require('connect');
+var io = require('socket.io');
+
+
+exports.start = function(data, server, session_store) {    
   io = io.listen(server, {
     transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling','jsonp-polling']
   });

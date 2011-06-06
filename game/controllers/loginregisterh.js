@@ -1,69 +1,90 @@
-var Forms   = require('forms')
-  , forms   = require('../models/forms.js')
-  , models  = require('../models/models.js')
-  , auth    = require('../auth.js')
-  , sys     = require('sys');
-  
-require('./mail.js');
+var auth;
+var Forms = require('forms');
+var login_form;
+var register_form;
+var User;
+
+function start(auth_, login_form_, register_form_, User_) {
+  auth = auth_;
+  login_form = login_form_;
+  register_form = register_form_
+  User = User_;
+}
 
 function register(req,res) {
-  forms.register_form.handle(req, {
-      success : function(form){
-        var data = form.data;
-        
-        auth.registerUser(data, function(result){
-          simpleWrite(res,result);
-        })
-        
+  register_form.handle(req, {
+      success: function(form) {
+        auth.registerUser(form.data, function(result) {
+          if(result == 'registered') {
+            res.send({
+              success: 'Registration successfull.'
+            });
+          } else if(result == 'taken') {
+            res.send({
+              error: 'Username is already taken, choose a different one.'
+            });
+          } else {
+            res.send({
+              error: 'We have some internal issues. Please do something else while we figure out what\'s wrong.'
+            });
+          }
+        });
       },
-      other : function(form){
-        simpleWrite(res,"You filled out the form wrong! Try again! ");
+      other: function(form){
+        res.send({
+          error: 'You have filled out the form wrong. Try again!'
+        });
       }
   });
 }
 
-function login_register_f(req,res) {
-  res.render('login', {
-    title: 'Awesome Web Game 3.0 | Login',
-    login_form: forms.login_form.toHTML(Forms.render.p),
-    register_form: forms.register_form.toHTML(Forms.render.p)
+function login(req,res) {
+  login_form.handle(req, {
+    success: function(form) {
+      auth.authUser(form.data, function(err,user) {
+        if(!err) {
+          res.send({
+            success: "Authentication succesfull."
+          });
+//          req.session.regenerate(function(){
+            req.session.user = user;
+//          });
+        } else if (err == 'user' || err == 'match') {
+          res.send({
+            error: "Wrong username/password"
+          });
+        } else {
+          res.send({
+            error: "We have some internal issues. Please do something else while we figure out what\'s wrong."
+          });
+        }
+      });
+    },
+    other: function(form) {
+      res.send({
+        error: "There was something wrong with the form. Please try again."
+      });
+    }
   });
 }
 
-function login(req,res) {
-  console.log(sys.inspect(req.body));  
-
-	forms.login_form.handle(req, {
-	    success: function(form){
-          var data = form.data;
-          
-          auth.authUser(data, function(user){
-            if(!user){
-              res.send({
-                type: "fail",
-                data: "Authentication failed. Check username/password"
-              })
-            }
-            else{
-              res.send({
-                type: "success",
-                data: "Authentication succesfull!"
-              })
-              req.session.user = user;
-            }
-          })
-	    },
-	    other : function(form){
-	        res.send("There was an error with the form, please check it! ");
-	    }
-	});
+function logout(req,res) {
+  req.session.destroy(function(){});
+  res.redirect('home');
 }
 
-function logout(req,res){
-  delete req.session.user;
-  res.redirect('/login');
-} 
+function login_register_f(req,res) {
+  //console.log(req.flash());
+  res.render('login', {
+    head: 'login_head',
+    title: 'Login/Register',
+    login_form: login_form.toHTML(Forms.render.p),
+    register_form: register_form.toHTML(Forms.render.p),
+    flash: req.flash()
+  });
+}
 
+exports.start = start;
 exports.login_register_f = login_register_f;
 exports.login = login;
 exports.register = register;

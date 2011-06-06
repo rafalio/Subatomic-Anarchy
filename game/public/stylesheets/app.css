@@ -1,7 +1,0 @@
-/* line 3, ../sass/app.scss */
-body {
-  background: #333;
-  background: url("../images/starfield.png") repeat-x fixed;
-  color: #fff;
-  font-size: 14px;
-}

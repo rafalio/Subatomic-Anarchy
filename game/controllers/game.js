@@ -1,6 +1,6 @@
 exports.index = function(req,res) {
   res.render('game', {
-    layout: 'game_layout',
+    head: 'game_head',
     title: "Welcome to our awesome game!",
   });
 }

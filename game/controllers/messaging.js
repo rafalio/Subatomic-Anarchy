@@ -1,11 +1,15 @@
-var Forms   = require('forms')
-  , forms   = require('../models/forms.js')
-  , models  = require('../models/models.js')
-  , pdata  = require('../data.js')
+var Forms = require('forms')
+var forms;
+var models;
+var pdata;
 
 var sys = require('sys');
   
-
+function start(forms_, models_, pdata_) {
+  forms = forms_;
+  models = models_;
+  pdata = pdata_;
+}
 
 // GET
 
@@ -31,20 +35,20 @@ function inbox(req,res){
             msg.receiver = result.username;
             sentBuf.push(msg);
             next();
-          })
+          });
         }
         else{
           res.render('inbox',{
-            layout: 'inbox_layout',
+            head: 'inbox_head',
             title: 'Messages',
             message_form: forms.message_form.toHTML(Forms.render.p),
             messages: msgBuf,
             sent_messages: sentBuf
-          })
+          });
         }
-      }) 
+      });
     }
-  })
+  });
 }
 
 // POST
@@ -65,7 +69,7 @@ function sendMessage(req,res){
                 from: req.session.user._id,
                 to: to_id,
                 content: data.message
-              })
+              });
               
               msg.save(function(err){
                 if(!err){
@@ -77,10 +81,8 @@ function sendMessage(req,res){
                     to_client.send({
                       type: "notification",
                       content: "New message from " + req.session.user.username
-                    })
+                    });
                   }
-
-                  
                   res.send("Message has been sent succesfuly!");
                 } else{
                   res.send("There has been an error sending your message. Try again later!");
@@ -90,12 +92,12 @@ function sendMessage(req,res){
             }
           })       
 	    },
-	    other : function(form){
+	    other: function(form){
 	        res.send("There was an error with the form, please check it! ");
 	    }
   })
 }
-   
 
+exports.start = start;
 exports.inbox = inbox;
 exports.sendMessage = sendMessage;

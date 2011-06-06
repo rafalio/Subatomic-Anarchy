@@ -1,10 +1,9 @@
 require('./db.js');
-require('../controllers/mail.js');
 
 var resources = {
-  deuterium: {type: Number, min:0},
-  food:      {type: Number, min:0},
-  gold:      {type: Number, min:0}
+  deuterium: {type: Number, min:0, default: 0},
+  food:      {type: Number, min:0, default: 0},
+  gold:      {type: Number, min:0, default: 0}
 }
 
 var UserSchema = new Schema({
@@ -13,14 +12,14 @@ var UserSchema = new Schema({
   email: String,
   joined: {type: Date, default: Date.now},
   admin: {type: Boolean, default: false},
-  position:{
+  position: {
     x: {type: Number, default: 3},
     y: {type: Number, default: 3}
   },
   rotation: {type: Number, default: 0},
   resources: resources,
   capacity: {type: Number}
-})
+});
 
 mongoose.model('User', UserSchema);
 
@@ -38,7 +37,7 @@ var MessageSchema = new Schema({
   date: {type: Date, default: Date.now},
   read: {type: Boolean, default: false},
   content: String
-})
+});
 
 mongoose.model('Message', MessageSchema);
 
@@ -48,30 +47,12 @@ var PlanetSchema = new Schema({
     x: Number,
     y: Number
   },
-  type: String,
+  kind: String,
   resources: resources
 });
 
-// Middleware
-
-UserSchema.pre('save', function(next){
-   
-  email(this.email,
-        "Thanks for registering with our awesome game!",
-        "Thanks for registering with our awesome game!",
-        
-        function(error,success){
-          if(error){
-            console.log("Registration succesful! But unfortunately the email server broke.");
-          }
-          else{
-            console.log("Registration succesful! A confirmation email has been sent to you!");
-          }    
-        });
-  
-  next(null);
-  
-})
+mongoose.model('Planet', PlanetSchema);
 
 exports.User    = mongoose.model('User');
 exports.Message = mongoose.model('Message');
+exports.Planet  = mongoose.model('Planet');
