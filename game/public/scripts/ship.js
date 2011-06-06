@@ -4,9 +4,25 @@ namespace.module('game.drawing', function(exports, require){
   
   // Pre:   Players array initialized with player data
   // Post:  Each entry in the player array is expanded with a bitmap and txt for EaselJS
-
+  
+  var pressed = true;
+  
+  
+  function hookEvent(target, evt, fn){
+    target.addEventListener(evt, fn)
+  }
+  
+  function unhookEvent(target, evt, fn){
+    target.removeEventListener(evt, fn);
+  }
+  
+  
   function assocForEach(obj,fn){
     Object.keys(obj).forEach(fn);
+  }
+  
+  function snapToGrid(position){
+    
   }
 
   function onImageLoadInit(img){
@@ -16,6 +32,48 @@ namespace.module('game.drawing', function(exports, require){
     assocForEach(players, function(name){
       registerUser(name)
     })
+
+    var me_bitmap = players[me].shipBitmap;
+    
+    me_bitmap.onPress = function(e){
+      
+      console.log("pressed!");
+      
+      console.log(pressed);
+      
+      if(pressed){
+        me_bitmap.scaleX = 1.3;
+        me_bitmap.scaleY = 1.3;
+        
+        stage.onMouseDown = function(e){
+          var m = players[me];
+          
+          console.log(e);
+          
+          m.position.x = Math.floor(e.stageX / map.grid_size);
+          m.position.y = Math.floor(e.stageY / map.grid_size);
+          
+          me_bitmap.scaleX = 1.0;
+          me_bitmap.scaleY = 1.0;
+          
+          synchronizePlayer(m);
+          
+          pressed = false;
+          fromStage = true;
+          
+          stage.onMouseDown = null; // unhook event
+        }
+        
+      }
+      
+      else{
+        me_bitmap.scaleX = 1.0;
+        me_bitmap.scaleY = 1.0;
+      }
+      
+      pressed = !pressed
+    }
+    
 
     synchronizePlayers();
   }
@@ -155,7 +213,6 @@ namespace.module('game.drawing', function(exports, require){
       stage.addChild(labels);
       
       console.log(stage);
-
       
       var scroll_listener;
       
