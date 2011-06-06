@@ -20,8 +20,10 @@ h1{
     text-align: center;
 }
 
-#dialog-form textarea {
-    height: 130px;
+#dialog-form {
+    textarea {
+      height: 120px;
+    }
 }
 
 #dialog-form input, textarea {
@@ -39,13 +41,18 @@ h1{
     @include border-radius(2px);
 }
 
+#demo button{
+    float: right;
+}
+
 #messages, #sent_messages {
    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
    font-size: 30px;
    
    ul {
      padding: 10px;     
-     font-size: 10px;   
+     font-size: 10px;  
+     list-style-type: none; 
         
      li {       
        background: #fff;

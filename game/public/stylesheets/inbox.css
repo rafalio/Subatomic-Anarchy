@@ -26,12 +26,12 @@ h1 {
   text-align: center;
 }
 
-/* line 23, ../sass/inbox.scss */
+/* line 24, ../sass/inbox.scss */
 #dialog-form textarea {
-  height: 130px;
+  height: 120px;
 }
 
-/* line 27, ../sass/inbox.scss */
+/* line 29, ../sass/inbox.scss */
 #dialog-form input, textarea {
   padding: 10px;
   border: solid 1px #E5E5E5;
@@ -52,27 +52,33 @@ h1 {
   border-radius: 2px;
 }
 
-/* line 42, ../sass/inbox.scss */
+/* line 44, ../sass/inbox.scss */
+#demo button {
+  float: right;
+}
+
+/* line 48, ../sass/inbox.scss */
 #messages, #sent_messages {
   font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: 30px;
 }
-/* line 46, ../sass/inbox.scss */
+/* line 52, ../sass/inbox.scss */
 #messages ul, #sent_messages ul {
   padding: 10px;
   font-size: 10px;
+  list-style-type: none;
 }
-/* line 50, ../sass/inbox.scss */
+/* line 57, ../sass/inbox.scss */
 #messages ul li, #sent_messages ul li {
   background: #fff;
   margin: 10px 0 0 0;
   padding: 10px;
 }
-/* line 56, ../sass/inbox.scss */
+/* line 63, ../sass/inbox.scss */
 #messages ul h3, #sent_messages ul h3 {
   color: #000;
 }
-/* line 60, ../sass/inbox.scss */
+/* line 67, ../sass/inbox.scss */
 #messages ul p, #sent_messages ul p {
   color: #999999;
   font-size: 19px;

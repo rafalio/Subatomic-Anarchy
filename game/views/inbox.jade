@@ -3,11 +3,10 @@
     h1.title Messaging Centre
   
   #demo
-    button(type="submit") Compose Message
-
+    button(type="submit") + Compose Message
 
   #demo
-    #dialog-form
+    #dialog-form(title="Send a message")
       form.form(method="post", action="/sendMessage", id="messageForm")      
           !{message_form}
           //button(type="submit", class="slick-black") Send Message!
