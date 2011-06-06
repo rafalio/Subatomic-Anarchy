@@ -1,11 +1,12 @@
-#title
-  h1.title Admin Panel
+.container
+  #title
+    h1.title Admin Panel
 
-#users
-  - if(users != "error")
-    | List of currently registered users:
-    ul
-      - for(var l in users)
-        li= users[l].username
-  - else
-    |ERROR
+  #users
+    - if(users != "error")
+      | List of currently registered users:
+      ul
+        - for(var l in users)
+          li= users[l].username
+    - else
+      |ERROR

@@ -1,0 +1,5 @@
+@import "mixins.scss";
+
+body{
+  @include body_setup;  
+}

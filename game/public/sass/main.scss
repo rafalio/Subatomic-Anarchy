@@ -2,10 +2,23 @@
 
 #header {
   height: 50px;
+  padding-top: 10px;
+  padding-right:20px;
 
   @include text;
 
   #logout {
     float: right;
   }
+}
+
+h1 {
+    color: #fff; 
+}
+
+.title {
+    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+    font-size: 40px;
+    color: #fff;
+    -webkit-text-stroke: 1px black;
 }
