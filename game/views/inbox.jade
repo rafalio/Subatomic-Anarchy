@@ -71,15 +71,15 @@ script
     $( "#dialog-form" ).dialog({
       
       autoOpen: false,
-      height: 500,
-      width: 500,
+      height: 200,
+      width: 200,
       modal: true,
       buttons: {
         "Send message": function() {
         var bValid = true;
           allFields.removeClass( "ui-state-error" );
-          $.post("/sendMessage", $("#dialog-form").serialize(), function(data){
-            $(this).dialog("close");
+          $.post("/sendMessage", $("#messageForm").serialize(), function(data){
+            $("#dialog-form").dialog("close");
           });
           
         }
