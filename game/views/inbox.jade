@@ -1,9 +1,10 @@
 #title
-  h1.title Your Inbox!
+  h1.title Messages!
   
 form.form(method="post", action="/sendMessage", id="messageForm")
-  !{message_form}
-  button(type="submit", class="slick-black") Send Message!
+  fieldset
+    !{message_form}
+    button(type="submit", class="slick-black") Send Message!
   
 #result
 
@@ -12,8 +13,8 @@ form.form(method="post", action="/sendMessage", id="messageForm")
   ul
     - for(var l in messages)
       li
-        h3= "From: " + messages[l].sender
-        h5= "Date Received: " + messages[l].date
+        h3= "From: " + messages[l].sender + " on " + messages[l].date
+        
         p= messages[l].content
         
 #sent_messages
@@ -21,8 +22,7 @@ form.form(method="post", action="/sendMessage", id="messageForm")
   ul
     - for(var l in sent_messages)
       li
-        h3= "To: " + sent_messages[l].receiver
-        h5= "Date Sent: " + sent_messages[l].date
+        h3= "To: " + sent_messages[l].receiver + " Date Sent: " + sent_messages[l].date
         p= sent_messages[l].content
   
 script

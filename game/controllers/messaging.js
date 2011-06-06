@@ -35,8 +35,8 @@ function inbox(req,res){
         }
         else{
           res.render('inbox',{
-            layout: 'game_layout',
-            title: 'Your inbox!',
+            layout: 'inbox_layout',
+            title: 'Messages',
             message_form: forms.message_form.toHTML(Forms.render.p),
             messages: msgBuf,
             sent_messages: sentBuf

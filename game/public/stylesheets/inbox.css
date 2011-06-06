@@ -77,5 +77,24 @@ h1 {
 #sent_messages {
   font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: 30px;
-  color: #fff;
+}
+/* line 67, ../sass/inbox.scss */
+#sent_messages ul {
+  padding: 10px;
+  font-size: 10px;
+}
+/* line 71, ../sass/inbox.scss */
+#sent_messages ul li {
+  background: #fff;
+  margin: 10px 0 0 0;
+  padding: 1px;
+}
+/* line 77, ../sass/inbox.scss */
+#sent_messages ul h3 {
+  color: #000;
+}
+/* line 81, ../sass/inbox.scss */
+#sent_messages ul p {
+  color: #999999;
+  font-size: 19px;
 }

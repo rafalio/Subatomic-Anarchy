@@ -63,11 +63,26 @@ h1{
 #sent_messages{
    font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
    font-size: 30px;
-   color: #fff;
+   
+   ul {
+     padding: 10px;     
+     font-size: 10px;   
+        
+     li {       
+       background: #fff;
+       margin: 10px 0 0 0;
+       padding: 1px
+     }    
+   
+     h3{
+     color: #000;    
+     }
+
+     p {
+       color: #999999;
+       font-size: 19px;
+     }
+   }
+
 
 }
-
-
-
-
-
