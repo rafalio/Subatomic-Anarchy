@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* line 3, ../sass/inbox.scss */
 body {
   background: #333;
@@ -26,13 +27,18 @@ h1 {
 }
 
 /* line 23, ../sass/inbox.scss */
-.form input, textarea {
+#dialog-form textarea {
+  height: 130px;
+}
+
+/* line 27, ../sass/inbox.scss */
+#dialog-form input, textarea {
   padding: 10px;
   border: solid 1px #E5E5E5;
   outline: 0;
   font: normal 13px/100% Verdana, Tahoma, sans-serif;
-  width: 800px;
-  background: #FFFFFF;
+  width: 400px;
+  background: #ffffff;
   background: -webkit-gradient(linear, left top, left 25, from(white), color-stop(4%, #eeeeee), to(white));
   background: -moz-linear-gradient(top, white, #eeeeee 1px, white 25px);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px;
@@ -46,27 +52,27 @@ h1 {
   border-radius: 2px;
 }
 
-/* line 38, ../sass/inbox.scss */
+/* line 42, ../sass/inbox.scss */
 #messages, #sent_messages {
   font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: 30px;
 }
-/* line 42, ../sass/inbox.scss */
+/* line 46, ../sass/inbox.scss */
 #messages ul, #sent_messages ul {
   padding: 10px;
   font-size: 10px;
 }
-/* line 46, ../sass/inbox.scss */
+/* line 50, ../sass/inbox.scss */
 #messages ul li, #sent_messages ul li {
   background: #fff;
   margin: 10px 0 0 0;
   padding: 10px;
 }
-/* line 52, ../sass/inbox.scss */
+/* line 56, ../sass/inbox.scss */
 #messages ul h3, #sent_messages ul h3 {
   color: #000;
 }
-/* line 56, ../sass/inbox.scss */
+/* line 60, ../sass/inbox.scss */
 #messages ul p, #sent_messages ul p {
   color: #999999;
   font-size: 19px;
