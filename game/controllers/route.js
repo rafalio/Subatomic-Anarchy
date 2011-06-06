@@ -61,7 +61,8 @@ exports.start = function(app,auth,data,forms,models) {
     if(req.session.user) {
       next();
     } else {
-      req.flash('error', 'You have to login!');
+      if(req.originalUrl != "/")
+        req.flash('error', 'You have to login!');
       res.redirect('/login');
     }
   }
@@ -78,7 +79,7 @@ exports.start = function(app,auth,data,forms,models) {
 
   // Logs access to site after logging in
   function accessLogger(req, res, next) {
-    console.log('Restricted part accessed by %s', req.session.user.username);
+    console.log('Restricted part %s accessed by %s', req.originalUrl,req.session.user.username);
     next();
   }
   
