@@ -62,6 +62,8 @@ namespace.module('game.drawing', function(exports, require){
           fromStage = true;
           
           stage.onMouseDown = null; // unhook event
+          
+          notifyServer();
         }
         
       }
@@ -70,6 +72,7 @@ namespace.module('game.drawing', function(exports, require){
         me_bitmap.scaleX = 1.0;
         me_bitmap.scaleY = 1.0;
       }
+      
       
       pressed = !pressed
     }
