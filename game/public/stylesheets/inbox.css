@@ -28,11 +28,11 @@ h1 {
 
 /* line 23, ../sass/inbox.scss */
 .form input, textarea {
-  padding: 5px;
+  padding: 10px;
   border: solid 1px #E5E5E5;
   outline: 0;
   font: normal 13px/100% Verdana, Tahoma, sans-serif;
-  width: 200px;
+  width: 800px;
   background: #FFFFFF;
   background: -webkit-gradient(linear, left top, left 25, from(white), color-stop(4%, #eeeeee), to(white));
   background: -moz-linear-gradient(top, white, #eeeeee 1px, white 25px);
@@ -48,53 +48,27 @@ h1 {
 }
 
 /* line 38, ../sass/inbox.scss */
-#messages {
+#messages, #sent_messages {
   font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
   font-size: 30px;
 }
 /* line 42, ../sass/inbox.scss */
-#messages ul {
+#messages ul, #sent_messages ul {
   padding: 10px;
   font-size: 10px;
 }
 /* line 46, ../sass/inbox.scss */
-#messages ul li {
+#messages ul li, #sent_messages ul li {
   background: #fff;
   margin: 10px 0 0 0;
-  padding: 1px;
+  padding: 10px;
 }
 /* line 52, ../sass/inbox.scss */
-#messages ul h3 {
+#messages ul h3, #sent_messages ul h3 {
   color: #000;
 }
 /* line 56, ../sass/inbox.scss */
-#messages ul p {
-  color: #999999;
-  font-size: 19px;
-}
-
-/* line 63, ../sass/inbox.scss */
-#sent_messages {
-  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
-  font-size: 30px;
-}
-/* line 67, ../sass/inbox.scss */
-#sent_messages ul {
-  padding: 10px;
-  font-size: 10px;
-}
-/* line 71, ../sass/inbox.scss */
-#sent_messages ul li {
-  background: #fff;
-  margin: 10px 0 0 0;
-  padding: 1px;
-}
-/* line 77, ../sass/inbox.scss */
-#sent_messages ul h3 {
-  color: #000;
-}
-/* line 81, ../sass/inbox.scss */
-#sent_messages ul p {
+#messages ul p, #sent_messages ul p {
   color: #999999;
   font-size: 19px;
 }

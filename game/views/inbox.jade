@@ -13,7 +13,8 @@ form.form(method="post", action="/sendMessage", id="messageForm")
   ul
     - for(var l in messages)
       li
-        h3= "From: " + messages[l].sender + " on " + messages[l].date
+        h3= "From: " + messages[l].sender 
+        h3= "On: " + messages[l].date
         
         p= messages[l].content
         
@@ -22,7 +23,8 @@ form.form(method="post", action="/sendMessage", id="messageForm")
   ul
     - for(var l in sent_messages)
       li
-        h3= "To: " + sent_messages[l].receiver + " Date Sent: " + sent_messages[l].date
+        h3= "To: " + sent_messages[l].receiver 
+        h3= "Date Sent: " + sent_messages[l].date
         p= sent_messages[l].content
   
 script
