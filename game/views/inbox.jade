@@ -1,10 +1,15 @@
 #title
-  h1.title Messages!
+  h1.title Messaging Centre
   
-form.form(method="post", action="/sendMessage", id="messageForm")
-  fieldset
-    !{message_form}
-    button(type="submit", class="slick-black") Send Message!
+#demo
+  button(type="submit") Compose Message
+
+
+#demo
+  #dialog-form
+    form.form(method="post", action="/sendMessage", id="messageForm")      
+        !{message_form}
+        //button(type="submit", class="slick-black") Send Message!
   
 #result
 
@@ -34,3 +39,54 @@ script
       $("#result").html(data);
     });
   });
+
+
+script
+  $(function() {
+    $( "button, input:submit, a", "#demo" ).button().click(function() {
+      $( "#dialog-form" ).dialog( "open" );
+    });    
+  });
+
+
+
+script
+  $(function() {
+    $( "#dialog:ui-dialog" ).dialog( "destroy" );
+
+    var id = $( "#to" ),
+      message = $( "#message" ),
+      allFields = $( [] ).add( id ).add( message ),
+      tips = $( ".validateTips" );
+
+    function updateTips( t ) {
+      tips
+        .text( t )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        tips.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+
+    $( "#dialog-form" ).dialog({
+      
+      autoOpen: false,
+      height: 500,
+      width: 500,
+      modal: true,
+      buttons: {
+        "Send message": function() {
+        var bValid = true;
+          allFields.removeClass( "ui-state-error" );
+          $.post("/sendMessage", $("#dialog-form").serialize(), function(data){
+            $(this).dialog("close");
+          });
+          
+        }
+      },
+      close: function() {
+        allFields.val( "" ).removeClass( "ui-state-error" );
+      }
+    });
+  });
+
