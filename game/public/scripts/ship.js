@@ -174,7 +174,6 @@ namespace.module('game.drawing', function(exports, require){
 
   // Converts a grid positition (ie (3,5) ), to a stage coordinate position in pixels.
   // Places it in the center of the grid.
-
   function gridToStage(pos){
     return {
       x: (pos.x + 0.5)*map.grid_size,
@@ -264,11 +263,11 @@ namespace.module('game.drawing', function(exports, require){
         document.removeEventListener("mousemove",scroll_listener);
       })
       
-      canvas.addEventListener("mousewheel", function(evt){
-              evt.preventDefault();
-              var delta = evt.wheelDeltaY;      
-              setStageScale(stage.scaleX + delta/500);
-            })
+      // canvas.addEventListener("mousewheel", function(evt){
+      //         evt.preventDefault();
+      //         var delta = evt.wheelDeltaY;      
+      //         setStageScale(stage.scaleX + delta/500);
+      //       })
       
       ship.onload = function() {
       
