@@ -20,7 +20,6 @@ exports.start = function(data, server, session_store) {
         if(error){
           console.log("ERROR FETCHING SESSION!");
         }
-      
         
         // If the user has a session set up. This would fail if site is open, node crashes,
         // and then you restart node. Socket.IO from client side would try to establish a connection,
@@ -48,12 +47,10 @@ exports.start = function(data, server, session_store) {
           // Synchronize the client
           client.send({ 
                 type:     'onNewConnect',
-                me:       session.user,
+                me:       session.user.username,
                 everyone: data.players
-              });
-           
+              });  
         }
-
       
         // Tell everyone a new guy arrived
         client.broadcast({
@@ -63,15 +60,19 @@ exports.start = function(data, server, session_store) {
         
         
         client.on('disconnect', function(){
-          console.log(data.players);
-          console.log(session.user);
 
           data.players[session.user.username].activeConnections -= 1;
 
           if(data.players[session.user.username].activeConnections == 0){
             delete data.players[session.user.username];
             console.log("all instances of user disconnected");
-          } 
+          }
+          
+          io.broadcast({
+            type:   "userDisconnected",
+            pName:  session.user.username
+          })
+
         });
       
       });
@@ -81,21 +82,35 @@ exports.start = function(data, server, session_store) {
   
     client.on('message', function(msg){
       console.log("message received!");
-    
+
+      
       switch(msg.type){
+        
+        // Called when the player says he reached a new location!
         case 'playerUpdate':
-          updatePlayerArray(msg, data.players);
+          updatePlayerData(msg.pData);
           client.broadcast(msg);
           break;
+          
+          
+        /*  When a player initiates movement, pass the message on to everyone else,
+            so that animation can start.
+        */
+        case 'initMovement':
+          client.broadcast(msg);
+          break;
+          
       }
     });
   
     
   });
   
-  function updatePlayerArray(msg){
-    var p = data.players[msg.name];
-    p.position = msg.pos;
-    p.rotation = msg.rot;
+  function updatePlayerData(pData){
+    var p = data.players[pData.username];
+    p.position = pData.position;
+    p.rotation = pData.rotation;
   }
+  
+  
 }

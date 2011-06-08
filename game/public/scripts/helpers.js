@@ -1,9 +1,48 @@
-namespace.module('game.helpers', function(exports, require){
-});
+// l2 norm of point
+function l2(p){
+  return Math.sqrt(Math.pow(p.x,2) + Math.pow(p.y, 2));
+}
+
+// Distance between two points
+function dist(p1, p2){
+  return l2({x: p1.x - p2.x, y:p1.y - p2.y});
+}
+
+// Manhattan Distance between two points
+function manhattan(p1,p2){
+  return Math.abs(p1.x-p2.x) + Math.abs(p1.y-p2.y);
+}
+
+function dot_product(v1,v2){
+  return v1.x*v2.x + v1.y*v2.y;
+}
+
+// Subtraction
+function sub(v1,v2){
+  return {x: v1.x - v2.x, y: v1.y - v2.y};
+}
+
+// Returns the angle between two vectors v1, v2, in radians.
+function v_angle(v1,v2){
+  return Math.acos(dot_product(v1,v2) / (l2(v1) * l2(v2)));
+}
+
+function hookEvent(target, evt, fn){
+  target.addEventListener(evt, fn)
+}
+
+function unhookEvent(target, evt, fn){
+  target.removeEventListener(evt, fn);
+}  
+
+function assocForEach(obj,fn){
+  Object.keys(obj).forEach(fn);
+}
+
+
 
 
 // Registers a global array key
-
 var KEY = {
     'BACKSPACE': 8,
     'TAB': 9,

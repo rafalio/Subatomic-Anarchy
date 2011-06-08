@@ -1,13 +1,11 @@
-namespace.module('game.socket', function(exports, require){
-  
-  var game              = require('game.drawing')
-  var dynamic_messenger = require('game.dynamic_messenger');
-  
+var socket = null;
+
+// Connect when we loaded all the required things
+
+function socket_init(){
   socket = new io.Socket(null, {port: 3000, rememberTransport: false});
   socket.connect();
-  
-  exports.socket = socket;
-  
+
   var socket_events = {
     'connect' : connectHandler
    ,'disconnect' : disconnectHandler
@@ -16,61 +14,73 @@ namespace.module('game.socket', function(exports, require){
    ,'reconnect_failed' : reconnect_failedHandler
    ,'message' : messageHandler
   }
-  
+
   Object.keys(socket_events).forEach( function(event, index, arr){
     var f = socket_events[event];
     if(!f) console.log("Cannot find " + fname + 'function. Please create it!' );
     else socket.on(event,f);
   })
+}
 
-  function connectHandler(){
-    console.log("i've connected!!");
-  }
+function connectHandler(){
+  console.log("i've connected!!");
+}
 
-  function disconnectHandler(){
-    console.log("disconnected :(");
-  }
+function disconnectHandler(){
+  console.log("disconnected :(");
+}
 
-  function reconnectHandler(){
+function reconnectHandler(){
 
-  }
+}
 
-  function reconnectingHandler(nextRetry){
+function reconnectingHandler(nextRetry){
 
-  }
+}
 
-  function reconnect_failedHandler(){
+function reconnect_failedHandler(){
 
-  }
+}
 
-  function messageHandler(msg){
+function messageHandler(msg){
+  
+  console.log("Message received: " + msg.type);
 
-    console.log("message received: " + msg);
-
-    // Only to be called whenever we connect as a new client
-    if(msg.type == 'onNewConnect'){  
-      // Synchronize everyone
-      game.setPlayers(msg.everyone);
-      game.setMe(msg.me.username);
-      game.init();   // Entry point to EaselJS
-    }
-
-    // A challenger appears!
-    else if(msg.type == 'newArrival'){
-      game.addNewPlayer(msg.player);
-    }
-
-    // Challenger changes position!
-    else if(msg.type == 'playerUpdate'){
-      console.log("hurray, server notified us!");
-      game.updatePlayer(msg);
-    }
+  // Only to be called whenever we connect as a new client
+  if(msg.type == 'onNewConnect'){
+    // Synchronize everyone, and add myself to the board!
     
-    else if(msg.type == 'notification'){
-      console.log("notification received! " + msg.content);
-      dynamic_messenger.createNotification(msg.content);
-    }
+    Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
+      addPlayer(msg.everyone[pUsername]);
+    })
     
+    me = players[msg.me];
+    me.hookControls();
+  }
+
+  // New player connects to the server
+  else if(msg.type == 'newArrival'){
+    addPlayer(msg.player);
+  }
+
+  // We are notified that some other player has changed state
+  else if(msg.type == 'playerUpdate'){
+    var p = players[msg.pData.username];
+    p.updatePlayer(msg.pData);
   }
   
-});
+  // Server telling us we need to animate someone
+  else if(msg.type == 'initMovement'){
+    players[msg.pName].doMove(msg.move_to);
+  }
+  
+  // Someone has disconnected. Get rid of them
+  else if(msg.type == 'userDisconnected'){
+    unloadPlayer(msg.pName);
+  }
+  
+  else if(msg.type == 'notification'){
+    createNotification(msg.content);
+  }
+  
+}

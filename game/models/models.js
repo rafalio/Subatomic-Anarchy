@@ -17,6 +17,7 @@ var UserSchema = new Schema({
     y: {type: Number, default: 3}
   },
   rotation: {type: Number, default: 0},
+  shipType: {type: Number, default: 1},
   resources: resources,
   capacity: {type: Number}
 });

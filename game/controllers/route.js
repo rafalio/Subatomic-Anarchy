@@ -2,6 +2,7 @@ var admin = require('./admin.js');
 var game = require('./game.js');
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
+var data = require('../data.js')
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
@@ -18,7 +19,7 @@ exports.start = function(app,auth,data,forms,models) {
       '/sendMessage' : [msg.sendMessage]
     },
     get : {
-      '/' : [requireLogin, accessLogger, game.index],
+      '/' : [requireLogin, accessLogger, noMultipleLogins, game.index],
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, writeData, lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
@@ -55,6 +56,17 @@ exports.start = function(app,auth,data,forms,models) {
     if(req.session.user) res.redirect('home');
     else next();
   }
+  
+  // Do not allow multiple game screens per person. Only one!
+  function noMultipleLogins(req,res,next){
+    var uname = req.session.user.username;
+    if(data.players[uname]){
+      res.send("Sorry, no multiple logins are allowed.")
+    }
+    else{
+      next();
+    }
+  }
 
   // If user is not logged in, redirect to login page
   function requireLogin(req,res,next){
@@ -88,6 +100,7 @@ exports.start = function(app,auth,data,forms,models) {
     models.User.findById(req.session.user._id, function(err, user){
       var p = data.players[user.username];
       user.position = p.position;
+      user.rotation = p.rotation;
       user.save(function(err){});
     });
     next();

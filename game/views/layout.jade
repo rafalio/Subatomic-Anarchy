@@ -8,7 +8,7 @@ html(lang="en")
     script(src="scripts/lib/namespace-plus.min.js")
     != partial(head)
     
-  body
+  body(onload = "game_init();")
     - if(session && session.user)
       #header
         #logout
