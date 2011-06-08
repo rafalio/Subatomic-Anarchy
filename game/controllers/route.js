@@ -1,5 +1,5 @@
 var admin = require('./admin.js');
-var game = require('./game.js');
+var game  = require('./game.js');
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
 
@@ -18,7 +18,8 @@ exports.start = function(app,auth,data,forms,models) {
       '/sendMessage' : [msg.sendMessage]
     },
     get : {
-      '/' : [requireLogin, accessLogger, game.index],
+      '/' : [index],
+      '/game' : [requireLogin, accessLogger, game.game],
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, writeData, lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
@@ -44,7 +45,13 @@ exports.start = function(app,auth,data,forms,models) {
       func.apply(app,args);
     });
   });
-
+  
+  function index(req,res) {
+    if(req.session.user)
+      res.redirect('/game');
+    else
+      res.redirect('/login');
+  }
 
 
   // MIDDLEWARE
@@ -61,8 +68,7 @@ exports.start = function(app,auth,data,forms,models) {
     if(req.session.user) {
       next();
     } else {
-      if(req.originalUrl != "/")
-        req.flash('error', 'You have to login!');
+      req.flash('error', 'You have to login!');
       res.redirect('/login');
     }
   }
