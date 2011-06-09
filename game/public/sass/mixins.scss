@@ -11,8 +11,7 @@ $default-text-shadow-v-offset: 5px;
 }
 
 @mixin body_setup{
-  background: #333;
-  background: 
-    url("../images/starfield.png") repeat-x fixed;
+  background: #FFFFFF url("../images/starfield.png") repeat;
+  background-size: 100%;
   @include text;
 }

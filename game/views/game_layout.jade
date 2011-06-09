@@ -27,9 +27,4 @@ html(lang="en")
     script(src="scripts/game.js")
     
   body(onload = "game_init();")
-    - if(session && session.user)
-      #header
-        #logout
-          |Logged in as #{session.user.username}
-          a(href='/logout') Logout
     !{body}

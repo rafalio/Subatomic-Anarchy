@@ -20,7 +20,7 @@ exports.start = function(app,auth,data,forms,models) {
     },
     get : {
       '/' : [index],
-      '/game' : [requireLogin, noMultipleLogins, accessLogger, game.game],
+      '/game' : [requireLogin, accessLogger, game.game],
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, writeData, lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],

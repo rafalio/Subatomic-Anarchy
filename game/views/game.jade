@@ -1,2 +1,15 @@
+#header  
+  #title Awesome Game
+  
+  menu
+    |Welcome #{session.user.username}
+    li 
+      a(href='/logout') Logout
+    li
+      a(href='/about') About
+
 #canv
-  canvas(id="canvas", width="900", height="600")
+  canvas(id="canvas", width="1000", height="600")
+  
+#footer Resources and other stuff
+    

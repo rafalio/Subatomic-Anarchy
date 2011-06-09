@@ -1,11 +1,65 @@
 @import "mixins.scss";
+@import "compass/reset";
 
-@charset "UTF-8";
 body{
   @include body_setup;
+  
+  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #fff;
+  
+  padding: 5px 10px;
+  
 }
 
 canvas{
   // For testing where the canvas is.
-  border: 2px solid white;
+  border: 1px solid white;
+  @include border-radius(8px);
+  background-color: #111;
 }
+
+#header{
+  height: 40px;
+  padding-bottom:10px;
+  
+    
+  #title{
+    float:left;
+    -webkit-text-stroke: 0.5px black;
+    font-size:40px;
+  }
+  
+  #text{
+    float:right;
+  }
+  
+  
+  menu{
+    list-style-type: none;
+    float: right;
+    
+    li{
+      a{
+        padding: 7px;
+        background-color:#111;
+        @include border-radius(3px);
+      }
+      
+      display: inline;
+      padding: 0 5px; 
+    }
+    
+    li:hover{
+      a{
+        background-color:#222;
+      }
+    }   
+  }
+  
+}
+
+
+
+
+
