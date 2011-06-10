@@ -6,6 +6,8 @@ var ship_images   = {};
 var SHIP_TYPES    = 1;          // Number of ship types
 
 var players       = {};         // Global array to keep all the players. Indexed via username;
+
+var planet_images = {};
 var planets       = {};
 
 var pressed       = false;      // are we pressing our player ?

@@ -5,10 +5,13 @@
   Map.prototype.grid_num    = {x: 50, y: 50};
   
   
+  
+  // Names have to be unique, and the name has to be equal to the key
   var simple_map = {
     "betelgeuse" : {
+      name: "betelgeuse",
       position: {x: 4, y : 3},
-      src: "planet1.png",
+      src : "betelgeuse.png",
       type: "whatever",
       resources: {}
     }
@@ -22,14 +25,42 @@
     this.grid_num.x = w/this.grid_size;
     this.grid_num.y = w/this.grid_size;
     this.drawGrid();
+    
+    this.loadMap(simple_map);
+    
     this.registerMapControls();
+  }  
+  
+  Map.prototype.loadPlanetImages = function(map, done){
+    var sources = [];
+    Object.keys(map).forEach(function(p){
+      sources.push(map[p].src);
+    });
+    sources = _.uniq(sources);  
+    var l = sources.length;
+
+    (function(num){
+      var ptr = arguments.callee;
+      
+      if(num >= l) done();
+      
+      else{
+        var s = new Image();
+        s.onload = function(){
+          planet_images[sources[num]] = s;
+          ptr(num+1);
+        }
+        s.src = 'images/planets/{0}.png'.format(Object.keys(map)[num])
+      }
+    })(0); 
   }
   
-  
-  
   Map.prototype.loadMap = function(map){
-    Object.keys(map).forEach(function(planet){
-      map[planet]
+    this.loadPlanetImages(map, function(){
+      Object.keys(map).forEach(function(pName){
+        planets[pName] = new Planet(map[pName]);
+      })
+      console.log(planets);
     })
   }
   
