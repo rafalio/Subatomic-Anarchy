@@ -16,7 +16,7 @@ var me            = null;       // My player object. It resides inside 'players'
 function game_init(){
   canvas  = document.getElementById('canvas');
   stage   = new Stage(canvas)
-  map     = new Map();
+  map     = new Map(5000,5000);
 
   loadShips(1,shipsLoaded); 
 }

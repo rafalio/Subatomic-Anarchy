@@ -16,7 +16,11 @@
   
   
   // Constructor
-  function Map(){
+  function Map(w, h){
+    this.dim.width = w;
+    this.dim.height = h;
+    this.grid_num.x = w/this.grid_size;
+    this.grid_num.y = w/this.grid_size;
     this.drawGrid();
     this.registerMapControls();
   }
