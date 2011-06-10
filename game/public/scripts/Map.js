@@ -4,11 +4,33 @@
   Map.prototype.dim         = {width: 5000, height: 5000};
   Map.prototype.grid_num    = {x: 50, y: 50};
   
+  
+  var simple_map = {
+    "betelgeuse" : {
+      position: {x: 4, y : 3},
+      src: "planet1.png",
+      type: "whatever",
+      resources: {}
+    }
+  }
+  
+  
   // Constructor
   function Map(){
     this.drawGrid();
     this.registerMapControls();
   }
+  
+  
+  
+  Map.prototype.loadMap = function(map){
+    Object.keys(map).forEach(function(planet){
+      map[planet]
+    })
+  }
+  
+  
+  
   
   // Given an (x,y) stage pixel, snaps to nearest grid
   Map.prototype.snapToGrid = function(position){
