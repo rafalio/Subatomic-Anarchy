@@ -107,7 +107,9 @@ exports.start = function(app,auth,data,forms,models) {
       console.log(user);
       
       var p = data.players[user.username];
-      user.position = p.position;
+      user.position.x = p.position.x;
+      user.position.y = p.position.y;
+      
       user.rotation = p.rotation;
       user.save(function(err){});
     });
