@@ -37,7 +37,19 @@ app.configure('production', function(){
 
 app.dynamicHelpers({
   session: function(req, res) {
-    return req.session;
+    return req.session
+  },
+  players: function(req,res){
+    return data.players
+  },
+  me: function(req,res){
+    if(req.session.user){
+      console.log(req.session.user)
+      console.log(data.players)
+      return data.players[req.session.user.username]
+    }
+    else
+      return null;
   }
 });
 

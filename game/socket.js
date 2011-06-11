@@ -27,46 +27,36 @@ exports.start = function(data, server, session_store) {
         // if the server is running all the time, this shouldn't happen.
         
         if(session){
-          // Add current player to playing users.
-          
-          var uname = session.user.username;
-          
-          if(! data.players[uname]){
-            console.log("adding to session")
-            data.players[uname] = session.user;
-            data.players[uname].activeConnections = 1;
-            
-            data.clients[uname] = client;
-          }
-          else{
-            // Player is already playing, just add one extra connection
-            data.players[uname].activeConnections += 1
-          }
-         
-         
+                   
           // Synchronize the client
           client.send({ 
                 type:     'onNewConnect',
                 me:       session.user.username,
                 everyone: data.players
               });  
+              
+              
+              
+          var uname = session.user.username;
+
+          if(! data.players[uname]){
+            console.log("adding {0} to session".format(uname))
+            data.players[uname] = session.user;
+          }
+          
         }
       
         // Tell everyone a new guy arrived
         client.broadcast({
           type: 'newArrival',
-          player: data.players[uname]
+          player: data.players[session.user.username]
         });
         
         
         client.on('disconnect', function(){
 
-          data.players[session.user.username].activeConnections -= 1;
-
-          if(data.players[session.user.username].activeConnections == 0){
             delete data.players[session.user.username];
-            console.log("all instances of user disconnected");
-          }
+            console.log("deleting player {0} from player list".format(session.user.username));
           
           io.broadcast({
             type:   "userDisconnected",

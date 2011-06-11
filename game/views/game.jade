@@ -8,8 +8,37 @@
     li
       a(href='/about') About
 
-#canv
-  canvas(id="canvas", width="1000", height="600")
+
+#container
+  //#chat lol wut
   
-#footer Resources and other stuff
+  canvas(id="canvas", width="1200", height="600")
+
+    
+  #resources
+    ul
+      li Deuterium: #{me.resources.deuterium}
+      li Gold: #{me.resources.gold}
+      li Food: #{me.resources.food}
+      
+      
+  
+  #tabs(class="tabs-bottom")
+    ul
+      li
+        a(href="#chat") Chat
+      li
+        a(href="#inbox") Inbox
+      li
+        a(href="#sent") Sent
+        
+    #chat
+      p oh hai
+      
+    #inbox
+      p inbox here
+      
+    #sent
+      p sent messages here
+    
     

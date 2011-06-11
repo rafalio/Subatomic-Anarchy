@@ -12,12 +12,80 @@ body{
   
 }
 
-canvas{
-  // For testing where the canvas is.
-  border: 1px solid white;
-  @include border-radius(8px);
-  background-color: #111;
+#container{
+  margin: 0 auto;
+  width:1250px;
+  position: relative;
+  
+  canvas{
+    border: 1px solid white;
+    @include border-radius(8px);
+    background-color: #111;
+    //position: absolute; 
+  }
+  
+  #resources{
+    position: absolute;
+    top: 550px;
+    left: 1040px;
+    background: #222;
+    @include border-radius(8px);
+    padding:4px;
+    width: 150px;
+  }
+  
+//  #chat{
+//    position: absolute;
+//    top: 550px;
+//    left: 5px;
+//    background: #222;
+//    @include border-radius(8px);
+//    padding:4px;
+//    width: 150px;
+//  }
+  
+  #tabs{
+    position: absolute;
+    top: 395px;
+    left: 2px;
+    height: 200px;
+    width: 300px;
+  }
+  
+  .tabs-bottom{
+    position:relative;
+    
+    .ui-tabs-panel{
+      height: 140px; 
+      overflow: auto;
+    }
+    
+    .ui-tabs-nav{
+      position: absolute !important; 
+      left: 0; 
+      bottom: 0; 
+      right:0; 
+      padding: 0 0.2em 0.2em 0;
+      
+      li{
+        margin-top: -2px !important; 
+        margin-bottom: 1px !important; 
+        border-top: none; 
+        border-bottom-width: 1px;
+      }
+      
+      
+    }
+    
+  }
+  
+  .ui-tabs-selected{ 
+    margin-top: -3px !important; 
+  }
+  
+  
 }
+
 
 #header{
   height: 40px;
@@ -40,21 +108,11 @@ canvas{
     float: right;
     
     li{
-      a{
-        padding: 7px;
-        background-color:#111;
-        @include border-radius(3px);
-      }
-      
       display: inline;
       padding: 0 5px; 
     }
     
-    li:hover{
-      a{
-        background-color:#222;
-      }
-    }   
+       
   }
   
 }

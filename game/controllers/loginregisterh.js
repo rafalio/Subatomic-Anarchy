@@ -3,6 +3,7 @@ var Forms = require('forms');
 var login_form;
 var register_form;
 var User;
+var data = require('../data.js')
 
 function start(auth_, login_form_, register_form_, User_) {
   auth = auth_;
@@ -46,9 +47,15 @@ function login(req,res) {
           res.send({
             success: "Authentication succesfull."
           });
-//          req.session.regenerate(function(){
             req.session.user = user;
-//          });
+            
+            var uname = req.session.user.username;
+
+            if(! data.players[uname]){
+              console.log("adding {0} to session".format(uname))
+              data.players[uname] = req.session.user;
+            }
+            
         } else if (err == 'user' || err == 'match') {
           res.send({
             error: "Wrong username/password"
@@ -74,7 +81,6 @@ function logout(req,res) {
 }
 
 function login_register_f(req,res) {
-  //console.log(req.flash());
   res.render('login', {
     head: 'login_head',
     title: 'Login/Register',
@@ -89,3 +95,12 @@ exports.login_register_f = login_register_f;
 exports.login = login;
 exports.register = register;
 exports.logout = logout;
+
+String.prototype.format = function() {
+    var formatted = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+        formatted = formatted.replace(regexp, arguments[i]);
+    }
+    return formatted;
+};
