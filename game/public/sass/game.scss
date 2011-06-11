@@ -34,13 +34,16 @@ body{
     width: 150px;
   }
   
-  
+  #tabs:hover{
+    opacity: 1;
+  }
   #tabs{
     position: absolute;
     top: 395px;
     left: 2px;
     height: 200px;
     width: 300px;
+    opacity: 0.1;
     
     #chat{
 
@@ -57,13 +60,11 @@ body{
           
           li:nth-child(odd){
             background: red;
-          }
-          
+          }          
         }
 
         form{
           input{
-
             width: 290px;
             background: #222;
             border: 1px solid #AAA;
@@ -71,17 +72,9 @@ body{
             color: #BBB;
             margin-bottom: -20px;
           }
-        }
-                
-      }
-      
-      
-      
-
-      
+        }         
+      } 
     }
-  
-    
   }
   
   .tabs-bottom{
@@ -105,17 +98,12 @@ body{
         border-top: none; 
         border-bottom-width: 1px;
       }
-      
-      
     }
-    
   }
   
   .ui-tabs-selected{ 
     margin-top: -3px !important; 
   }
-  
-  
 }
 
 
