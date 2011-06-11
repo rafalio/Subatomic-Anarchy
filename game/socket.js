@@ -27,16 +27,7 @@ exports.start = function(data, server, session_store) {
         // if the server is running all the time, this shouldn't happen.
         
         if(session){
-                   
-          // Synchronize the client
-          client.send({ 
-                type:     'onNewConnect',
-                me:       session.user.username,
-                everyone: data.players
-              });  
-              
-              
-              
+          
           var uname = session.user.username;
 
           if(! data.players[uname]){
@@ -44,6 +35,13 @@ exports.start = function(data, server, session_store) {
             data.players[uname] = session.user;
           }
           
+          // Synchronize the client
+          client.send({ 
+                type:     'onNewConnect',
+                me:       session.user.username,
+                everyone: data.players
+              });
+              
         }
       
         // Tell everyone a new guy arrived

@@ -63,6 +63,10 @@
         player.setBitmapScale(1.3);
 
         stage.onMouseDown = function(e){
+          
+          console.log(player.position.x);
+          console.log(player.position.y);
+          
           player.doMove(map.snapToGrid({x: e.stageX, y: e.stageY}));
           
           // Notify the server to start the animation for other people connected
@@ -178,7 +182,7 @@
   Player.prototype.tick = function(){
     var control = this.control;
     
-    if(!this.movement_done){
+    if(!control.movement_done){
       
       if(control.should_rotate){
         
@@ -221,13 +225,11 @@
             this.position.y -= Math.cos(this.rotation * Math.PI / 180) * this.M_PER_TICK;
             control.move_complete -= this.M_PER_TICK;
           }
+          
           this.syncBitmap();
         }
       }      
     }
-    
-    
-    
     
   }
   
