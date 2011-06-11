@@ -56,33 +56,32 @@
     var control = this.control;
     
     bitmap.onPress = function(e){
-      
-      pressed = !pressed
+      if(!pressed1) {
+        if(!pressed2) {
+          player.setBitmapScale(1.3);
+          pressed1 = true;
+          pressed2 = true;
+          
+          stage.onMouseDown = function(e){
+            var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
+            if(_.isEqual(player.position, move_to_grid)) {
+              player.setBitmapScale(1);
+              pressed1 = false;
+              stage.omMouseDown = null;  // unhook event
+            } else {
+              player.doMove(move_to_grid);
 
-      if(pressed){
-        player.setBitmapScale(1.3);
-
-        stage.onMouseDown = function(e){
-          
-          console.log(player.position.x);
-          console.log(player.position.y);
-          
-          player.doMove(map.snapToGrid({x: e.stageX, y: e.stageY}));
-          
-          // Notify the server to start the animation for other people connected
-          socket.send({
-            type:  'initMovement',
-            pName: me.username,
-            move_to: control.move_to
-          })
-          
-          player.setBitmapScale(1);
-          pressed = false;
-          stage.onMouseDown = null;   // unhook event
+              // Notify the server to start the animation for other people connected
+              socket.send({
+                type: 'initMovement',
+                pName: me.username,
+                move_to: control.move_to
+              });
+            }
+          }
+        } else {
+          pressed2 = false;
         }
-      }
-      else{
-        player.setBitmapScale(1);
       }
     }
   }
@@ -216,8 +215,6 @@
                 the server of that, so that the change can be propagated.
             */
             socket.send(this.generateUpdatePacket());
-            
-
           }
 
           else{
@@ -230,7 +227,6 @@
         }
       }      
     }
-    
   }
   
   w.Player = Player;

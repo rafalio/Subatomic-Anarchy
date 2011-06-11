@@ -10,7 +10,8 @@ var players       = {};         // Global array to keep all the players. Indexed
 var planet_images = {};
 var planets       = {};
 
-var pressed       = false;      // are we pressing our player ?
+var pressed1      = false;
+var pressed2      = false;      // are we pressing anything?
 var me            = null;       // My player object. It resides inside 'players'
 
 
