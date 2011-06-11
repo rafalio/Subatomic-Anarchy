@@ -1,16 +1,20 @@
+#logout_confirm(title="Logout?")
+  p 
+    span(class="ui-icon ui-icon-alert", style="float:left; margin:0 7px 20px 0;")
+    |Are you sure you want to log out ?
+
 #header  
   #title Awesome Game
   
   menu
     |Welcome #{session.user.username}
     li 
-      a(href='/logout') Logout
+      a(id="logout_link") Logout
     li
       a(href='/about') About
 
 
 #container
-  //#chat lol wut
   
   canvas(id="canvas", width="1200", height="600")
 

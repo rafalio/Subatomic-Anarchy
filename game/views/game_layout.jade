@@ -18,6 +18,8 @@ html(lang="en")
       google.load("jqueryui", "1.8.13")
 
 
+    script(src="scripts/game_ui.js")
+    
     script(src="scripts/helpers.js")
 
     script(src="scripts/Map.js")
@@ -28,19 +30,7 @@ html(lang="en")
     script(src="scripts/dynamic_messenger.js")
     script(src="scripts/game.js")
     
+    
+    
   body(onload = "game_init();")
     !{body}
-    
-    
-    script
-      $(function(){
-        $("menu a").button();
-        
-        $("#tabs").tabs({
-        });
-        
-        $(".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *")
-        .removeClass("ui-corner-all ui-corner-top")
-        .addClass("ui-corner-bottom")
-        
-      });

@@ -104,6 +104,8 @@ exports.start = function(app,auth,data,forms,models) {
   // TEMPORARY: Writes player data back to backing store
   function writeData(req,res,next){
     models.User.findById(req.session.user._id, function(err, user){
+      console.log(user);
+      
       var p = data.players[user.username];
       user.position = p.position;
       user.rotation = p.rotation;
