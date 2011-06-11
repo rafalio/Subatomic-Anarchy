@@ -41,6 +41,47 @@ body{
     left: 2px;
     height: 200px;
     width: 300px;
+    
+    #chat{
+
+
+      #chat_wrap{
+        margin: -1.0em -1.3em;
+        
+        #chatBox{
+          padding: 2px;
+          width: 290px;
+          height: 137px;
+          overflow: hidden;
+          
+          
+          li:nth-child(odd){
+            background: red;
+          }
+          
+        }
+
+        form{
+          input{
+
+            width: 290px;
+            background: #222;
+            border: 1px solid #AAA;
+            height: 20px;
+            color: #BBB;
+            margin-bottom: -20px;
+          }
+        }
+                
+      }
+      
+      
+      
+
+      
+    }
+  
+    
   }
   
   .tabs-bottom{
