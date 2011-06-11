@@ -100,20 +100,28 @@
      control.should_move    = true;
      
      // Compute rotation
-     var v1        = sub(control.move_to, this.position);
-     var v2        = {x: 0, y: - manhattan(this.position, control.move_to)};
-     var a         = (this.position.x > control.move_to.x ? -1 : 1 );
-     var b         = (a == -1 ? 360 : 0);          
-     var new_angle = a*v_angle(v1,v2) * 180 / Math.PI + b; 
+     var v1             = sub(control.move_to, this.position);
+     var v2             = {x: 0, y: - manhattan(this.position, control.move_to)};
+     var a              = (this.position.x > control.move_to.x ? -1 : 1 );
+     var b              = (a == -1 ? 360 : 0);          
+     var new_angle      = a*v_angle(v1,v2) * 180 / Math.PI + b;
+     var crossing360    = (this.rotation < new_angle ? 360 - new_angle + this.rotation : 360 - this.rotation + new_angle);
+     var notcrossing360 = Math.abs(this.rotation-new_angle);
 
      control.rotate_to = new_angle;
      control.should_rotate = true;
-
-     control.rot_complete   = Math.abs(this.rotation - new_angle);
-     control.move_complete  = dist(this.position, control.move_to);
-
+     
+     
      // 1 : clockwise, -1 : anticlockwise
-     control.rotate_dir = (this.rotation < control.rotate_to ? 1 : -1)
+     if(crossing360 < notcrossing360) {
+       control.rot_complete = crossing360;
+       control.rotate_dir = (this.rotation < control.rotate_to ? -1 : 1);
+       
+     } else {
+       control.rot_complete = notcrossing360;
+       control.rotate_dir = (this.rotation < control.rotate_to ? 1 : -1);
+     }
+     control.move_complete  = dist(this.position, control.move_to);
      
   }
   
