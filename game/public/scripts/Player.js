@@ -67,7 +67,7 @@
             if(_.isEqual(player.position, move_to_grid)) {
               player.setBitmapScale(1);
               pressed1 = false;
-              stage.omMouseDown = null;  // unhook event
+              stage.onMouseDown = null;  // unhook event
             } else {
               player.doMove(move_to_grid);
 
