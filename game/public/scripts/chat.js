@@ -1,10 +1,10 @@
 function message(obj){
-  var el = document.createElement('li');
+  var el = document.createElement('p');
   if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
   else if ('message' in obj) el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
   if( obj.message && window.console && console.log ) console.log(obj.message[0], obj.message[1]);
-  document.getElementById('chat').appendChild(el);
-  document.getElementById('chat').scrollTop = 1000000;
+  document.getElementById('chatBox').appendChild(el);
+  document.getElementById('chatBox').scrollTop = 1000000;
 }
 
 function send(){
