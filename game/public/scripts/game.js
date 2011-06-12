@@ -1,6 +1,7 @@
 var stage;
 var canvas;
 var map;
+var chat;
 
 var ship_images   = {};
 var SHIP_TYPES    = 1;          // Number of ship types
@@ -23,6 +24,7 @@ function game_init(){
   canvas  = document.getElementById('canvas');
   stage   = new Stage(canvas)
   map     = new Map(5000,5000);
+  chat    = new Chat();
 
   loadShips(1,shipsLoaded); 
 }

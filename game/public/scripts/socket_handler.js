@@ -59,11 +59,15 @@ function messageHandler(msg){
     me = players[msg.me];
     
     me.hookControls();
+    
+    chat.setupChat(msg.chatBuf);
+    
   }
 
   // New player connects to the server
   else if(msg.type == 'newArrival'){
     addPlayer(msg.player);
+    chat.message({from: "", txt: msg.player.username + " has just connected"});
   }
 
   // We are notified that some other player has changed state
@@ -80,24 +84,15 @@ function messageHandler(msg){
   // Someone has disconnected. Get rid of them
   else if(msg.type == 'userDisconnected'){
     unloadPlayer(msg.pName);
+    chat.message({from: "", txt: msg.pName + " has just disconnected"});
   }
   
-  else if(msg.type == 'notification'){
-    createNotification(msg.content);
-  }
-
-  else if(msg.type == 'initial_chat'){
-    setupChat(msg.buf);
-  }
-
   // Handling of chat messages
   else if(msg.type == 'chat'){
-    updateChat(msg);
-  }
-
-  //Handling of chat announcements
-  else if(msg.type == 'chat_a'){
-    updateStatus(msg);
+    chat.message({
+      from: msg.from,
+      txt: msg.txt
+    })
   }
 
   

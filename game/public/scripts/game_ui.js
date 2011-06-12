@@ -26,6 +26,13 @@ $(function(){
         $(this).dialog("close");
       }
     }
-  }); 
+  });
+  
+  
+  $("#chatForm").submit(function(event){
+    event.preventDefault();
+    console.log(chat);
+    chat.send();
+  });
   
 });

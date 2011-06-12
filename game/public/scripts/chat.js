@@ -1,40 +1,48 @@
-function message(obj){
-  var el = document.createElement('li');
-  el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
-  if( obj.message && window.console && console.log ) console.log(obj.message[0], obj.message[1]);
-  document.getElementById('chatBox').appendChild(el);
-  document.getElementById('chatBox').scrollTop = 1000000;
-}
-
-function send(){
-  var val = document.getElementById('chatInput').value;
-  socket.send({
-    type: "chat",
-    val: val  
-  });
-  message({message:['You', val]});
-  document.getElementById('chatInput').value = '';
-}
-      
-function esc(msg){
-  return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-function setupChat(buf){
-  console.log("Setting up chat!")  
-  for (var i in buf) message(buf[i]);
+(function(w){
   
-}
+  // this is a singleton pattern
+  
+  function Chat(){
+    
+  }
+  
+  Chat.prototype.message = function(obj){
+    var el = document.createElement('li');
+    el.innerHTML = '<b>' + this.esc(obj.from) + ':</b> ' + this.esc(obj.txt);
+    document.getElementById('chatBox').appendChild(el);
+    document.getElementById('chatBox').scrollTop = 1000000;
+  }
 
-function updateChat(msg){
-  var id = msg.message[0];
-  var text = msg.message[1];
-  message({message:[id, text]});
-}
+  Chat.prototype.send = function(){
+    var val = document.getElementById('chatInput').value;
 
-function updateStatus(msg){
-  var id = msg.announcement[0];
-  var text = msg.announcement[1];
-  message({message:[id, text]});
-}
+    socket.send({
+      type: "chat",
+      txt: val
+    });
 
+    this.message({
+      from: me.username,
+      txt: val
+    });
+    
+    document.getElementById('chatInput').value = '';
+  }
+
+  Chat.prototype.esc = function(msg){
+    return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  Chat.prototype.setupChat = function(buf){  
+    for (var i in buf) this.message(buf[i]); 
+  }
+
+  w.Chat = Chat;
+  
+})(window);
+
+
+  
+  
+  
+  
