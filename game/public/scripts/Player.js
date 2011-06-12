@@ -61,13 +61,15 @@
           player.setBitmapScale(1.3);
           pressed1 = true;
           pressed2 = true;
+          pressed_obj = player;
           
           stage.onMouseDown = function(e){
             var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
             if(_.isEqual(player.position, move_to_grid)) {
               player.setBitmapScale(1);
               pressed1 = false;
-              stage.onMouseDown = null;  // unhook event
+              stage.onMouseDown = null;  // unhook events
+              document.onkeydown = null;
             } else {
               player.doMove(move_to_grid);
 
@@ -77,6 +79,16 @@
                 pName: me.username,
                 move_to: control.move_to
               });
+            }
+          }
+          
+          document.onkeydown = function(e){
+            if(e.keyCode == KEY.ESCAPE) {
+              player.setBitmapScale(1);
+              pressed1 = false;
+              pressed2 = false;
+              stage.onMouseDown = null; // unhook events
+              document.onkeydown = null;
             }
           }
         } else {
@@ -126,8 +138,7 @@
   }
   
   Player.prototype.setBitmapScale = function(s){
-    this.shipBitmap.scaleX = s;
-    this.shipBitmap.scaleY = s;
+    this.shipBitmap.scaleX = this.shipBitmap.scaleY = s;
   }
   
   Player.prototype.initBitmap = function(){

@@ -12,8 +12,11 @@ var planets       = {};
 
 var pressed1      = false;
 var pressed2      = false;      // are we pressing anything?
+//var pressed_obj   = null;
 var me            = null;       // My player object. It resides inside 'players'
 
+//document.onkeyup = handleKeyUp;
+// Handle key presses I wasn't sure wether to add it globally, or to the player. For now the player.
 
 // Called onload in body
 function game_init(){

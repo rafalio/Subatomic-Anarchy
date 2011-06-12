@@ -18,13 +18,13 @@
     this.planetBitmap = new Bitmap(img);
     this.planetBitmap.regX = img.width / 2;
     this.planetBitmap.regY = img.height / 2;
-    this.setScale(0.55);
+    this.setBitmapScale(0.55);
     
     this.syncBitmap();
     stage.addChild(this.planetBitmap);
   }
   
-  Planet.prototype.setScale = function(s){
+  Planet.prototype.setBitmapScale = function(s){
     this.planetBitmap.scaleX = this.planetBitmap.scaleY = s;
   }
   
