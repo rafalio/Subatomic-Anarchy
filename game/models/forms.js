@@ -19,7 +19,6 @@ var register_form = forms.create({
     email: fields.email({required: true})
 });
 
-
 var message_form = forms.create({
   to: fields.string({required:true}),
   message: fields.string({

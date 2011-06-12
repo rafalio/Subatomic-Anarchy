@@ -85,5 +85,10 @@ function messageHandler(msg){
   else if(msg.type == 'notification'){
     createNotification(msg.content);
   }
+
+  // Handling of chat messages
+  else if(msg.type == 'chat'){
+    updateChat(msg);
+  }
   
 }
