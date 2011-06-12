@@ -35,7 +35,8 @@ body{
   }
   
   #tabs:hover{
-    opacity: 1;
+    opacity: 1.0;
+    
   }
   #tabs{
     position: absolute;
@@ -45,12 +46,14 @@ body{
     width: 300px;
     opacity: 0.1;
     
+    
     #chat{
 
 
       #chat_wrap{
         margin: -1.0em -1.3em;
-        
+        list-style:none;        
+
         #chatBox{
           padding: 2px;
           width: 290px;

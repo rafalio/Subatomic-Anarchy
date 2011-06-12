@@ -86,9 +86,19 @@ function messageHandler(msg){
     createNotification(msg.content);
   }
 
+  else if(msg.type == 'initial_chat'){
+    setupChat(msg.buf);
+  }
+
   // Handling of chat messages
   else if(msg.type == 'chat'){
     updateChat(msg);
   }
+
+  //Handling of chat announcements
+  else if(msg.type == 'chat_a'){
+    updateStatus(msg);
+  }
+
   
 }

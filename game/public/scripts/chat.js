@@ -1,7 +1,6 @@
 function message(obj){
-  var el = document.createElement('p');
-  if ('announcement' in obj) el.innerHTML = '<em>' + esc(obj.announcement) + '</em>';
-  else if ('message' in obj) el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
+  var el = document.createElement('li');
+  el.innerHTML = '<b>' + esc(obj.message[0]) + ':</b> ' + esc(obj.message[1]);
   if( obj.message && window.console && console.log ) console.log(obj.message[0], obj.message[1]);
   document.getElementById('chatBox').appendChild(el);
   document.getElementById('chatBox').scrollTop = 1000000;
@@ -21,9 +20,21 @@ function esc(msg){
   return msg.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+function setupChat(buf){
+  console.log("Setting up chat!")  
+  for (var i in buf) message(buf[i]);
+  
+}
+
 function updateChat(msg){
   var id = msg.message[0];
   var text = msg.message[1];
+  message({message:[id, text]});
+}
+
+function updateStatus(msg){
+  var id = msg.announcement[0];
+  var text = msg.announcement[1];
   message({message:[id, text]});
 }
 

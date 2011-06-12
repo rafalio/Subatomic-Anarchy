@@ -11,7 +11,7 @@ exports.start = function(data, server, session_store) {
   
   io.on('connection', function(client){
 
-    client.send({ buffer: buffer });
+    
   
     // Get the connection cookie
     var cookie_string = client.request.headers.cookie;
@@ -38,6 +38,8 @@ exports.start = function(data, server, session_store) {
             console.log("adding {0} to session".format(uname))
             data.players[uname] = session.user;
           }
+
+          
           
           // Synchronize the client
           client.send({ 
@@ -46,32 +48,37 @@ exports.start = function(data, server, session_store) {
                 everyone: data.players
               });
 
+         //Sending the 15 most recent messages    
+          client.send({ 
+            type: 'initial_chat',
+            buf: buffer
+          });
+
           //Broadcasting that the client connected for chat
          client.broadcast({
-           type: 'chat',
-           announcement: uname + ' connected' });
+           type: 'chat_a',
+           announcement:[uname,'connected'] });
          }
       
         // Tell everyone a new guy arrived
-        /* To fix
+        
         client.broadcast({
           type: 'newArrival',
           player: data.players[session.user.username]
         });
-        */
+        
 
         client.on('disconnect', function(){
 
             delete data.players[session.user.username];
             console.log("deleting player {0} from player list".format(session.user.username));
           
-          //Broadcasting that the client disconnectedfor chat
-          /* To fix       
+          //Broadcasting that the client disconnectedfor chat  
           client.broadcast({
-            type: 'chat',
-            announcement: uname + ' disconnected'
+            type: 'chat_a',
+            announcement: [uname,' disconnected']
           })
-          */
+
 
           io.broadcast({
             type:   "userDisconnected",
@@ -111,8 +118,11 @@ exports.start = function(data, server, session_store) {
             type: "chat",  
             message: [client.sessionId, msg.val]
           };
+          var p = {
+            message: [client.sessionId, msg.val]
+          }
           console.log(msg.val);
-          buffer.push(m);
+          buffer.push(p);
           if (buffer.length > 15) buffer.shift();
           client.broadcast(m);
       }
