@@ -11,6 +11,7 @@ var models = require('./models/models.js');
 var route = require('./controllers/route.js');
 var session_store = new express.session.MemoryStore();
 var socket = require('./socket.js');
+var _      = require('underscore');
 
 auth.start(models.User);
 
@@ -56,8 +57,15 @@ app.dynamicHelpers({
 // Routes
 route.start(app,auth,data,forms,models);
 
-
-app.listen(3000);
-console.log("Express server listening on port %d", app.address().port);
-
-socket.start(data, app, session_store);
+models.Planet.find({},function(err, res){
+  if(!err) {
+    res.forEach(function(e){
+      data.planets[e["name"]] = data.arrayFilter(["kind", "resources", "position"], e);
+    });
+    app.listen(3000);
+    console.log("Express server listening on port %d", app.address().port);
+    socket.start(data, app, session_store);
+  } else {
+    console.log("Massive fucking error. Go and fix right now!");
+  }
+});
