@@ -233,7 +233,8 @@
             /*  By this point, the player has finished the movement. Notify
                 the server of that, so that the change can be propagated.
             */
-            socket.send(this.generateUpdatePacket());
+            if(this == me)
+              socket.send(this.generateUpdatePacket());
           }
 
           else{
@@ -241,7 +242,6 @@
             this.position.y -= Math.cos(this.rotation * Math.PI / 180) * this.M_PER_TICK;
             control.move_complete -= this.M_PER_TICK;
           }
-          
           this.syncBitmap();
         }
       }      
