@@ -20,10 +20,13 @@
   
   Map.prototype.loadPlanetImages = function(map, done){
     var sources = [];
+    
     Object.keys(map).forEach(function(p){
       sources.push(map[p].src);
     });
+    
     sources = _.uniq(sources);  
+    
     var l = sources.length;
 
     (function(num){
@@ -37,7 +40,7 @@
           planet_images[sources[num]] = s;
           ptr(num+1);
         }
-        s.src = 'images/planets/{0}.png'.format(Object.keys(map)[num])
+        s.src = 'images/planets/{0}'.format(sources[num]);
       }
     })(0); 
   }
@@ -50,9 +53,6 @@
       console.log(planets);
     })
   }
-  
-  
-  
   
   // Given an (x,y) stage pixel, snaps to nearest grid
   Map.prototype.snapToGrid = function(position){

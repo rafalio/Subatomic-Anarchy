@@ -24,6 +24,7 @@ exports.start = function(app,auth,data,forms,models) {
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, /*writeData, */lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
+      '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
       '/inbox' : [requireLogin, accessLogger, msg.inbox]
     }
   }
