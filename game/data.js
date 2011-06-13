@@ -66,11 +66,34 @@ function planetsExtr() {
   return ret;
 }
 
+function updatePlanetData(data, planetname) {
+  updateData('planet', data, planetname);
+}
+
 function updatePlayerData(data, username){
-  models.User.findById(players[username]._id, function(err, p) {
-    Object.keys(data).forEach(function(e,i,a) {
-      players[username][e] = data[e];
-      p[e] = data[e];
+  updateData('player', data, username)
+}
+
+function updateData(t, data, name) {
+  var a;
+  var m;
+  if (t == 'player') {
+    a = players;
+    m = models.User;
+  } else if (t == 'planet') {
+    a = planets;
+    m = models.Planet;
+  } else {
+    return;
+  }
+  m.findById(a[name]._id, function(err, p) {
+    Object.keys(data).forEach(function(e,i,arr) {
+      if(a[name][e]) {
+        a[name][e] = data[e];
+        p[e] = data[e];
+      } else {
+        console.log("Trying to save wrong data");
+      }
     });
     p.save(function(err) {
       if(err)
@@ -91,3 +114,4 @@ exports.playersExtr = playersExtr;
 exports.playerExtr = playerExtr;
 exports.planetsExtr = planetsExtr;
 exports.updatePlayerData = updatePlayerData;
+exports.updatePlanetData = updatePlanetData;

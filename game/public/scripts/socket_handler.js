@@ -1,10 +1,12 @@
 var socket = null;
+var map;
 
 // Connect when we loaded all the required things
 
-function socket_init(){
+function socket_init(map_){
   socket = new io.Socket(null, {port: 3000, rememberTransport: false});
   socket.connect();
+  map = map_;
 
   var socket_events = {
     'connect' : connectHandler
@@ -54,7 +56,9 @@ function messageHandler(msg){
     // Synchronize everyone, and add myself to the board!
     Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
       addPlayer(msg.everyone[pUsername]);
-    })
+    });
+    
+    map.loadMap(msg.planets);
     
     me = players[msg.me];
     

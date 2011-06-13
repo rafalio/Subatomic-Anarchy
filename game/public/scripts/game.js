@@ -30,9 +30,8 @@ function game_init(){
 }
 
 // Add a player to the player list. p is an object from which we instantiate a player
-
-function addPlayer(p){
-  if(players[p.username] == undefined){
+function addPlayer(p) {
+  if(players[p.username] == undefined) {
     players[p.username] = new Player(p);
   } else {
     console.log("error occured when adding player to player list");
@@ -42,7 +41,7 @@ function addPlayer(p){
 function shipsLoaded(){
   Ticker.addListener(window);
   hookImagesToProfile();
-  socket_init();              // Initialize networking with sockets
+  socket_init(map);              // Initialize networking with sockets
 }
 
 // Load all spacehips into memory. All the spaceships have names "spaceship#.png"

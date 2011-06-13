@@ -4,18 +4,6 @@
   Map.prototype.dim         = {width: 5000, height: 5000};
   Map.prototype.grid_num    = {x: 50, y: 50};
   
-  
-  // Names have to be unique, and the name has to be equal to the key
-  var simple_map = {
-    "betelgeuse" : {
-      name: "betelgeuse",
-      position: {x: 4, y : 3},
-      src : "betelgeuse.png",
-      type: "whatever",
-      resources: {}
-    }
-  }
-  
   // Constructor
   function Map(w, h){
     this.dim.width = w;
@@ -25,9 +13,7 @@
     this.drawGrid();
     
     this.fpsLabel = "";
-    
-    this.loadMap(simple_map);
-    
+        
     this.drawFPS();
     this.registerMapControls();
   }  
