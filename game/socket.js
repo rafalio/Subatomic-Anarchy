@@ -4,6 +4,8 @@ var io = require('socket.io');
 //Chat buffer
 var buffer = [];
 
+var io      = require('socket.io');
+
 exports.start = function(data, server, session_store) {    
   io = io.listen(server, {
     transports: ['websocket', 'htmlfile', 'xhr-multipart', 'xhr-polling','jsonp-polling']
@@ -26,89 +28,72 @@ exports.start = function(data, server, session_store) {
         // and then you restart node. Socket.IO from client side would try to establish a connection,
         // but we wouldn't have been logged in as seen by the server, hence this would fail. Normally,
         // if the server is running all the time, this shouldn't happen.
-        
-        if(session){
-          
+
+        if(session && session.user){
           var uname = session.user.username;
-
-          if(! data.players[uname]){
-            console.log("adding {0} to session".format(uname))
-            data.players[uname] = session.user;
-          }
-
+          data.addPlayer(session.user);
+          
           // Synchronize the client
           client.send({ 
-                type:     'onNewConnect',
-                me:       session.user.username,
-                everyone: data.players,
-                chatBuf:  buffer
+            type:     'onNewConnect',
+            me:       uname,
+            everyone: data.playersExtr(),
+            planets:  data.planetsExtr(),
+            chatBuf:  buffer
           });
-      
+          
           // Tell everyone a new guy arrived
-        
           client.broadcast({
             type: 'newArrival',
-            player: data.players[session.user.username]
+            player: data.playerExtr(uname)
           });
-        
+      
+          client.on('disconnect', function(){
+            data.deletePlayer(uname);
 
-        client.on('disconnect', function(){
-
-          delete data.players[session.user.username];
-          console.log("deleting player {0} from player list".format(session.user.username));
-        
-          io.broadcast({
-            type:   "userDisconnected",
-            pName:  session.user.username
-          })
+            io.broadcast({
+              type:   "userDisconnected",
+              pName:  uname
+            });
+          });
           
-        });
-        
-        client.on('message', function(msg){
-          console.log("message received!");
-          console.log(msg.type);
+          client.on('message', function(msg){
+            console.log("message received!");
 
-          switch(msg.type){
+            switch(msg.type){  
+              // Called when the player says he reached a new location!
+              case 'positionUpdate':
+                data.updatePlayerData(msg.pData, uname);
+                msg.username = uname;
+                client.broadcast(msg);
+                break;
 
-            // Called when the player says he reached a new location!
-            case 'playerUpdate':
-              updatePlayerData(msg.pData);
-              client.broadcast(msg);
-              break;
 
-            /*  When a player initiates movement, pass the message on to everyone else,
-                so that animation can start.
-            */
-            case 'initMovement':
-              client.broadcast(msg);
-              break;
-
-            case 'chat':
-            
-              var p = {
-                type: 'chat',
-                from: uname,
-                txt: msg.txt
-              }
+              /*  When a player initiates movement, pass the message on to everyone else,
+                  so that animation can start. */
+              case 'initMovement':
+                msg.username = uname;
+                client.broadcast(msg);
+                break;
               
-              buffer.push(p);
-              
-              if (buffer.length > 15) buffer.shift();
-              client.broadcast(p);
-              break;
-          }
-        }); 
-    
-      }
-      })
+              case 'chat':
+                var p = {
+                  type: 'chat',
+                  from: uname,
+                  txt: msg.txt
+                }
+                
+                buffer.push(p);
+                
+                if(buffer.length > 15) buffer.shift();
+                client.broadcast(p);
+                break;
+            }
+          });
+        }
+      });  
+    } else {
+      //Massive Error
     }
-  })
-  
-  function updatePlayerData(pData){
-    var p = data.players[pData.username];
-    p.position = pData.position;
-    p.rotation = pData.rotation;
-  }
-  
-  
+  });
 }

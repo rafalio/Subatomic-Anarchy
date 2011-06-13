@@ -4,20 +4,6 @@
   Map.prototype.dim         = {width: 5000, height: 5000};
   Map.prototype.grid_num    = {x: 50, y: 50};
   
-  
-  
-  // Names have to be unique, and the name has to be equal to the key
-  var simple_map = {
-    "betelgeuse" : {
-      name: "betelgeuse",
-      position: {x: 4, y : 3},
-      src : "betelgeuse.png",
-      type: "whatever",
-      resources: {}
-    }
-  }
-  
-  
   // Constructor
   function Map(w, h){
     this.dim.width = w;
@@ -26,8 +12,9 @@
     this.grid_num.y = w/this.grid_size;
     this.drawGrid();
     
-    this.loadMap(simple_map);
-    
+    this.fpsLabel = "";
+        
+    this.drawFPS();
     this.registerMapControls();
   }  
   
@@ -84,6 +71,19 @@
       x: (pos.x + 0.5)*this.grid_size,
       y: (pos.y + 0.5)*this.grid_size
     }
+  }
+  
+  Map.prototype.drawFPS = function(){
+    this.fpsLabel = new Text("-- fps","bold 14px Arial","#FFF");
+  	stage.addChild(this.fpsLabel);
+  	this.fpsLabel.x = 300;
+  	this.fpsLabel.y = 300;
+  }
+  
+  Map.prototype.updateFPS = function(){
+    this.fpsLabel.text = Math.round( Ticker.getMeasuredFPS() )+ " fps";
+    this.fpsLabel.x = -stage.x + 10;
+    this.fpsLabel.y = -stage.y + 15;
   }
   
   Map.prototype.registerMapControls = function(){    

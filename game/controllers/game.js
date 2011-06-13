@@ -8,11 +8,6 @@ exports.game = function(req,res) {
   // 'me' from the dynamic helpers
   
   var uname = req.session.user.username;
-
-  if(! data.players[uname]){
-    console.log("adding {0} to session".format(uname))
-    data.players[uname] = req.session.user;
-  }
   
   res.render('game', {
     layout: 'game_layout',

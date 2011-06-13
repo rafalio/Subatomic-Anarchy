@@ -1,10 +1,12 @@
 var socket = null;
+var map;
 
 // Connect when we loaded all the required things
 
-function socket_init(){
+function socket_init(map_){
   socket = new io.Socket(null, {port: 3000, rememberTransport: false});
   socket.connect();
+  map = map_;
 
   var socket_events = {
     'connect' : connectHandler
@@ -54,9 +56,13 @@ function messageHandler(msg){
     // Synchronize everyone, and add myself to the board!
     Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
       addPlayer(msg.everyone[pUsername]);
-    })
+    });
+    
+    map.loadMap(msg.planets);
     
     me = players[msg.me];
+    
+    updateResources(me.resources);
     
     me.hookControls();
     
@@ -71,14 +77,13 @@ function messageHandler(msg){
   }
 
   // We are notified that some other player has changed state
-  else if(msg.type == 'playerUpdate'){
-    var p = players[msg.pData.username];
-    p.updatePlayer(msg.pData);
+  else if(msg.type == 'positionUpdate'){
+    players[msg.username].updatePosition(msg.pData);
   }
   
   // Server telling us we need to animate someone
   else if(msg.type == 'initMovement'){
-    players[msg.pName].doMove(msg.move_to);
+    players[msg.username].doMove(msg.move_to);
   }
   
   // Someone has disconnected. Get rid of them
@@ -86,14 +91,18 @@ function messageHandler(msg){
     unloadPlayer(msg.pName);
     chat.message({from: "", txt: msg.pName + " has just disconnected"});
   }
-  
-  // Handling of chat messages
+// Handling of chat messages
   else if(msg.type == 'chat'){
     chat.message({
       from: msg.from,
       txt: msg.txt
-    })
+    });
   }
-
+  //else if(msg.type == 'notification'){
+  //  createNotification(msg.content);
+  //}
   
+  else if(msg.type == 'updateResources') {
+    
+  }
 }

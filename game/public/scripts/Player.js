@@ -33,9 +33,8 @@
   
   /*  Use this function to update the player state. pData is an object that holds
       various update information.
-  
   */
-  Player.prototype.updatePlayer = function(pData){
+  Player.prototype.updatePosition = function(pData){
     this.position.x = pData.position.x;
     this.position.y = pData.position.y;
     this.rotation   = pData.rotation;
@@ -76,7 +75,6 @@
               // Notify the server to start the animation for other people connected
               socket.send({
                 type: 'initMovement',
-                pName: me.username,
                 move_to: control.move_to
               });
             }
@@ -144,8 +142,8 @@
   Player.prototype.initBitmap = function(){
     
     // load bitmap depending on ship type    
-    console.log(ship_images);
-    console.log(this.shipType);
+    //console.log(ship_images);
+    //console.log(this.shipType);
     
     var img = ship_images[this.shipType];
     this.shipBitmap = new Bitmap(img);
@@ -180,7 +178,6 @@
   // Useful information about the player that we send
   Player.prototype.generateDataPacket = function(){
     return {
-      username:   this.username,
       position:   this.position,
       rotation:   this.rotation,
     }
@@ -193,7 +190,7 @@
   
   Player.prototype.generateUpdatePacket = function(){
     return {
-      type: 'playerUpdate',
+      type: 'positionUpdate',
       pData: this.generateDataPacket()
     }
   }

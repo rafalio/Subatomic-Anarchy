@@ -3,7 +3,6 @@ var Forms = require('forms');
 var login_form;
 var register_form;
 var User;
-var data = require('../data.js')
 
 function start(auth_, login_form_, register_form_, User_) {
   auth = auth_;
@@ -47,15 +46,7 @@ function login(req,res) {
           res.send({
             success: "Authentication succesfull."
           });
-            req.session.user = user;
-            
-            var uname = req.session.user.username;
-
-            if(! data.players[uname]){
-              console.log("adding {0} to session".format(uname))
-              data.players[uname] = req.session.user;
-            }
-            
+          req.session.user = user;
         } else if (err == 'user' || err == 'match') {
           res.send({
             error: "Wrong username/password"
