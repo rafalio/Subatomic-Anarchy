@@ -31,8 +31,7 @@ $(function(){
       }
     }
   });
-  
-  
+
   $("#profile").dialog({
     resizable: false,
     draggable: false,
@@ -56,12 +55,17 @@ $(function(){
 
 function hookImagesToProfile(){
   Object.keys(ship_images).forEach(function(e){
-    console.log("asdfa")
     var el = document.createElement("li");
     el.setAttribute("class","ui-state-default");
     el.innerHTML = ship_images[e].outerHTML
     $("#ship_choose").append(el);
-  })
+  });
   
 	$("#ship_choose" ).selectable();
+}
+
+function updateResources(res) {
+  $("#resources ul").html("<li>Gold: " + res.gold + "</li>");
+  $("#resources ul").append("<li>Deuterium: " + res.deuterium + "</li>");
+  $("#resources ul").append("<li>Food: " + res.food + "</li>");
 }

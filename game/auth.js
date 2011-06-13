@@ -30,6 +30,7 @@ exports.authUser = function(data, cb) {
           console.log("Error: Passwords don't match");
           cb('match', null);
         } else {
+          console.log(user);
           cb(null, user);
         }
       });

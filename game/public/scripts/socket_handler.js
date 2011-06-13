@@ -58,6 +58,8 @@ function messageHandler(msg){
     
     me = players[msg.me];
     
+    updateResources(me.resources);
+    
     me.hookControls();
     
     chat.setupChat(msg.chatBuf);
@@ -71,14 +73,13 @@ function messageHandler(msg){
   }
 
   // We are notified that some other player has changed state
-  else if(msg.type == 'playerUpdate'){
-    var p = players[msg.pData.username];
-    p.updatePlayer(msg.pData);
+  else if(msg.type == 'positionUpdate'){
+    players[msg.username].updatePosition(msg.pData);
   }
   
   // Server telling us we need to animate someone
   else if(msg.type == 'initMovement'){
-    players[msg.pName].doMove(msg.move_to);
+    players[msg.username].doMove(msg.move_to);
   }
   
   // Someone has disconnected. Get rid of them
@@ -86,14 +87,18 @@ function messageHandler(msg){
     unloadPlayer(msg.pName);
     chat.message({from: "", txt: msg.pName + " has just disconnected"});
   }
-  
-  // Handling of chat messages
+// Handling of chat messages
   else if(msg.type == 'chat'){
     chat.message({
       from: msg.from,
       txt: msg.txt
-    })
+    });
   }
-
+  //else if(msg.type == 'notification'){
+  //  createNotification(msg.content);
+  //}
   
+  else if(msg.type == 'updateResources') {
+    
+  }
 }

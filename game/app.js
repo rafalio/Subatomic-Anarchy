@@ -1,17 +1,16 @@
 /**
  * Module dependencies.
  */
-var express = require('express');
+var express       = require('express');
 
-var app = module.exports = express.createServer();
-var auth = require('./auth.js');
-var data = require('./data.js');
-var forms = require('./models/forms.js');
-var models = require('./models/models.js');
-var route = require('./controllers/route.js');
+var app           = module.exports = express.createServer();
+var auth          = require('./auth.js');
+var data          = require('./data.js');
+var forms         = require('./models/forms.js');
+var models        = require('./models/models.js');
+var route         = require('./controllers/route.js');
 var session_store = new express.session.MemoryStore();
-var socket = require('./socket.js');
-var _      = require('underscore');
+var socket        = require('./socket.js');
 
 auth.start(models.User);
 
@@ -39,33 +38,26 @@ app.configure('production', function(){
 app.dynamicHelpers({
   session: function(req, res) {
     return req.session
-  },
-  players: function(req,res){
-    return data.players
-  },
-  me: function(req,res){
-    if(req.session.user){
-      console.log(req.session.user)
-      console.log(data.players)
-      return data.players[req.session.user.username]
-    }
-    else
-      return null;
-  }
+  }//,
+  //players: function(req,res){
+  //  return data.players
+  //},
+  //me: function(req,res){
+  //  if(req.session.user){
+  //    console.log(req.session.user)
+  //    console.log(data.players)
+  //    return data.players[req.session.user.username]
+  //  }
+  //  else
+  //    return null;
+  //}
 });
 
 // Routes
 route.start(app,auth,data,forms,models);
 
-models.Planet.find({},function(err, res){
-  if(!err) {
-    res.forEach(function(e){
-      data.planets[e["name"]] = data.arrayFilter(["kind", "resources", "position"], e);
-    });
-    app.listen(3000);
-    console.log("Express server listening on port %d", app.address().port);
-    socket.start(data, app, session_store);
-  } else {
-    console.log("Massive fucking error. Go and fix right now!");
-  }
+data.start(models, function(){
+  app.listen(3000);
+  console.log("Express server listening on port %d", app.address().port);
+  socket.start(data, app, session_store);
 });

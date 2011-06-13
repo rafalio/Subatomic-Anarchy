@@ -34,8 +34,7 @@ function game_init(){
 function addPlayer(p){
   if(players[p.username] == undefined){
     players[p.username] = new Player(p);
-  }
-  else{
+  } else {
     console.log("error occured when adding player to player list");
   }
 }

@@ -19,7 +19,7 @@ var UserSchema = new Schema({
   rotation: {type: Number, default: 0},
   shipType: {type: Number, default: 1},
   resources: resources,
-  capacity: {type: Number}
+  capacity: {type: Number, min: 0}
 });
 
 mongoose.model('User', UserSchema);
@@ -49,7 +49,8 @@ var PlanetSchema = new Schema({
     y: Number
   },
   kind: String,
-  resources: resources
+  resources: resources,
+  src: String
 });
 
 mongoose.model('Planet', PlanetSchema);
