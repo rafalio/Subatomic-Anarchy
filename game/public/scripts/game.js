@@ -4,7 +4,7 @@ var map;
 var chat;
 
 var ship_images   = {};
-var SHIP_TYPES    = 1;          // Number of ship types
+var SHIP_TYPES    = 3;          // Number of ship types
 
 var players       = {};         // Global array to keep all the players. Indexed via username;
 
@@ -42,6 +42,7 @@ function addPlayer(p){
 
 function shipsLoaded(){
   Ticker.addListener(window);
+  hookImagesToProfile();
   socket_init();              // Initialize networking with sockets
 }
 

@@ -144,6 +144,8 @@
   Player.prototype.initBitmap = function(){
     
     // load bitmap depending on ship type    
+    console.log(ship_images);
+    console.log(this.shipType);
     
     var img = ship_images[this.shipType];
     this.shipBitmap = new Bitmap(img);

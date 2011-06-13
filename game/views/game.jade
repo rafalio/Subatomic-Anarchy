@@ -3,6 +3,12 @@
     span(class="ui-icon ui-icon-alert", style="float:left; margin:0 7px 20px 0;")
     |Are you sure you want to log out ?
 
+#profile(title="Profile")
+  h1 Welcome #{session.user.username}
+  br
+  h2 Ships
+  ol(id="ship_choose")
+
 #header  
   #title Awesome Game
   
@@ -10,6 +16,8 @@
     |Welcome #{session.user.username}
     li
       a(href="inbox") Inbox
+    li 
+      a(id="profile_link") Profile
     li 
       a(id="logout_link") Logout
     li
