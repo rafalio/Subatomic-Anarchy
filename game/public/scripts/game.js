@@ -82,5 +82,7 @@ function tick(){
     players[player].tick();
   })
   
+  map.updateFPS();  
   stage.update();
+  
 }
