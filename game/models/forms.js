@@ -20,7 +20,9 @@ var register_form = forms.create({
 });
 
 var message_form = forms.create({
-  to: fields.string({required:true}),
+  to: fields.string({
+    required:true,
+  }),
   message: fields.string({
         widget: widgets.textarea({rows: 6}),
         required: true

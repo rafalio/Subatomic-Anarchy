@@ -5,11 +5,8 @@
   #demo
     button(type="submit") + Compose Message
 
-  #demo
-    #dialog-form(title="Send a message")
-      form.form(method="post", action="/sendMessage", id="messageForm")      
-          !{message_form}
-          //button(type="submit", class="slick-black") Send Message!
+  #dialog-form(title="Send a message")
+      form.form(method="post", action="/sendMessage", id="messageForm") !{message_form}
   
   #result
 
@@ -32,15 +29,8 @@
           h3= "Date Sent: " + sent_messages[l].date
           p= sent_messages[l].content
   
-  script
-    $("#messageForm").submit(function(event){
-      event.preventDefault();
-      $.post("/sendMessage", $("#messageForm").serialize(), function(data){
-        $("#result").html(data);
-      });
-    });
 
-
+  //Script for when the compose message button is clicked
   script
     $(function() {
       $( "button, input:submit, a", "#demo" ).button().click(function() {
@@ -49,10 +39,9 @@
     });
 
 
-
   script
     $(function() {
-      $( "#dialog:ui-dialog" ).dialog( "destroy" );
+      $( "#compose:ui-dialog" ).dialog( "destroy" );
 
       var id = $( "#to" ),
         message = $( "#message" ),
@@ -67,6 +56,7 @@
           tips.removeClass( "ui-state-highlight", 1500 );
         }, 500 );
       }
+      
 
       $( "#dialog-form" ).dialog({
       
@@ -76,7 +66,7 @@
         modal: true,
         buttons: {
           "Send message": function() {
-          var bValid = true;
+            var bValid = true;
             allFields.removeClass( "ui-state-error" );
             $.post("/sendMessage", $("#messageForm").serialize(), function(data){
               $("#dialog-form").dialog("close");

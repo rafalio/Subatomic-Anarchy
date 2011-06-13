@@ -9,6 +9,10 @@ $(function(){
   .removeClass("ui-corner-all ui-corner-top")
   .addClass("ui-corner-bottom");
   
+  $("#message_link").click(function(){
+    $("#compose").dialog('open');
+  });
+
   $("#logout_link").click(function(){
     $("#logout_confirm").dialog('open');
   });
@@ -32,7 +36,56 @@ $(function(){
     }
   });
   
+  // Function for composing and sending messages
+  $(function() {
+      $( "#compose:ui-dialog" ).dialog( "destroy" );
+
+      var id = $( "#to" ),
+        message = $( "#message" ),
+        allFields = $( [] ).add( id ).add( message ),
+        tips = $( ".validateTips" );
+
+      function updateTips( t ) {
+        tips
+          .text( t )
+          .addClass( "ui-state-highlight" );
+        setTimeout(function() {
+          tips.removeClass( "ui-state-highlight", 1500 );
+        }, 500 );
+      }
+
+  //TODO Autocompletion of usernames
+      var tags = [];
+      $( "#id_to" ).autocomplete({
+			  source: tags
+		  });
+    
+  // Scripts for sending messages
+    $("#compose").dialog({
+      autoOpen: false,
+      height: 350,j
+      width: 450,
+      modal: true,
+      buttons: {
+        "Send Message": function(){
+          var bValid = true;
+          allFields.removeClass( "ui-state-error" );
+          $.post("/sendMessage", $("#messageForm").serialize(), function(data){
+            $("#compose").dialog("close");
+          }); 
+        },
+        close: function() {
+            allFields.val( "" ).removeClass( "ui-state-error" );
+        }
+      }
+    
+    });
+
+   });    
+
+
   
+
   $("#profile").dialog({
     resizable: false,
     draggable: false,

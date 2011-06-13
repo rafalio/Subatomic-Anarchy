@@ -12,6 +12,27 @@ body{
   
 }
 
+#compose {
+    textarea {
+      height: 120px;
+    }
+}
+
+#compose input, textarea {
+    padding: 10px;
+    border: solid 1px #E5E5E5;
+    outline: 0;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif;
+    width: 400px;
+    background: #ffffff;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    @include border-radius(2px);
+}
+
 #ship_choose{
   
   .ui-selected { 
@@ -27,7 +48,26 @@ body{
     height: 80px;
     text-align:center;
   }
-  
+  #dialog-form {
+    textarea {
+      height: 120px;
+    }
+}
+
+#dialog-form input, textarea {
+    padding: 10px;
+    border: solid 1px #E5E5E5;
+    outline: 0;
+    font: normal 13px/100% Verdana, Tahoma, sans-serif;
+    width: 400px;
+    background: #ffffff;
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
+    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
+    @include border-radius(2px);
+}
 }
 
 #container{
@@ -50,12 +90,15 @@ body{
     @include border-radius(8px);
     padding:4px;
     width: 150px;
-  }
-  
-  #tabs:hover{
-    opacity: 1.0;
     
   }
+
+  
+  #tabs:hover{
+    //opacity: 1.0;
+    //background: none;
+  }
+
   #tabs{
     position: absolute;
     top: 395px;
@@ -63,10 +106,11 @@ body{
     height: 200px;
     width: 300px;
     //opacity: 0.1;
+    background: none;
+    
     
     
     #chat{
-
 
       #chat_wrap{
         margin: -1.0em -1.3em;
@@ -76,11 +120,10 @@ body{
           padding: 2px;
           width: 290px;
           height: 137px;
-          overflow: hidden;
-          
+          overflow: auto;               
           
           li:nth-child(odd){
-            background: red;
+            background: none;
           }          
         }
 

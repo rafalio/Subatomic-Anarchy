@@ -9,19 +9,25 @@
   h2 Ships
   ol(id="ship_choose")
 
+#compose(title="Send a message")
+  form.form(method="post", action="/sendMessage", id="messageForm") !{message_form}
+      
+
 #header  
   #title Awesome Game
   
   menu
     |Welcome #{session.user.username}
     li
-      a(href="inbox") Inbox
+      a(id="message_link") Compose Message
     li 
       a(id="profile_link") Profile
     li 
       a(id="logout_link") Logout
     li
       a(href='/about') About
+
+          
 
 
 #container
