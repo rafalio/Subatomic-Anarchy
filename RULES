@@ -1,0 +1,12 @@
+AWESOME GAME
+
+The objective of the game is as follows:
+
+- We have players who own spaceships and travel from Planet to Planet
+- You are given a certain starting level of Gold, Deuterium and Food (100, 100, 100)
+- There three types of planets: Agricultural, Factory and Mining Planets
+- Planets have a certain size that does not change, and depending on this they have more demand of everything and produce more resources
+- Planets that produce a certain resource sell it for less
+
+Planets have type Dwarf, Terrestrial, Giant
+
