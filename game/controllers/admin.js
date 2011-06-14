@@ -68,12 +68,14 @@ function populateDB(planets){
   })
 }
 
-function mapgen(req,res) {
-  res.render('mapgen', {
-    title: 'Map Generator'
+function mapEdit(req,res) {
+  res.render('mapEdit', {
+    layout: 'mapEdit_layout',
+    title: 'Map Editor'
   });
 }
 
 exports.start = start;
 exports.admin = admin;
 exports.clearPlanets = clearPlanets;
+exports.mapEdit = mapEdit;

@@ -88,12 +88,10 @@ function updateData(t, data, name) {
   }
   m.findById(a[name]._id, function(err, p) {
     Object.keys(data).forEach(function(e,i,arr) {
-      if(a[name][e]) {
-        a[name][e] = data[e];
-        p[e] = data[e];
-      } else {
+      if(a[name][e] != undefined)
+        p[e] = a[name][e] = data[e];
+      else
         console.log("Trying to save wrong data");
-      }
     });
     p.save(function(err) {
       if(err)
