@@ -46,22 +46,27 @@ function deletePlayer(username) {
   console.log("deleting player %s from player list", username);
 }
 
-function playersExtr() {
+function playersExtr(exclude) {
   var ret = {};
-  Object.keys(players).forEach(function(e,i,a){
-    ret[e] = playerExtr(e);
+  Object.keys(players).forEach(function(e,i,a) {
+    if(e != exclude)
+      ret[e] = playerExtr(e);
   });
   return ret;
 }
 
 function playerExtr(username) {
-  return arrayFilter(["username","position","rotation","shipType","resources", "capactiy"], players[username]);
+  return arrayFilter(["username", "position", "rotation", "shipType"], players[username]);
+}
+
+function mainPlayerExtr(username) {
+  return arrayFilter(["username", "position", "rotation", "resources", "shipType", "capactiy"], players[username]);
 }
 
 function planetsExtr() {
   var ret = {};
-  Object.keys(planets).forEach(function(e,i,a){
-    ret[e] = arrayFilter(["name", "kind", "resources", "position", "src"], planets[e]);
+  Object.keys(planets).forEach(function(e,i,a) {
+    ret[e] = arrayFilter(["name", "kind", "position", "src"], planets[e]);
   });
   return ret;
 }
@@ -113,3 +118,4 @@ exports.playerExtr = playerExtr;
 exports.planetsExtr = planetsExtr;
 exports.updatePlayerData = updatePlayerData;
 exports.updatePlanetData = updatePlanetData;
+exports.mainPlayerExtr = mainPlayerExtr;

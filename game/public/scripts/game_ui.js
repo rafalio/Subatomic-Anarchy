@@ -107,7 +107,7 @@ function hookImagesToProfile(){
 }
 
 
-function updateResources(res) {
+function updateResourcesUI(res) {
   $("#resources ul").html("<li>Gold: " + res.gold + "</li>");
   $("#resources ul").append("<li>Deuterium: " + res.deuterium + "</li>");
   $("#resources ul").append("<li>Food: " + res.food + "</li>");

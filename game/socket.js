@@ -36,8 +36,8 @@ exports.start = function(data, server, session_store) {
           // Synchronize the client
           client.send({ 
             type:     'onNewConnect',
-            me:       uname,
-            everyone: data.playersExtr(),
+            me:       data.mainPlayerExtr(uname),
+            everyone: data.playersExtr(uname),
             planets:  data.planetsExtr(),
             chatBuf:  buffer
           });
@@ -56,7 +56,7 @@ exports.start = function(data, server, session_store) {
               pName:  uname
             });
           });
-          
+                    
           client.on('message', function(msg){
             console.log("message received!");
 
@@ -97,3 +97,12 @@ exports.start = function(data, server, session_store) {
     }
   });
 }
+
+function sendResources(client, resources) {
+  client.send({
+    type: "updateResources",
+    res: resources
+  });
+}
+
+exports.sendResources = sendResources;

@@ -60,9 +60,10 @@ function messageHandler(msg){
     
     map.loadMap(msg.planets);
     
-    me = players[msg.me];
+    addPlayer(msg.me);
+    me = players[msg.me.username];
     
-    updateResources(me.resources);
+    updateResourcesUI(me.resources);
     
     me.hookControls();
     
@@ -103,6 +104,7 @@ function messageHandler(msg){
   //}
   
   else if(msg.type == 'updateResources') {
-    
+    me.resources = msg.res;
+    updateResourcesUI(me.resources);
   }
 }
