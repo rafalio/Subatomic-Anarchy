@@ -22,8 +22,9 @@ exports.start = function(app,auth,data,forms,models) {
       '/' : [index],
       '/game' : [requireLogin, accessLogger, game.game],
       '/login' : [loggedIn, lr.login_register_f],
-      '/logout' : [requireLogin, /*writeData, */lr.logout],
+      '/logout' : [requireLogin, /*writeData, */ lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
+      '/mapEdit' : [requireLogin, requireAdmin, accessLogger, admin.mapEdit],
       '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
       '/inbox' : [requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [msg.getUsernames]
