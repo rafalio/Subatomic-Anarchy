@@ -12,21 +12,112 @@ body{
   
 }
 
+//#trade(title="Trading Arena")
+//  #left_images
+//    #top_planet
+//    #bottom_ship
+//    
+//  #middle_trade
+//    #top_sell
+//    #bottom_buy
+//    
+//  #right_trade
+  
+  
+#trade{
+  margin: 0 auto;
+  
+  div{
+    @include border-radius(8px);
+  }
+  
+  h3{
+    padding: 20px 0;
+    font-size:15px;
+  }
 
-#ship_choose{
+  
+  div.box{
+    width: 270px;
+    height: 90%;
+    border: 1px solid #AAA;
+    float: left;
+    padding: 5px 15px;
+    margin: 10px;
+    
+    div:first-child{
+      padding-bottom: 15px;
+      border-bottom: 1px solid #AAA;
+      @include border-radius(0px);
+    }
+    
+  }
+  
+  #left_images, #middle_trade{
+    > div{
+      //border: 1px solid #AAA;
+      width: 90%;
+      height: 200px;
+      margin: 10px;
+      img{
+        display: block;
+        margin: 0 auto;
+        vertical-align: middle;
+      }
+    }
+  }
+  
+  #middle_trade{
+    ol{
+      margin-left: 10px;
+    }
+    
+    li{
+      width:80px;
+      height: 40px;
+      
+      p{
+        position: relative;
+        top: 30%;
+      }
+    }
+  }
+  
+  #right_trade{
+    ul{
+      margin: 0 15px;
+      
+      li{
+        padding: 7px 0;
+      }
+    }
+    
+    #info_box{
+      padding: 50px 0;
+    }
+    
+  }
+  
+}
+
+
+
+div.selectable{
   
   .ui-selected { 
     background: #F39814; 
     color: white; 
   }
   
-  li{
+  ol li{
     margin: 3px;
     padding: 2px;
     float: left;
     width: 100px;
     height: 80px;
     text-align:center;
+    @include border-radius(6px);
+    vertical-align:text-middle;
   }
   
   #dialog-form {

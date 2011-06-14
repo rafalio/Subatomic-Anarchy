@@ -64,15 +64,11 @@ $(function(){
     }
   });
   
-  console.log($("#compose").find("to"));
-  
   $("#compose #to").autocomplete({
     source: '/getUsernames',
     minLength: 1
   })
   
-  
-
   // Profile
   $("#profile").dialog({
     resizable: false,
@@ -87,6 +83,25 @@ $(function(){
       }
     }
   });
+  
+  
+  $("#trade").dialog({
+    resizable: false,
+    draggable: false,
+    modal: true,
+    autoOpen: true,
+    width: 1000,
+    height: 600,
+    buttons : {
+      "Leave Planet" : function(){
+        $(this).dialog("close");
+      },
+      "Trade" : function(){
+         $("#info_box").dialog("open");
+      }
+    }
+  });
+  
     
   $("#chatForm").submit(function(event){
     event.preventDefault();
@@ -95,6 +110,53 @@ $(function(){
   
 });
 
+
+function hookTrading(){
+  
+  $("#bottom_ship").append(
+    "<img src=images/spaceship{0}.png></img>".format(me.shipType)
+  )
+  
+  
+  
+  $("#sell_choose").selectable();
+  $("#buy_choose").selectable();
+  
+  $("#slider_buy").slider({
+    slide: function(event,ui){
+      $("#buy_amount").html(ui.value + " Units");
+    }
+  });
+  
+  $("#slider_sell").slider({
+    slide: function(event,ui){
+      $("#sell_amount").html(ui.value + " Units");
+    }
+  });
+  
+  
+  $("#info_box").dialog({
+    resizable: false,
+    draggable: false,
+    modal: true,
+    autoOpen: false,
+    width: 300,
+    height: 150,
+    buttons: {
+      "Close" : function(){
+        $(this).dialog("close");
+      }
+    }
+  })
+  
+  
+  
+}
+
+function hookUI(){
+  hookTrading();
+}
+
 function hookImagesToProfile(){
   Object.keys(ship_images).forEach(function(e){
     var el = document.createElement("li");
@@ -102,14 +164,15 @@ function hookImagesToProfile(){
     el.innerHTML = ship_images[e].outerHTML
     $("#ship_choose").append(el);
   });
-  
 	$("#ship_choose" ).selectable();
 }
 
-
-function updateResourcesUI(res) {
+function updateResourcesUI(res){
   $("#resources ul").html("<li>Gold: " + res.gold + "</li>");
   $("#resources ul").append("<li>Deuterium: " + res.deuterium + "</li>");
   $("#resources ul").append("<li>Food: " + res.food + "</li>");
 }
+
+
+
 

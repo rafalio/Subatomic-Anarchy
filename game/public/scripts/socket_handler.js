@@ -69,6 +69,8 @@ function messageHandler(msg){
     
     chat.setupChat(msg.chatBuf);
     
+    hookUI();   // hook the UI functions that require the player data
+    
   }
 
   // New player connects to the server
