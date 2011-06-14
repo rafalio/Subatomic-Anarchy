@@ -51,53 +51,79 @@ function inbox(req,res){
   });
 }
 
-// POST
 
+// POST
 function sendMessage(req,res){
-  forms.message_form.handle(req, {
-	    success: function(form){
-	      
-          var data = form.data;
+  
+  var data = req.body;
+  
+  if(data.to == '' || data.message == ''){
+    res.send({type: 'fail', message: "Please fill out the form correctly!"});
+    return;
+  }
+  
+  models.User.findOne({username: data.to}, function(err, result){
+    if(!result){
+      res.send({
+        type: "fail",
+        message: "Sorry, no user with that username found, please try again!"
+      });
+    }
+    else{
+      var to_id = result._id;
+      var msg = new models.Message({
+        from: req.session.user._id,
+        to: to_id,
+        content: data.message
+      });
+      
+      msg.save(function(err){
+        if(!err){
+          res.send({type: "success", message: "Your message has been succesfuly sent!"});
           
-          models.User.findOne({username: data.to}, function(err, result){
-            if(!result){
-              res.send("Sorry, no user with that username found, try again!");
-            }
-            else{
-              var to_id = result._id;
-              var msg = new models.Message({
-                from: req.session.user._id,
-                to: to_id,
-                content: data.message
-              });
-              
-              msg.save(function(err){
-                if(!err){
-                  
-                  var to_client = pdata.clients[data.to]
-                  console.log(to_client);
-                  
-                  if(to_client){
-                    to_client.send({
-                      type: "notification",
-                      content: "New message from " + req.session.user.username
-                    });
-                  }
-                  res.send("Message has been sent succesfuly!");
-                } else{
-                  res.send("There has been an error sending your message. Try again later!");
-                }
-              })
-              
-            }
-          })       
-	    },
-	    other: function(form){
-	        res.send("There was an error with the form, please check it! ");
-	    }
+          // Maybe do dynamic notificaiton here if person is logged in!
+        }
+        else{
+          res.send({type: "fail", message: "There has been an error sending your message. Try again later!"});
+        }
+      }) 
+    }
+    
   })
+  
+}
+
+// For the autocomplete!
+function getUsernames(req,res){
+  console.log(req.query);
+  var data = req.query['term'];
+  var pattern = '/^' + data + '/';
+  console.log(pattern);
+  
+  var pattern = new RegExp(data);
+  
+  var buffer = [];
+  
+  // mega inefficient, hits database for ALL users on each call, because I don't think regex works for mongoose :S
+  models.User.find({}).each(function(err,user,next){
+    if(user) {
+      if(pattern.test(user.username)){
+        var obj = {}
+        obj['id'] = user.username;
+        obj['value'] = user.username;
+        buffer.push(obj); 
+      }
+      next();
+    }
+    else{
+      console.log(buffer);
+      res.send(buffer);
+    }
+  })
+  
 }
 
 exports.start = start;
 exports.inbox = inbox;
 exports.sendMessage = sendMessage;
+exports.getUsernames = getUsernames;

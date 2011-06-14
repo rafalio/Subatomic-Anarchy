@@ -35,57 +35,45 @@ $(function(){
       }
     }
   });
-
-  
-  // Function for composing and sending messages
-  $(function() {
-      $( "#compose:ui-dialog" ).dialog( "destroy" );
-
-      var id = $( "#to" ),
-        message = $( "#message" ),
-        allFields = $( [] ).add( id ).add( message ),
-        tips = $( ".validateTips" );
-
-      function updateTips( t ) {
-        tips
-          .text( t )
-          .addClass( "ui-state-highlight" );
-        setTimeout(function() {
-          tips.removeClass( "ui-state-highlight", 1500 );
-        }, 500 );
-      }
-
-  //TODO Autocompletion of usernames
-      var tags = [];
-      $( "#id_to" ).autocomplete({
-			  source: tags
-		  });
     
-  // Scripts for sending messages
-    $("#compose").dialog({
-      autoOpen: false,
-      height: 350,
-      width: 450,
-      modal: true,
-      buttons: {
-        "Send Message": function(){
-          var bValid = true;
-          allFields.removeClass( "ui-state-error" );
-          $.post("/sendMessage", $("#messageForm").serialize(), function(data){
-            $("#compose").dialog("close");
-          }); 
-        },
-        close: function() {
-            allFields.val( "" ).removeClass( "ui-state-error" );
-        }
-      }
-    
-    });
-
-   });    
-
-
   
+  // Messaging
+  $("#compose").dialog({
+    autoOpen: false,
+    height: 350,
+    width: 450,
+    modal: true,
+    resizable: false,
+    draggable: false,
+    // Clear value on close
+    close : function(event,ui){
+      $(this).find('div, input, textarea').each(function(i){
+        $(this).val('');
+        $(this).html('');
+      })
+    },
+    buttons: {
+      "Send Message": function(){
+        $.post("/sendMessage", $("#messageForm").serialize(), function(data){
+          $("#compose #result").html(data.message);
+        }); 
+      },
+      "Close": function() {
+          $("#compose").dialog('close');
+      }
+    }
+  });
+  
+  console.log($("#compose").find("to"));
+  
+  $("#compose #to").autocomplete({
+    source: '/getUsernames',
+    minLength: 1
+  })
+  
+  
+
+  // Profile
   $("#profile").dialog({
     resizable: false,
     draggable: false,

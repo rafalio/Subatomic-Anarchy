@@ -16,7 +16,7 @@ exports.start = function(app,auth,data,forms,models) {
     post : {
       '/login' : [lr.login],
       '/register' : [lr.register],
-      '/sendMessage' : [msg.sendMessage]
+      '/sendMessage' : [requireLogin, msg.sendMessage]
     },
     get : {
       '/' : [index],
@@ -25,7 +25,8 @@ exports.start = function(app,auth,data,forms,models) {
       '/logout' : [requireLogin, /*writeData, */lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
       '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
-      '/inbox' : [requireLogin, accessLogger, msg.inbox]
+      '/inbox' : [requireLogin, accessLogger, msg.inbox],
+      '/getUsernames' : [msg.getUsernames]
     }
   }
 

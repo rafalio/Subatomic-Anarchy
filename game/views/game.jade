@@ -10,7 +10,12 @@
   ol(id="ship_choose")
 
 #compose(title="Send a message")
-  form.form(method="post", action="/sendMessage", id="messageForm") !{message_form}
+  form.pretty(method="post", action="/sendMessage", id="messageForm")
+    p 
+      input(name="to", placeholder="Recipient", id="to", required)
+    p
+      textarea(name="message", placeholder="Message", rows="10",required)
+  #result
       
 
 #header  

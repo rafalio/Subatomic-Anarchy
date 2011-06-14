@@ -12,26 +12,6 @@ body{
   
 }
 
-#compose {
-    textarea {
-      height: 120px;
-    }
-}
-
-#compose input, textarea {
-    padding: 10px;
-    border: solid 1px #E5E5E5;
-    outline: 0;
-    font: normal 13px/100% Verdana, Tahoma, sans-serif;
-    width: 400px;
-    background: #ffffff;
-    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
-    background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
-    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
-    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
-    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
-    @include border-radius(2px);
-}
 
 #ship_choose{
   
@@ -48,27 +28,37 @@ body{
     height: 80px;
     text-align:center;
   }
+  
   #dialog-form {
     textarea {
       height: 120px;
     }
+  }
+  
 }
 
-#dialog-form input, textarea {
+#compose{
+  input, textarea{
+    width: 400px;
+  }
+}
+
+form.pretty{
+  input, textarea{
     padding: 10px;
     border: solid 1px #E5E5E5;
     outline: 0;
     font: normal 13px/100% Verdana, Tahoma, sans-serif;
-    width: 400px;
-    background: #ffffff;
+    background: #ddd;
     background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #EEEEEE), to(#FFFFFF));
     background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
     box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
     -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px;
-    @include border-radius(2px);
+    @include border-radius(4px);
+  }
 }
-}
+  
 
 #container{
   margin: 0 auto;
