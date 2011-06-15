@@ -14,8 +14,13 @@ $(function(){
   .removeClass("ui-corner-all ui-corner-top")
   .addClass("ui-corner-bottom");
   
-  $("#message_link").click(function(){
+  $("#compose_link").click(function(){
     $("#compose").dialog('open');
+  });
+  
+  $("messages_link").click(function(){
+    document.write("Jamal Khan");
+    $("#messages").dialog('open');
   });
 
   $("#logout_link").click(function(){
@@ -41,8 +46,15 @@ $(function(){
     }
   });
     
+  $("#messages").dialog({
+    autoOpen: false,
+    height: 600,
+    width: 700,
+    modal: true,
+  }),
+
   
-  // Messaging
+  // Message composition
   $("#compose").dialog({
     autoOpen: false,
     height: 350,

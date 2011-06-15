@@ -9,6 +9,9 @@
   h2 Ships
   ol(id="ship_choose")
 
+#messages(title="Messages")
+  p Hello i want to try
+
 #compose(title="Send a message")
   form.pretty(method="post", action="/sendMessage", id="messageForm")
     p 
@@ -82,7 +85,9 @@
   menu
     |Welcome #{session.user.username}
     li
-      a(id="message_link") Compose Message
+      a(id="messages_link") Messages
+    li
+      a(id="compose_link") Compose Message
     li 
       a(id="profile_link") Profile
     li 
