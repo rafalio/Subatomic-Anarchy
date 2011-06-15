@@ -45,12 +45,14 @@
     })(0); 
   }
   
-  Map.prototype.loadMap = function(map){
+  Map.prototype.loadMap = function(map, done){
     this.loadPlanetImages(map, function(){
       Object.keys(map).forEach(function(pName){
         planets[pName] = new Planet(map[pName]);
       })
-      console.log(planets);
+      if(done != null){
+        done();
+      }
     })
   }
   
@@ -88,6 +90,7 @@
   
   Map.prototype.registerMapControls = function(){    
     var scroll_listener;
+    var me = this;
     
     canvas.addEventListener("mousedown", function(evt){
       var off_x = evt.offsetX;
@@ -105,15 +108,27 @@
           y: st.y - (off_y - e.offsetY)
         }
     
-        //TODO: Add checking for out-of-bounds on the other end
-        // That's a function of grid_size, map dimensions, and canvas size.
+        // OOB Checks: Top-Left
         if(newCoords.x < 0){
           stage.x = newCoords.x;
         }
         if(newCoords.y < 0){
           stage.y = newCoords.y;
         }
-    
+        
+        // OOB Checks: Bottom-Right
+        if(newCoords.x < canvas.width-me.dim.width){
+          stage.x = canvas.width-me.dim.width;
+        }
+        if(newCoords.y < canvas.height-me.dim.height){
+          stage.y = canvas.height-me.dim.height;
+        }
+        
+        if(typeof minimap != "undefined"){
+          minimap.redraw();
+          minimap.shape.x = minimap.pos.x - stage.x;
+          minimap.shape.y = minimap.pos.y - stage.y;
+        }
       }
       document.addEventListener("mousemove", scroll_listener); 
     })

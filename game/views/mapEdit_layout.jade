@@ -14,9 +14,21 @@ html(lang="en")
     script
       google.load("jquery", "1.6.1")
       google.load("jqueryui", "1.8.13")
-      
-      
+    
+    
+    script(src="scripts/game_ui.js")
+    script(src="scripts/helpers.js")
+    
+    script(src="scripts/Map.js")
+    script(src="scripts/Minimap.js")
+    script(src="scripts/Planet.js")
     script(src="scripts/mapEdit.js")  
     
-  body()
+  body(onload = "init();")
     !{body}
+    <input type="text" id="pname" style="position:absolute;" />
+    <input type="text" id="pkind" style="position:absolute;" />
+    <input type="text" id="pdeut" style="position:absolute;" />
+    <input type="text" id="pfood" style="position:absolute;" />
+    <input type="text" id="pgold" style="position:absolute;" />
+    

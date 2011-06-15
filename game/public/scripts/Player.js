@@ -198,6 +198,7 @@
   
   Player.prototype.tick = function(){
     var control = this.control;
+    minimap.redraw();
     
     if(!control.movement_done){
       
