@@ -25,6 +25,7 @@
   }
   
   Planet.prototype.setBitmapScale = function(s){
+    this.planetBitmap.scale = s;
     this.planetBitmap.scaleX = this.planetBitmap.scaleY = s;
   }
   

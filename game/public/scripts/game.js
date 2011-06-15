@@ -1,6 +1,7 @@
 var stage;
 var canvas;
 var map;
+var minimap;
 var chat;
 
 var ship_images   = {};
@@ -24,6 +25,7 @@ function game_init(){
   canvas  = document.getElementById('canvas');
   stage   = new Stage(canvas)
   map     = new Map(5000,5000);
+  minimap = new Minimap(975,25,200,200);
   chat    = new Chat();
 
   loadShips(1,shipsLoaded); 

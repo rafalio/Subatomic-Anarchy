@@ -2,7 +2,7 @@ var admin = require('./admin.js');
 var game  = require('./game.js');
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
-var data = require('../data.js')
+var data  = require('../data.js')
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
@@ -24,7 +24,7 @@ exports.start = function(app,auth,data,forms,models) {
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, /*writeData, */ lr.logout],
       '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
-      '/mapEdit' : [requireLogin, requireAdmin, accessLogger, admin.mapEdit],
+      '/mapEdit' : [requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
       '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
       '/inbox' : [requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [msg.getUsernames]
