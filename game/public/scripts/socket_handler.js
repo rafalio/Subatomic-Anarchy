@@ -63,7 +63,7 @@ function messageHandler(msg){
     addPlayer(msg.me);
     me = players[msg.me.username];
     
-    updateResourcesUI(me.resources);
+    updateResourcesUI("#resources ul", me.resources);
     
     me.hookControls();
     
@@ -101,12 +101,14 @@ function messageHandler(msg){
       txt: msg.txt
     });
   }
-  //else if(msg.type == 'notification'){
-  //  createNotification(msg.content);
-  //}
   
   else if(msg.type == 'updateResources') {
     me.resources = msg.res;
-    updateResourcesUI(me.resources);
+    updateResourcesUI("#resources ul", me.resources);
   }
+  
+  else if(msg.type == 'initTrade'){
+    openTradingUI(msg);
+  }
+  
 }
