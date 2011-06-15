@@ -3,7 +3,7 @@
     span(class="ui-icon ui-icon-alert", style="float:left; margin:0 7px 20px 0;")
     |Are you sure you want to log out ?
 
-#profile(title="Profile")
+#profile.selectable(title="Profile")
   h1 Welcome #{session.user.username}
   br
   h2 Ships
@@ -16,6 +16,64 @@
     p
       textarea(name="message", placeholder="Message", rows="10",required)
   #result
+  
+
+#trade.selectable(title="Trading Arena")
+  #left_images.box
+    #top_planet
+      h3(id="planet_name")
+      img(src="images/planets/planet1.png")
+      
+    #bottom_ship
+      h3(id="ship_name") Your Ship
+  
+  #middle_trade.box
+    #top_buy.selectable
+      h3 What do you want to buy ?
+      #buy_wrap
+        ol(id="buy_choose")
+          li(class="ui-state-default") 
+            p Gold
+          li(class="ui-state-default") 
+            p Deuterium
+          li(class="ui-state-default") 
+            p Food
+    
+    #bottom_sell.selectable
+      h3 What do you want to sell ?
+      #sell_wrap
+      ol(id="sell_choose")
+        li(class="ui-state-default") 
+          p Gold
+        li(class="ui-state-default") 
+          p Deuterium
+        li(class="ui-state-default") 
+          p Food
+        
+  #right_trade.box
+  
+    #sliders
+      h3 How much to buy ? 
+        span(id="buy_amount") 0 Units
+      #slider_buy
+    
+      h3 How much to sell ? 
+        span(id="sell_amount") 0 Units
+      #slider_sell
+      
+    #res
+      h3 Resources after trade:
+      ul
+        li Deuterium:
+        li Gold: 
+        li Food: 
+        
+    #info_box(title="Trade Aftermath")
+      p Maciek, could you implement this... ?
+      p Trade succesful or trade failed ?
+    
+    
+    
       
 
 #header  

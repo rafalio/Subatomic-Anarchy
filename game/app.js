@@ -56,7 +56,7 @@ app.dynamicHelpers({
 // Routes
 route.start(app,auth,data,forms,models);
 
-data.start(models, function(){
+data.start(models, socket, function(){
   app.listen(3000);
   console.log("Express server listening on port %d", app.address().port);
   socket.start(data, app, session_store);

@@ -50,6 +50,7 @@
       Object.keys(map).forEach(function(pName){
         planets[pName] = new Planet(map[pName]);
       })
+      
       if(done != null){
         done();
       }

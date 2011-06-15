@@ -60,13 +60,16 @@ function messageHandler(msg){
     
     map.loadMap(msg.planets);
     
-    me = players[msg.me];
+    addPlayer(msg.me);
+    me = players[msg.me.username];
     
-    updateResources(me.resources);
+    updateResourcesUI("#resources ul", me.resources);
     
     me.hookControls();
     
     chat.setupChat(msg.chatBuf);
+    
+    hookUI();   // hook the UI functions that require the player data
     
   }
 
@@ -98,11 +101,14 @@ function messageHandler(msg){
       txt: msg.txt
     });
   }
-  //else if(msg.type == 'notification'){
-  //  createNotification(msg.content);
-  //}
   
   else if(msg.type == 'updateResources') {
-    
+    me.resources = msg.res;
+    updateResourcesUI("#resources ul", me.resources);
   }
+  
+  else if(msg.type == 'initTrade'){
+    openTradingUI(msg);
+  }
+  
 }

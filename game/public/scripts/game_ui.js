@@ -1,3 +1,8 @@
+var whatBuy = '';
+var whatSell = '';
+var planet = null;    // planet data we received for Trading
+
+
 $(function(){
   
   $("menu a").button();
@@ -64,15 +69,11 @@ $(function(){
     }
   });
   
-  console.log($("#compose").find("to"));
-  
   $("#compose #to").autocomplete({
     source: '/getUsernames',
     minLength: 1
   })
   
-  
-
   // Profile
   $("#profile").dialog({
     resizable: false,
@@ -87,6 +88,33 @@ $(function(){
       }
     }
   });
+  
+  
+  $("#trade").dialog({
+    resizable: false,
+    draggable: false,
+    modal: true,
+    autoOpen: false,
+    width: 1000,
+    height: 600,
+    buttons : {
+      "Leave Planet" : function(){
+        $(this).dialog("close");
+      },
+      "Trade" : function(){
+        if( (whatBuy == '' || whatSell == '') || whatBuy == whatSell){
+          $("#info_box").html("You need to select the resources, and make sure they are different!");
+        }
+        else{
+          $("#info_box").html("Not implemented :(");
+        }
+        
+        $("#info_box").dialog("open");
+        
+      }
+    }
+  });
+  
     
   $("#chatForm").submit(function(event){
     event.preventDefault();
@@ -95,6 +123,138 @@ $(function(){
   
 });
 
+
+function hookTrading(){
+  
+  $("#bottom_ship").append(
+    "<img src=images/spaceship{0}.png></img>".format(me.shipType)
+  )
+  
+  
+  
+  $("#buy_choose").selectable({
+    stop : function(event, ui){
+      whatBuy = $("#buy_choose li.ui-selected p").html();
+      onBothResourcesSelect();    
+    }
+    
+  });
+  
+  $("#sell_choose").selectable({
+    stop : function(evt, ui){
+      whatSell = $("#sell_choose li.ui-selected p").html();
+      onBothResourcesSelect();
+    }
+  });
+  
+  $("#slider_buy").slider({
+    slide: function(event,ui){
+      $("#buy_amount").html(ui.value + " Units");
+      
+      var rate = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+      sliderValueUpdate("#slider_sell", ui.value * rate);
+      
+    }
+  });
+  
+  $("#slider_sell").slider({
+    slide: function(event,ui){
+      $("#sell_amount").html(ui.value + " Units");
+      
+      var rate = getRes(whatSell,planet.prices) / getRes(whatBuy,planet.prices);
+      sliderValueUpdate("#slider_buy", ui.value * rate);
+    }
+  });
+  
+  
+  $("#info_box").dialog({
+    resizable: false,
+    draggable: false,
+    modal: true,
+    autoOpen: false,
+    width: 300,
+    height: 150,
+    buttons: {
+      "Close" : function(){
+        $(this).dialog("close");
+      }
+    }
+  })
+}
+
+function hookUI(){
+  hookTrading();
+}
+
+function updateTradingUI(tData){
+  planet = tData.planet;
+  var localPlanet = planets[planet.name];
+  
+  console.log(planet);
+  console.log(localPlanet);
+  
+  $("#planet_name").html(planet.name);
+  $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)  
+  
+}
+
+function openTradingUI(tData){
+  updateTradingUI(tData);
+  updateResourcesUI("#res ul", me.resources);
+  $("#trade").dialog("open");
+}
+
+// gets the amount of resource given as a string, and a pointer
+function getRes(str, ptr){
+  if(str == "Food"){
+    return ptr.food;
+  }
+  else if(str == "Gold"){
+    return ptr.gold;
+  }
+  else if(str == "Deuterium"){
+    return ptr.deuterium;
+  }
+  else{
+    console.log("Error in selecting resoures");
+  }
+}
+
+
+function onBothResourcesSelect(){
+  if(whatSell != '' && whatBuy != ''){
+    
+    resetSliders();
+    
+    var maxSell = getRes(whatSell,me.resources)
+    $("#slider_sell").slider("option","max",maxSell);
+    
+    var multiplier = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+    var maxBuy = Math.floor( getRes(whatSell,me.resources) / multiplier );
+    $("#slider_buy").slider("option","max",maxBuy);
+    
+  } else{
+    
+  }
+}
+
+function resetSliders(){
+  $("#slider_buy").slider("option","max",0);
+  $("#slider_sell").slider("option","max",0);
+  sliderValueUpdate("#slider_sell", 0)
+  sliderValueUpdate("#slider_buy", 0)
+}
+
+
+function sliderValueUpdate(id, value){
+  $(id).slider("option","value",value);
+  if(id == "#slider_sell")
+    $("#sell_amount").html(value + " Units");
+  else if(id == "#slider_buy")
+    $("#buy_amount").html(value + " Units");
+}
+
+
 function hookImagesToProfile(){
   Object.keys(ship_images).forEach(function(e){
     var el = document.createElement("li");
@@ -102,14 +262,15 @@ function hookImagesToProfile(){
     el.innerHTML = ship_images[e].outerHTML
     $("#ship_choose").append(el);
   });
-  
 	$("#ship_choose" ).selectable();
 }
 
-
-function updateResources(res) {
-  $("#resources ul").html("<li>Gold: " + res.gold + "</li>");
-  $("#resources ul").append("<li>Deuterium: " + res.deuterium + "</li>");
-  $("#resources ul").append("<li>Food: " + res.food + "</li>");
+function updateResourcesUI(selector,ptr){
+  $(selector).html("<li>Gold: " + ptr.gold + "</li>");
+  $(selector).append("<li>Deuterium: " + ptr.deuterium + "</li>");
+  $(selector).append("<li>Food: " + ptr.food + "</li>");
 }
+
+
+
 

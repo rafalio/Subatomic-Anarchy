@@ -31,13 +31,13 @@ exports.start = function(data, server, session_store) {
 
         if(session && session.user){
           var uname = session.user.username;
-          data.addPlayer(session.user);
+          data.addPlayer(session.user, client);
           
           // Synchronize the client
           client.send({ 
             type:     'onNewConnect',
-            me:       uname,
-            everyone: data.playersExtr(),
+            me:       data.mainPlayerExtr(uname),
+            everyone: data.playersExtr(uname),
             planets:  data.planetsExtr(),
             chatBuf:  buffer
           });
@@ -56,18 +56,17 @@ exports.start = function(data, server, session_store) {
               pName:  uname
             });
           });
-          
+                    
           client.on('message', function(msg){
             console.log("message received!");
 
             switch(msg.type){  
               // Called when the player says he reached a new location!
               case 'positionUpdate':
-                data.updatePlayerData(msg.pData, uname);
-                msg.username = uname;
-                client.broadcast(msg);
+                data.newPos(msg.pData, uname);
+                //msg.username = uname;
+                //client.broadcast(msg);
                 break;
-
 
               /*  When a player initiates movement, pass the message on to everyone else,
                   so that animation can start. */
@@ -97,3 +96,34 @@ exports.start = function(data, server, session_store) {
     }
   });
 }
+
+function sendResources(client, resources) {
+  client.send({
+    type: "updateResources",
+    res: resources
+  });
+}
+
+//This get's called by data.newPos. planet has the following:
+//name, resources, prices
+//prices are in a general unit of something, so if
+//prices = {gold: 1, deuterium: 2, food: 3}, you need 1 gold to buy 3 food
+function initTrade(client, uname, planet) {
+  client.send({
+    type: "initTrade",
+    planet: planet
+  });
+}
+
+//Convention proposition: position -1,-1 means the player disappears!
+function updatePos(client, uname, pData) {
+  client.broadcast({
+    type: 'positionUpdate',
+    pData: pData,
+    username: uname
+  });
+}
+
+exports.sendResources = sendResources;
+exports.initTrade = initTrade;
+exports.updatePos = updatePos;
