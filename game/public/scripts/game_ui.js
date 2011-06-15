@@ -1,5 +1,8 @@
 var whatBuy = '';
 var whatSell = '';
+var sellAmount;
+var buyAmount;
+
 var planet = null;    // planet data we received for Trading
 
 
@@ -104,12 +107,11 @@ $(function(){
       "Trade" : function(){
         if( (whatBuy == '' || whatSell == '') || whatBuy == whatSell){
           $("#info_box").html("You need to select the resources, and make sure they are different!");
+          $("#info_box").dialog("open");
         }
         else{
-          $("#info_box").html("Not implemented :(");
+          sendTradePacket(whatBuy, buyAmount, whatSell, sellAmount);
         }
-        
-        $("#info_box").dialog("open");
         
       }
     }
@@ -123,14 +125,25 @@ $(function(){
   
 });
 
+function sendTradePacket(tBuy, bAmount, tSell, sAmount){
+  socket.send({
+    type: "trade",
+    buy: {
+      resource: tBuy,
+      amount: bAmount
+    },
+    sell: {
+      resource: tSell,
+      amount: sAmount
+    }
+  })
+}
 
 function hookTrading(){
   
   $("#bottom_ship").append(
     "<img src=images/spaceship{0}.png></img>".format(me.shipType)
   )
-  
-  
   
   $("#buy_choose").selectable({
     stop : function(event, ui){
@@ -150,8 +163,10 @@ function hookTrading(){
   $("#slider_buy").slider({
     slide: function(event,ui){
       $("#buy_amount").html(ui.value + " Units");
+      buyAmount = ui.value;
       
-      var rate = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+      var rate = getRes(whatSell,planet.prices) / getRes(whatBuy,planet.prices);
+      
       sliderValueUpdate("#slider_sell", ui.value * rate);
       
     }
@@ -160,8 +175,9 @@ function hookTrading(){
   $("#slider_sell").slider({
     slide: function(event,ui){
       $("#sell_amount").html(ui.value + " Units");
+      sellAmount = ui.value;
       
-      var rate = getRes(whatSell,planet.prices) / getRes(whatBuy,planet.prices);
+      var rate = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
       sliderValueUpdate("#slider_buy", ui.value * rate);
     }
   });
@@ -190,12 +206,26 @@ function updateTradingUI(tData){
   planet = tData.planet;
   var localPlanet = planets[planet.name];
   
-  console.log(planet);
-  console.log(localPlanet);
-  
   $("#planet_name").html(planet.name);
-  $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)  
+  $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)
   
+  updatePlanetResources();
+  
+}
+
+
+function updatePlanetResources(){
+  var ulbox = $("#top_planet #res_box ul")
+  ulbox.html("");
+  ulbox.append("<li>Gold: {0}</li>".format(planet.resources.gold) )
+  ulbox.append("<li>Food: {0}</li>".format(planet.resources.food) )
+  ulbox.append("<li>Deuterium: {0}</li>".format(planet.resources.deuterium) )
+  ulbox.append("<li>Exchange: G{0} | F{1} | D{2}</li>".format(
+    planet.prices.gold,
+    planet.prices.food,
+    planet.prices.deuterium
+    ) 
+  )
 }
 
 function openTradingUI(tData){
@@ -203,6 +233,8 @@ function openTradingUI(tData){
   updateResourcesUI("#res ul", me.resources);
   $("#trade").dialog("open");
 }
+
+
 
 // gets the amount of resource given as a string, and a pointer
 function getRes(str, ptr){
@@ -230,7 +262,8 @@ function onBothResourcesSelect(){
     $("#slider_sell").slider("option","max",maxSell);
     
     var multiplier = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
-    var maxBuy = Math.floor( getRes(whatSell,me.resources) / multiplier );
+    var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
+    
     $("#slider_buy").slider("option","max",maxBuy);
     
   } else{
@@ -248,10 +281,15 @@ function resetSliders(){
 
 function sliderValueUpdate(id, value){
   $(id).slider("option","value",value);
-  if(id == "#slider_sell")
+  
+  if(id == "#slider_sell"){
     $("#sell_amount").html(value + " Units");
-  else if(id == "#slider_buy")
+    sellAmount = value;
+  }
+  else if(id == "#slider_buy"){
     $("#buy_amount").html(value + " Units");
+    buyAmount = value;;
+  } 
 }
 
 

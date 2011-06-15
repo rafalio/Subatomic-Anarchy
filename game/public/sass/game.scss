@@ -11,18 +11,6 @@ body{
   padding: 5px 10px;
   
 }
-
-//#trade(title="Trading Arena")
-//  #left_images
-//    #top_planet
-//    #bottom_ship
-//    
-//  #middle_trade
-//    #top_sell
-//    #bottom_buy
-//    
-//  #right_trade
-  
   
 #trade{
   margin: 0 auto;
@@ -34,6 +22,11 @@ body{
   h3{
     padding: 20px 0;
     font-size:15px;
+  }
+  
+  h2{
+    font-size:28px;
+    padding: 5px 0;
   }
 
   
@@ -53,12 +46,27 @@ body{
     
   }
   
+  #left_images{
+    #top_planet{
+      img{
+        float:left;
+        padding-right: 10px;
+      }
+      p{
+        padding-bottom: 15px;
+      }
+      li{
+        padding: 5px 0;
+      }
+    }
+  }
+  
   #left_images, #middle_trade{
     > div{
-      //border: 1px solid #AAA;
       width: 90%;
       height: 200px;
       margin: 10px;
+      
       img{
         display: block;
         margin: 0 auto;

@@ -111,4 +111,9 @@ function messageHandler(msg){
     openTradingUI(msg);
   }
   
+  else if(msg.type == 'tradeResponse'){
+    $("#info_box").html("blarg, response comes here");
+    $("#info_box").dialog("open");
+  }
+  
 }

@@ -58,7 +58,7 @@ exports.start = function(data, server, session_store) {
           });
                     
           client.on('message', function(msg){
-            console.log("message received!");
+            console.log("message received! msg type: " + msg.type);
 
             switch(msg.type){  
               // Called when the player says he reached a new location!
@@ -86,6 +86,11 @@ exports.start = function(data, server, session_store) {
                 
                 if(buffer.length > 15) buffer.shift();
                 client.broadcast(p);
+                break;
+                
+                
+              case 'trade':
+                console.log(msg);
                 break;
             }
           });
