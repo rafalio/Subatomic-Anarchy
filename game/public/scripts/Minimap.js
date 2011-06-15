@@ -47,7 +47,7 @@
   	// Box
   	this.shape.graphics.beginStroke(color1).beginFill(color2).rect(0,0,this.dim.width,this.dim.height);
     
-    // View
+    // Current View
     this.shape.graphics.beginStroke(color4).beginFill().rect((-stage.x*this.dim.width)/map.dim.width,
                                                              (-stage.y*this.dim.height)/map.dim.height,
                                                              (canvas.width*this.dim.width)/map.dim.width,
@@ -56,14 +56,14 @@
     // Blips
     var me = this;
     
-    if(typeof planets != "undefined"){ // Planets
+    if(typeof planets != "undefined"){ // Planets (red)
       Object.keys(planets).forEach(function(i){
         me.shape.graphics.beginStroke().beginFill(color3).rect(planets[i].position.x*me.dim.width/map.grid_num.x,
                                                                planets[i].position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
                                                                me.dim.height/map.grid_num.y);
       });
     }
-    if(typeof players != "undefined"){ // Players
+    if(typeof players != "undefined"){ // Players (blue)
       Object.keys(players).forEach(function(i){
         me.shape.graphics.beginStroke().beginFill(color5).rect(players[i].position.x*me.dim.width/map.grid_num.x,
                                                                players[i].position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,

@@ -57,14 +57,15 @@ function init(){
 
 // Called on every clock tick
 function tick(){
-  rot = (rot + Math.PI/180)%(2*Math.PI);
+  //rot = (rot + Math.PI/180)%(2*Math.PI);
   editBoxesPos();
-  modelsPos();
+  //modelsPos();
   map.updateFPS();
   stage.update();
 }
 
 function onClick(){
+  // Move selected planet
   if(tplanet != undefined && selstate == 1){
     var pt = map.snapToGrid({x: stage.mouseX, y: stage.mouseY});
     tplanet.position.x = pt.x;
@@ -74,6 +75,7 @@ function onClick(){
     modelsPos();
     editBoxesPos();
   }
+  // "Select" an empty grid position
   else if(selstate == 0){
     var prev = nplanet;
     nplanet = map.snapToGrid({x: stage.mouseX, y: stage.mouseY});
@@ -81,6 +83,7 @@ function onClick(){
     modelsPos();
     editBoxesPos();
   }
+  // Helpers/Workarounds TODO: Look for a cleaner way to do this
   else if(selstate == 2){
     tplanet.planetBitmap.scaleX = tplanet.planetBitmap.scaleY = tplanet.planetBitmap.scale*1.2;
     selstate = 1;
@@ -92,17 +95,20 @@ function onClick(){
 }
 
 function onMove(){
+  // "Cursor" Thingy
   if(selstate == 3){
     nplanet = map.snapToGrid({x: stage.mouseX, y: stage.mouseY});
     modelsPos();
   }
 }
 
+// Load small planet images
 function loadPlanetModels(){
   for(i = 0; i < planetsn; i++){
     var nsrc = "planet" + (i+1) + ".png";
     var lsrc = "images/planets/planet" + (i+1) + ".png";
     var ssrc = "images/smalls/planet" + (i+1) + ".png";
+    
     planet_images[nsrc] = new Image();
     planet_simages[nsrc] = new Image();
     
@@ -113,12 +119,14 @@ function loadPlanetModels(){
    }
 }
 
+// Setup bitmaps for small planets
 function setPlanetModel(i){
   var src = "planet" + (i+1) + ".png";
   planet_models[src] = new Bitmap(planet_simages[src]);
   planet_models[src].regX = planet_simages[src].width/2;
   planet_models[src].regY = planet_simages[src].height/2;
   planet_models[src].onClick = function(e){
+    // Change source of an existing planet
     if(tplanet != undefined){
       tplanet.src = "planet" + (i+1) + ".png";
       stage.removeChild(tplanet.planetBitmap);
@@ -129,6 +137,7 @@ function setPlanetModel(i){
       selstate = 2;
       modelsPos();
     }
+    // Create a new planet
     else if(selstate == 0 && nplanet.x > -1 && nplanet.y > -1){
       while(planets["planet" + pindex] != null) pindex++;
       console.log(nplanet.x + "," + nplanet.y);
@@ -160,12 +169,15 @@ function setPlanetModel(i){
   stage.addChild(planet_models[src]);
 }
 
+// Load planets and link mousevents for editing
 function planetsLoaded(ps){
   Object.keys(ps).forEach(function(i){
     (function(target) {
 		  ps[i].planetBitmap.onPress = function(evt) {
+		    // Select and edit a planet's info
         if(tplanet != ps[i] || selstate == 0)
         {
+          // Save previous planet
           if(tplanet != undefined){
             tplanet.planetBitmap.scaleX = tplanet.planetBitmap.scaleY = tplanet.planetBitmap.scale;
             editBoxesSetData();
@@ -179,6 +191,7 @@ function planetsLoaded(ps){
           modelsPos();
           editBoxesGetData(ps[i]);
         }
+        // Deselect and save planet info
         else if(selstate == 1)
         {
           editBoxesSetData();
@@ -189,11 +202,13 @@ function planetsLoaded(ps){
 		  }
 		})(ps[i].planetBitmap);
   });
-  minimap.redraw();
+  minimap.redraw(); // Update minimap
   stage.addChild(label);
 }
 
+// Planet palette cursor thing
 function modelsPos(){
+  // fixed position, existing planet
   if(tplanet != undefined)
   {
     for(i = 0; i < planetsn; i++){
@@ -202,12 +217,15 @@ function modelsPos(){
       planet_models[src].y = Math.round(tplanet.planetBitmap.y-16 + 64*Math.sin(i*2*Math.PI/9));
       if(tplanet.src == src) planet_models[src].alpha = 1;
       else                   planet_models[src].alpha = 0.25;
+      planet_models[src].scaleX = planet_models[src].scaleY = 1;
     }
   }
+  // empty location, selstate 0: fixed location
+  //                 selstate 3: following mouse position (see onMove)
   else if(nplanet.x != -1 && nplanet.y != -1){
     for(i = 0; i < planetsn; i++){
       var src = "planet" + (i+1) + ".png";
-      var r = 24 + (selstate != 3 ? 40 : 0);
+      var r = 24 + (selstate == 3 ? 0 : 40);
       var pt = map.gridToStage(nplanet);
       planet_models[src].x = Math.round(pt.x-(selstate == 3 ? 8 : 16) + r*Math.cos(i*2*Math.PI/9 + (selstate == 3 ? rot : 0)));
       planet_models[src].y = Math.round(pt.y-(selstate == 3 ? 8 : 16) + r*Math.sin(i*2*Math.PI/9 + (selstate == 3 ? rot : 0)));
@@ -215,6 +233,7 @@ function modelsPos(){
       planet_models[src].scaleX = planet_models[src].scaleY = (selstate == 3? 0.5 : 1);
     }
   }
+  // Hide
   else
   {
     for(i = 0; i < planetsn; i++){
@@ -225,7 +244,9 @@ function modelsPos(){
   }
 }
 
+// Textboxes with planet info
 function editBoxesPos(){
+  // Dynamic labelling
   if(tplanet != undefined){
     var k = -1;
     switch(document.activeElement.id)
@@ -238,6 +259,7 @@ function editBoxesPos(){
       default: label.text = "";
     }
     
+    // Funky positioning
     var pt = findPos(canvas);
     for(i = 0; i < 5; i++){
       text[i].style.left = Math.round(stage.x + tplanet.planetBitmap.x + pt[0] + ((k==i)*96) +96*Math.cos(i*Math.PI/8 - Math.PI/4)) + "px";
@@ -246,9 +268,10 @@ function editBoxesPos(){
         label.x = tplanet.planetBitmap.x + 90 + 96*Math.cos(i*Math.PI/8 - Math.PI/4);
         label.y = tplanet.planetBitmap.y + 6 + 96*Math.sin(i*Math.PI/8 - Math.PI/4);
       }
-      //text[i].style.width = text[i].value.width() + "px";
+      //text[i].style.width = text[i].value.width() + "px"; // Dynamic Width?
     }
   }
+  // Hide when not needed
   else{
     label.text = "";
     for(i = 0; i < 5; i++){
@@ -258,6 +281,7 @@ function editBoxesPos(){
   }
 }
 
+// Load planet info into text boxes
 function editBoxesGetData(planet){
   text[0].value = planet.name;
   //text[0].style.width = text[0].value.width() + "px";
@@ -271,6 +295,7 @@ function editBoxesGetData(planet){
   //text[4].style.width = text[4].value.width() + "px";
 }
 
+// Save planet info from text boxes
 function editBoxesSetData(){
   if(tplanet != undefined){
     tplanet.name = text[0].value;
@@ -281,6 +306,7 @@ function editBoxesSetData(){
   }
 }
 
+// Helper function to find precise global location
 function findPos(obj){
 	var curleft = curtop = 0;
 	if (obj.offsetParent) {
@@ -292,6 +318,7 @@ function findPos(obj){
 	return [curleft,curtop];
 }
 
+// Helper function to calculate string width
 String.prototype.width = function(font) {
   var f = font || '13px arial',
       o = $('<div>' + this + '</div>')

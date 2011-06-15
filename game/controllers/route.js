@@ -2,7 +2,7 @@ var admin = require('./admin.js');
 var game  = require('./game.js');
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
-var data = require('../data.js')
+var data  = require('../data.js')
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
