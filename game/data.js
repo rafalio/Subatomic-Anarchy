@@ -90,6 +90,10 @@ function doTrade(msg, username) {
   players[username].startDoTrade(msg);
 }
 
+function shipUpdate(msg, username) {
+  players[username].updateShipType(msg.shipType);
+}
+
 exports.start = start;
 exports.users = users;
 exports.players = players;
@@ -98,3 +102,4 @@ exports.addPlayer = addPlayer;
 exports.deletePlayer = deletePlayer
 exports.newPos = newPos;
 exports.doTrade = doTrade;
+exports.shipUpdate = shipUpdate;

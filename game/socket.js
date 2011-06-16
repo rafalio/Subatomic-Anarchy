@@ -71,6 +71,11 @@ exports.start = function(data, server, session_store) {
                     
               case 'trade':
                 data.doTrade(msg, uname);
+                break;
+                
+              case 'shipUpdate':
+                data.shipUpdate(msg, uname);
+                break;
             }
           });
         }

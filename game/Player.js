@@ -35,6 +35,10 @@ Player.prototype.getResource = function(res) {
   return parseInt(this.source.resources[res].toString());
 }
 
+player.prototype.getShipType = function() {
+  return parseInt(this.source.shipType.toString());
+}
+
 //Socket
 Player.prototype.connectSocket = function(client) {
   this.client = client;
@@ -67,6 +71,14 @@ Player.prototype.broadcastPositionUpdate = function() {
   });
 }
 
+Player.prototype.broadcastShipChange = function() {
+  this.client.broadcast({
+    type: 'shipUpdate'
+    username: this.getName(),
+    shipType: this.getShipType()
+  });
+}
+
 //Updating
 Player.prototype.updateResource = function(incdec, res, am) {
   if(incdec == 'increase')
@@ -89,6 +101,12 @@ Player.prototype.updatePosition = function(pData) {
     this.broadcastPositionUpdate();
     this.save();
   }
+}
+
+Player.prototype.updateShipType = function(shipType) {
+  this.source.shipType = shipType;
+  this.broadcastShipChange();
+  this.save();
 }
 
 //Trading
