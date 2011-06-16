@@ -21,6 +21,7 @@
   Map.prototype.loadPlanetImages = function(map, done){
     var sources = [];
     
+    console.log(map);
     Object.keys(map).forEach(function(p){
       sources.push(map[p].src);
     });

@@ -50,7 +50,8 @@ var PlanetSchema = new Schema({
   },
   kind: String,
   resources: resources,
-  src: String
+  src: String,
+  size: {type: String, default: "small"}
 });
 
 mongoose.model('Planet', PlanetSchema);

@@ -4,7 +4,7 @@
     |Are you sure you want to log out ?
 
 #profile.selectable(title="Profile")
-  h1 Welcome #{session.user.username}
+  h1 Welcome #{user.getName()}
   br
   h2 Ships
   ol(id="ship_choose")
@@ -84,7 +84,7 @@
   #title Awesome Game
   
   menu
-    |Welcome #{session.user.username}
+    |Welcome #{user.getName()}
     li
       a(id="message_link") Compose Message
     li 

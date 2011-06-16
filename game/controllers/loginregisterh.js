@@ -3,12 +3,15 @@ var Forms = require('forms');
 var login_form;
 var register_form;
 var User;
+var Player;
+var data = require('../data.js');
 
-function start(auth_, login_form_, register_form_, User_) {
+function start(auth_, login_form_, register_form_, User_, Player_) {
   auth = auth_;
   login_form = login_form_;
   register_form = register_form_
   User = User_;
+  Player = Player_;
 }
 
 function register(req,res) {
@@ -46,7 +49,9 @@ function login(req,res) {
           res.send({
             success: "Authentication succesfull."
           });
-          req.session.user = user;
+          var user = new Player.Player(user);
+          data.users[user.getName()] = user;
+          req.session.username = user.getName();
         } else if (err == 'user' || err == 'match') {
           res.send({
             error: "Wrong username/password"
@@ -67,6 +72,8 @@ function login(req,res) {
 }
 
 function logout(req,res) {
+  delete req.user;
+  delete data.users[req.session.username];
   req.session.destroy(function(){});
   res.redirect('home');
 }

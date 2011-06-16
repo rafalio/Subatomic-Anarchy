@@ -9,9 +9,4 @@ html(lang="en")
     != partial(head)
     
   body
-    - if(session && session.user)
-      #header
-        #logout
-          |Logged in as #{session.user.username}
-          a(href='/logout') Logout
     !{body}

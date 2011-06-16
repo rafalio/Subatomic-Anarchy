@@ -20,7 +20,7 @@ function inbox(req,res){
   
   // call 'next' to advance the Mongo streaming cursor manually
   
-  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+  models.Message.find({to: req.user._id}).sort('date', -1).each(function(err,msg,next){
     if(msg){
       models.User.findOne({_id: msg.from}, function(err, result){
         msg.sender = result.username;
@@ -29,7 +29,7 @@ function inbox(req,res){
       })
     }
     else{
-      models.Message.find({from: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+      models.Message.find({from: req.user._id}).sort('date', -1).each(function(err,msg,next){
         if(msg){
           models.User.findOne({_id: msg.to}, function(err, result){
             msg.receiver = result.username;
@@ -72,7 +72,7 @@ function sendMessage(req,res){
     else{
       var to_id = result._id;
       var msg = new models.Message({
-        from: req.session.user._id,
+        from: req.user._id,
         to: to_id,
         content: data.message
       });

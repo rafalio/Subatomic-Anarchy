@@ -2,32 +2,31 @@ var admin = require('./admin.js');
 var game  = require('./game.js');
 var lr    = require('./loginregisterh.js');
 var msg   = require('./messaging.js');
-var data  = require('../data.js')
 
 // Routing information:
 // First comes the path, then the array of functions, starting with 
 // the middlewares, followed by the final handling function
 
-exports.start = function(app,auth,data,forms,models) {
-  lr.start(auth, forms.login_form, forms.register_form, models.User);
+exports.start = function(app,auth,data,forms,models,player) {
+  lr.start(auth, forms.login_form, forms.register_form, models.User, player);
   admin.start(models);
   msg.start(forms, models, data);
   var routes = {
     post : {
-      '/login' : [lr.login],
-      '/register' : [lr.register],
-      '/sendMessage' : [requireLogin, msg.sendMessage]
+      '/login' : [getUser, lr.login],
+      '/register' : [getUser, lr.register],
+      '/sendMessage' : [getUser, requireLogin, msg.sendMessage]
     },
     get : {
-      '/' : [index],
-      '/game' : [requireLogin, accessLogger, game.game],
-      '/login' : [loggedIn, lr.login_register_f],
-      '/logout' : [requireLogin, /*writeData, */ lr.logout],
-      '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
-      '/mapEdit' : [requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
-      '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
-      '/inbox' : [requireLogin, accessLogger, msg.inbox],
-      '/getUsernames' : [msg.getUsernames]
+      '/' : [getUser, index],
+      '/game' : [getUser, requireLogin, accessLogger, game.game],
+      '/login' : [getUser, loggedIn, lr.login_register_f],
+      '/logout' : [getUser, requireLogin, lr.logout],
+      '/admin' : [getUser, requireLogin, requireAdmin, accessLogger, admin.admin],
+      '/mapEdit' : [getUser, requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
+      '/admin/clearPlanets' : [getUser, requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
+      '/inbox' : [getUser, requireLogin, accessLogger, msg.inbox],
+      '/getUsernames' : [getUser, msg.getUsernames]
     }
   }
 
@@ -51,7 +50,7 @@ exports.start = function(app,auth,data,forms,models) {
   });
   
   function index(req,res) {
-    if(req.session.user)
+    if(req.user)
       res.redirect('/game');
     else
       res.redirect('/login');
@@ -63,24 +62,23 @@ exports.start = function(app,auth,data,forms,models) {
   // If the user is logged in, redirect to home
   // Use for places which require person to be NOT logged in.
   function loggedIn(req,res,next){
-    if(req.session.user) res.redirect('home');
+    if(req.user) res.redirect('home');
     else next();
   }
   
   // Do not allow multiple game screens per person. Only one!
   function noMultipleLogins(req,res,next){
-    var uname = req.session.user.username;
-    if(data.players[uname]){
-      res.send("Sorry, no multiple logins are allowed.")
-    }
-    else{
+    var uname = req.user.getName();
+    if(data.players[uname])
+      res.send("Sorry, no multiple accesses are allowed.");
+    else
       next();
-    }
   }
 
   // If user is not logged in, redirect to login page
   function requireLogin(req,res,next){
-    if(req.session.user) {
+    console.log(req.user);
+    if(req.user) {
       next();
     } else {
       req.flash('error', 'You have to login!');
@@ -90,7 +88,7 @@ exports.start = function(app,auth,data,forms,models) {
 
   // If user is not an admin, redirect to home page
   function requireAdmin(req,res,next){
-    if(req.session.user.admin) {
+    if(req.user.getAdmin()) {
       next();
     } else {
       req.flash('error', 'You don\'t have sufficient privileges to access the site');
@@ -100,13 +98,19 @@ exports.start = function(app,auth,data,forms,models) {
 
   // Logs access to site after logging in
   function accessLogger(req, res, next) {
-    console.log('Restricted part %s accessed by %s', req.originalUrl,req.session.user.username);
+    console.log('Restricted part %s accessed by %s', req.originalUrl, req.user.getName());
+    next();
+  }
+  
+  function getUser(req, res, next) {
+    if (req.session.username)
+      req.user = data.users[req.session.username];
     next();
   }
   
   // TEMPORARY: Writes player data back to backing store
-  function writeData(req,res,next){
-    models.User.findById(req.session.user._id, function(err, user){
+  /*function writeData(req,res,next){
+    models.User.findById(req.user._id, function(err, user){
       console.log(user);
       
       var p = data.players[user.username];
@@ -117,5 +121,5 @@ exports.start = function(app,auth,data,forms,models) {
       user.save(function(err){});
     });
     next();
-  }
+  }*/
 }
