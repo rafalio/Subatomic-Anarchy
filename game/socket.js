@@ -70,8 +70,7 @@ exports.start = function(data, server, session_store) {
                 break;
                     
               case 'trade':
-                console.log(msg);
-                break;
+                data.doTrade(msg, uname);
             }
           });
         }

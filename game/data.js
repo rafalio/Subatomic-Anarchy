@@ -78,15 +78,16 @@ function newPos(pData, username) {
 
 function checkTrade(username) {
   var ship = players[username].getPos();
-  console.log("Ship");
-  console.log("x: " + ship.x + " y: " + ship.y);
   Object.keys(planets).forEach(function(e,i,a) {
     var planet = planets[e].getPos();
     if(ship.x == planet.x && ship.y == planet.y) {
-      console.log("if");
       planets[e].initTrade(players[username]);
     }
   });
+}
+
+function doTrade(msg, username) {
+  players[username].startDoTrade(msg);
 }
 
 exports.start = start;
@@ -96,3 +97,4 @@ exports.planets = planets;
 exports.addPlayer = addPlayer;
 exports.deletePlayer = deletePlayer
 exports.newPos = newPos;
+exports.doTrade = doTrade;

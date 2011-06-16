@@ -112,7 +112,6 @@ $(function(){
         else{
           sendTradePacket(whatBuy, buyAmount, whatSell, sellAmount);
         }
-        
       }
     }
   });
@@ -129,11 +128,11 @@ function sendTradePacket(tBuy, bAmount, tSell, sAmount){
   socket.send({
     type: "trade",
     buy: {
-      resource: tBuy,
+      resource: tBuy.toLowerCase(),
       amount: bAmount
     },
     sell: {
-      resource: tSell,
+      resource: tSell.toLowerCase(),
       amount: sAmount
     }
   })

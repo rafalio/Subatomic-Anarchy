@@ -21,6 +21,7 @@ Planet.prototype.getPos = function() {
 }
 
 Planet.prototype.getResource = function(res) {
+  console.log(res);
   return parseInt(this.source.resources[res].toString());
 }
 
@@ -28,7 +29,7 @@ Planet.prototype.getResource = function(res) {
 Planet.prototype.updateResource = function(incdec, res, am) {
   if(incdec == 'increase')
     this.source.resources[res] += am;
-  else if(incedec == 'decrease')
+  else if(incdec == 'decrease')
     this.source.resources[res] -= am;
   else
     return;
@@ -37,8 +38,9 @@ Planet.prototype.updateResource = function(incdec, res, am) {
 }
 
 Planet.prototype.updateTradingPlayers = function() {
+  var tmp = this.currTrades;
   Object.keys(this.currTrades).forEach(function(e,i,a) {
-    a[e].updateTrade();
+    tmp[e].updateTrade();
   });
 }
 
@@ -66,7 +68,7 @@ Planet.prototype.doTrade = function(player, tData) {
     player.tradeError();
   } else {
     if(this.getResource(tData.buy.resource) >= tData.buy.amount &&
-         player.getResource.tData.sell.resource >= tData.sell.amount &&
+         player.getResource(tData.sell.resource) >= tData.sell.amount &&
          this.priceMatch(tData)) {
        //this doesn't do any validation. It's already been done
        player.doTrade(tData);
