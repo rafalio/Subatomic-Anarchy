@@ -35,7 +35,7 @@ Player.prototype.getResource = function(res) {
   return parseInt(this.source.resources[res].toString());
 }
 
-player.prototype.getShipType = function() {
+Player.prototype.getShipType = function() {
   return parseInt(this.source.shipType.toString());
 }
 
@@ -73,7 +73,7 @@ Player.prototype.broadcastPositionUpdate = function() {
 
 Player.prototype.broadcastShipChange = function() {
   this.client.broadcast({
-    type: 'shipUpdate'
+    type: 'shipUpdate',
     username: this.getName(),
     shipType: this.getShipType()
   });
