@@ -2,6 +2,7 @@
 \usepackage{fullpage}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{graphicx}
 
 \title{'Awesome Game' Report}
 \author{Rafal Szymanski, Maciej Albin, Suhaib Sarmad, Maciej Albin}
@@ -24,7 +25,16 @@
 		
 	\section{Game Idea and Mechanics}
 	
-		Our game takes place in space, on a two dimensional grid visible from above. 
+		Our game takes place in space, on a two dimensional grid visible from above. Here is a screenshot of our game to support the explanation of rules that follows in this report.
+		
+		\begin{figure}[htb]
+		\begin{center}
+		\leavevmode
+		\includegraphics[scale=0.35]{screen1.png}
+		\end{center}
+		\caption{Ingame Screenshot}
+		\label{fig:ingame1}
+		\end{figure}
 	
 		\subsection{Game Rules}
 		
@@ -42,6 +52,18 @@
 		\subsection{Minimap}
 			
 			As part of our game, and our quest to make it feel/look like an RTS game, we have created a minimap in the top right corner. The minimap shows the position of all planets in one color, along with all players shown in a different color. The minimap is synchronised in real time. One of our ideas was to implement a fog of war, but we did not have the time to do this.
+			
+			Here is a screenshot of the minimap:
+			
+			\begin{figure}[htb]
+			\begin{center}
+			\leavevmode
+			\includegraphics[scale=0.7]{minimap.png}
+			\end{center}
+			\caption{Minimap}
+			\label{fig:minimap}
+			\end{figure}
+			
 			
 		\subsection{Chat}
 			
