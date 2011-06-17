@@ -313,5 +313,6 @@ function updateResourcesUI(selector,ptr){
   $(selector).html("<li>Gold: " + ptr.gold + "</li>");
   $(selector).append("<li>Deuterium: " + ptr.deuterium + "</li>");
   $(selector).append("<li>Food: " + ptr.food + "</li>");
+  $(selector).append("<li>Capacity: " + me.resourcesTotal() + "/" + me.capacity + "</li>");
 }
 

@@ -28,6 +28,7 @@
     this.control = {};
     
     this.initBitmap();
+    console.log(this);
   }
   
   
@@ -64,14 +65,14 @@
   }
   
   Player.prototype.resourcesTotal = function(){
-    return this.resources
+    return _.map(this.resources, function(value,key){ return value; }).reduce(function(pValue,cValue){ 
+      return pValue + cValue});
   }
   
   /*
     Hooks control to the current player. This is only called for the player
     that is connected, as in P1 cannot control P2.
   */
-  
   Player.prototype.hookControls = function(){
     var bitmap  = this.shipBitmap;
     var player  = this;
