@@ -264,11 +264,15 @@ function onBothResourcesSelect(){
     
     resetSliders();
     
+    var available = me.capacity - me.resourcesTotal();
+    
     var maxSell = getRes(whatSell,me.resources)
     $("#slider_sell").slider("option","max",maxSell);
     
     var multiplier = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
     var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
+    
+    maxBuy = Math.min(maxBuy,available);
     
     $("#slider_buy").slider("option","max",maxBuy);
     
