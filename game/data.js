@@ -86,8 +86,22 @@ function checkTrade(username) {
   });
 }
 
-function doTrade(msg, username) {
-  players[username].startDoTrade(msg);
+function doTrade(tData, username) {
+  var player = players[username];
+  var planet = player.getTrade();
+  if(planet == undefined) {
+    console.log("Player %s is not trading!", username);
+    player.tradeError();
+  } else {
+    if(planet.getResource(tData.buy.resource) >= tData.buy.amount &&
+         player.getResource(tData.sell.resource) >= tData.sell.amount &&
+         planet.priceMatch(tData)) {
+       //this doesn't do any validation. It's already been done
+       player.doTrade(tData);
+     } else {
+       player.tradeError();
+     }
+   }
 }
 
 function endTrade(username) {

@@ -27,6 +27,10 @@ Player.prototype.getRot = function() {
   return parseInt(this.source.rotation.toString());
 }
 
+Player.prototype.getTrade = function() {
+  return this.currTrade;
+}
+
 Player.prototype.getAdmin = function() {
   return this.source.admin;
 }
@@ -129,18 +133,12 @@ Player.prototype.initTrade = function(planet) {
   }
 }
 
-Player.prototype.startDoTrade = function(tData) {
-  if(this.currTrade == undefined)
-    console.log("Player %s is not trading.", this.getName());
-  else
-    this.currTrade.doTrade(this,tData);  
-}
-
 Player.prototype.doTrade = function(tData) {
   //send trade confirmation. Don't remember the format
   this.tradeCorrect();
   this.updateResource('decrease', tData.sell.resource, tData.sell.amount);
   this.updateResource('increase', tData.buy.resource, tData.buy.amount);
+  this.currTrade.doTrade(tData);
 }
 
 Player.prototype.endTrade = function(player) {

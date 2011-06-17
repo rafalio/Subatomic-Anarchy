@@ -62,23 +62,9 @@ Planet.prototype.initTrade = function(player) {
   }
 }
 
-Planet.prototype.doTrade = function(player, tData) {
-  if(this.currTrades[player.getName()] == undefined) {
-    console.log("Player %s is not trading on %s. Can't trade!", player.getName(), this.getName());
-    player.tradeError();
-  } else {
-    if(this.getResource(tData.buy.resource) >= tData.buy.amount &&
-         player.getResource(tData.sell.resource) >= tData.sell.amount &&
-         this.priceMatch(tData)) {
-       //this doesn't do any validation. It's already been done
-       player.doTrade(tData);
-       this.updateResource('decrease', tData.buy.resource, tData.buy.amount);
-       this.updateResource('increase', tData.sell.resource, tData.sell.amount);
-       this.save();
-    } else {
-      player.tradeError();
-    }
-  }
+Planet.prototype.doTrade = function(tData) {
+  this.updateResource('decrease', tData.buy.resource, tData.buy.amount);
+  this.updateResource('increase', tData.sell.resource, tData.sell.amount);
 }
 
 Planet.prototype.endTrade = function(player) {
