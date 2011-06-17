@@ -39,8 +39,16 @@ Player.prototype.getResource = function(res) {
   return parseInt(this.source.resources[res].toString());
 }
 
+Player.prototype.getResourcesAmount = function() {
+  return this.getResource('gold') + this.getResource('deuterium') + this.getResource('food');
+}
+
 Player.prototype.getShipType = function() {
   return parseInt(this.source.shipType.toString());
+}
+
+Player.prototype.getCapacity = function() {
+  return parseInt(this.source.capacity.toString());
 }
 
 //Socket
@@ -176,6 +184,16 @@ Player.prototype.tradeCorrect = function() {
     type: 'tradeResponse',
     success: true
   });
+}
+
+Player.prototype.verifyTrade = function(tData) {
+  //check capacity
+  var capacity = (this.getResourcesAmount() - tData.sell.amount + tData.buy.amount) <= this.getCapacity();
+  console.log("Player: capacity: " + this.getCapacity() + " sell: " + (this.getResourcesAmount() - tData.sell.amount + tData.buy.amount));
+  //check availability of sell
+  var sell = this.getResource(tData.sell.resource) >= tData.sell.amount;
+  console.log("Player: capacity: " + capacity + " sell: " + sell);
+  return capacity && sell;
 }
 
 //DB

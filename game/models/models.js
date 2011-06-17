@@ -19,7 +19,7 @@ var UserSchema = new Schema({
   rotation: {type: Number, default: 0},
   shipType: {type: Number, default: 1},
   resources: resources,
-  capacity: {type: Number, min: 0}
+  capacity: {type: Number, min: 0, default: 100}
 });
 
 mongoose.model('User', UserSchema);

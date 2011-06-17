@@ -75,12 +75,20 @@ Planet.prototype.endTrade = function(player) {
   }
 }
 
+Planet.prototype.verifyTrade = function(tData) {
+  //check price validity
+  var price = this.priceMatch(tData);
+  //check amount of selling stuff
+  var sell = this.getResource(tData.buy.resource) >= tData.buy.amount
+  return price && sell;
+}
+
 Planet.prototype.genPrices = function() {
   //toDo
   return {"gold": 1, "deuterium": 2, "food": 3};
 }
 
-Planet.prototype.priceMatch = function() {
+Planet.prototype.priceMatch = function(iData) {
   //toDo
   return true;
 }

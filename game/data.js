@@ -93,14 +93,10 @@ function doTrade(tData, username) {
     console.log("Player %s is not trading!", username);
     player.tradeError();
   } else {
-    if(planet.getResource(tData.buy.resource) >= tData.buy.amount &&
-         player.getResource(tData.sell.resource) >= tData.sell.amount &&
-         planet.priceMatch(tData)) {
-       //this doesn't do any validation. It's already been done
-       player.doTrade(tData);
-     } else {
-       player.tradeError();
-     }
+    if(planet.verifyTrade(tData) && player.verifyTrade(tData))
+      player.doTrade(tData);
+    else
+      player.tradeError();
    }
 }
 
