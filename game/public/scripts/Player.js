@@ -40,9 +40,27 @@
     this.rotation   = pData.rotation;
     
     this.syncBitmap();
-  }  
+  }
   
   
+  // Hides a player from the view
+  Player.prototype.hideShip = function(){
+    this.shipBitmap.x = -100;
+    this.shipBitmap.y = -100;
+    
+  }
+  
+  Player.prototype.showShip = function(){
+    this.syncBitmap();
+  }
+  
+  
+  // We exit from planets on the left hand side, so don't put them on the rightmost border!
+  Player.prototype.exitPlanet = function(pPos){
+    this.position.x = pData.position.x;
+    this.position.y = pData.position.y;
+    this.syncBitmap();
+  }
   
   /*
     Hooks control to the current player. This is only called for the player

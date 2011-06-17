@@ -100,6 +100,13 @@ $(function(){
     autoOpen: false,
     width: 1000,
     height: 600,
+    
+    close: function(event,ui){
+      socket.send({
+        type: "endTrade"
+      })
+    },
+    
     buttons : {
       "Leave Planet" : function(){
         $(this).dialog("close");

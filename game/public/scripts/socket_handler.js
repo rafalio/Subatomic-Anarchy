@@ -112,8 +112,27 @@ function messageHandler(msg){
   }
   
   else if(msg.type == 'tradeResponse'){
-    $("#info_box").html("blarg, response comes here");
+    var response = ''
+    
+    if(msg.success){
+      response = "Trade was succesful!";
+    }
+      
+    else{
+      response = "Trading was unsuccesful! :(";
+    }
+      
+    $("#info_box").html(response);
     $("#info_box").dialog("open");
   }
+  
+  else if(msg.type == 'showShip'){
+    me.showShip();
+  }
+  
+  else if(msg.type == 'hideShip'){
+    me.hideShip();    
+  }
+  
   
 }

@@ -91,7 +91,7 @@ function doTrade(msg, username) {
 }
 
 function endTrade(username) {
-  palyers[username].endTrade();
+  players[username].endTrade();
 }
 
 function shipUpdate(msg, username) {
