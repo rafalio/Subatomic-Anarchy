@@ -95,6 +95,12 @@
           
           stage.onMouseDown = function(e){
             var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
+            if(typeof minimap != "undefined"){
+              if(minimap.mouseOver()){
+                return;
+              }
+            }
+            
             if(_.isEqual(player.position, move_to_grid)) {
               player.setBitmapScale(1);
               pressed1 = false;

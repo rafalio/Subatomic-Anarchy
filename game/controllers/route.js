@@ -15,7 +15,8 @@ exports.start = function(app,auth,data,forms,models,player) {
     post : {
       '/login' : [getUser, lr.login],
       '/register' : [getUser, lr.register],
-      '/sendMessage' : [getUser, requireLogin, msg.sendMessage]
+      '/sendMessage' : [getUser, requireLogin, msg.sendMessage],
+      '/admin/clearPlanets' : [getUser, requireLogin, admin.clearPlanets]
     },
     get : {
       '/' : [getUser, index],
@@ -24,7 +25,6 @@ exports.start = function(app,auth,data,forms,models,player) {
       '/logout' : [getUser, requireLogin, lr.logout],
       '/admin' : [getUser, requireLogin, requireAdmin, accessLogger, admin.admin],
       '/mapEdit' : [getUser, requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
-      '/admin/clearPlanets' : [getUser, requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
       '/inbox' : [getUser, requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [getUser, msg.getUsernames]
     }

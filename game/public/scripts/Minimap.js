@@ -17,22 +17,23 @@
     this.shape.height = h;
     stage.addChild(this.shape);
     
-    var me = this;
-    this.shape.onClick = function(e){
-      stage.x = -((e.stageX - me.pos.x)*map.dim.width)/me.dim.width + canvas.width/2;
-      stage.y = -((e.stageY - me.pos.y)*map.dim.height)/me.dim.height + canvas.height/2;
-      
-      if(stage.x > 0) stage.x = 0;
-      if(stage.y > 0) stage.y = 0;
-      if(stage.x < canvas.width-map.dim.width) stage.x = canvas.width-map.dim.width;
-      if(stage.y < canvas.height-map.dim.height) stage.y = canvas.height-map.dim.height;
-      
-      this.x = me.pos.x - stage.x;
-      this.y = me.pos.y - stage.y;
-      me.redraw();
-    }
-    
     this.redraw();
+  }
+  
+  Minimap.prototype.onMouse = function(e){
+    var me = this;
+    stage.x = -((stage.mouseX - me.pos.x)*map.dim.width)/me.dim.width + canvas.width/2;
+    stage.y = -((stage.mouseY - me.pos.y)*map.dim.height)/me.dim.height + canvas.height/2;
+    
+    if(stage.x > 0) stage.x = 0;
+    if(stage.y > 0) stage.y = 0;
+    if(stage.x < canvas.width-map.dim.width) stage.x = canvas.width-map.dim.width;
+    if(stage.y < canvas.height-map.dim.height) stage.y = canvas.height-map.dim.height;
+    
+    this.x = me.pos.x - stage.x;
+    this.y = me.pos.y - stage.y;
+    
+    minimap.updatePos();
   }
   
   Minimap.prototype.redraw = function(){
@@ -72,6 +73,27 @@
     }
     
     this.shape.cache(0,0,this.dim.width,this.dim.height);
+    stage.addChild(this.shape);
+  }
+  
+  Minimap.prototype.getPos = function(){
+    var me = this;
+    if(this.mouseOver()){
+      var pos = {x: floor((((stage.mouseX - me.pos.x)*map.dim.width)/me.dim.width)/map.grid_size),
+                 y: floor((((stage.mouseY - me.pos.y)*map.dim.height)/me.dim.height)/map.grid_size)};
+      return pos;
+    }
+  }
+  
+  Minimap.prototype.updatePos = function(){
+    this.redraw();
+    this.shape.x = this.pos.x - stage.x;
+    this.shape.y = this.pos.y - stage.y;
+  }
+  
+  Minimap.prototype.mouseOver = function(){
+    return (stage.mouseX > minimap.pos.x && stage.mouseY > minimap.pos.y &&
+            stage.mouseX <= minimap.pos.x+minimap.dim.width && stage.mouseY <= minimap.pos.y+minimap.dim.height);
   }
 
   w.Minimap = Minimap;

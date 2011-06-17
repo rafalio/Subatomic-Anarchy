@@ -1,0 +1,21 @@
+#generate_random{
+  input{
+    text-align: center;
+    padding: 4px;
+    margin: 4px;
+    width: 252px;
+  }
+  #mm{
+    label{
+      text-align: right;
+      padding: 4px;
+      margin: 4px;
+      width: 116px;
+    }
+    input{
+      padding: 4px;
+      margin: 4px;
+      width: 116px;
+    }
+  }
+}

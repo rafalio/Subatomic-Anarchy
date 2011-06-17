@@ -48,6 +48,7 @@ var PlanetSchema = new Schema({
     x: Number,
     y: Number
   },
+  size: String,
   kind: String,
   resources: resources,
   src: String,

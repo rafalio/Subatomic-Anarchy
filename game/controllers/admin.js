@@ -18,11 +18,14 @@ function admin(req,res) {
 }
 
 function clearPlanets(req,res){
+  console.log(req.body);
+  var map = req.body.map;
+  console.log(map);
   models.Planet.remove({},function(){
     console.log("planet removal succesful");
     console.log("adding planets again....");
-    populateDB(simple_map);
-    res.redirect('/admin');
+    populateDB(map);
+    res.send("Seems to have been succesful!");
   })
 }
 
@@ -59,7 +62,7 @@ var simple_map = {
   }
 }
 
-function populateDB(planets){  
+function populateDB(planets){
   Object.keys(planets).forEach(function(e){
     var p = new models.Planet(planets[e]);
     p.save(function(err){

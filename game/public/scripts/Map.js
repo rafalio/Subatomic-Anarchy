@@ -90,11 +90,17 @@
     this.fpsLabel.y = -stage.y + 15;
   }
   
-  Map.prototype.registerMapControls = function(){    
+  Map.prototype.registerMapControls = function(){
     var scroll_listener;
     var me = this;
     
     canvas.addEventListener("mousedown", function(evt){
+      if(typeof minimap != "undefined"){
+        if(minimap.mouseOver()){
+          minimap.onMouse(evt);
+        }
+      }
+    
       var off_x = evt.offsetX;
       var off_y = evt.offsetY;
     
@@ -104,6 +110,12 @@
       }
     
       scroll_listener = function(e){
+        if(typeof minimap != "undefined"){
+          if(minimap.mouseOver()){
+            minimap.onMouse(e);
+            return;
+          }
+        }
     
         var newCoords = {
           x: st.x - (off_x - e.offsetX),
@@ -127,9 +139,7 @@
         }
         
         if(typeof minimap != "undefined"){
-          minimap.redraw();
-          minimap.shape.x = minimap.pos.x - stage.x;
-          minimap.shape.y = minimap.pos.y - stage.y;
+          minimap.updatePos();
         }
       }
       document.addEventListener("mousemove", scroll_listener); 

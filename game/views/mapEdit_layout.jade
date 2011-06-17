@@ -4,6 +4,7 @@ html(lang="en")
     title= "AwesomeGame | " + title
 
     link(rel="stylesheet", href="stylesheets/game.css")
+    link(rel="stylesheet", href="stylesheets/mapedit.css")
     link(rel='stylesheet', href="stylesheets/jqueryui/dark-hive/jquery-ui-1.8.13.custom.css")
 
     script(src="http://www.google.com/jsapi")
@@ -17,6 +18,7 @@ html(lang="en")
     
     
     script(src="scripts/game_ui.js")
+    script(src="scripts/mapedit_ui.js")
     script(src="scripts/helpers.js")
     
     script(src="scripts/Map.js")
@@ -26,9 +28,19 @@ html(lang="en")
     
   body(onload = "init();")
     !{body}
-    <input type="text" id="pname" style="position:absolute;" />
-    <input type="text" id="pkind" style="position:absolute;" />
-    <input type="text" id="pdeut" style="position:absolute;" />
-    <input type="text" id="pfood" style="position:absolute;" />
-    <input type="text" id="pgold" style="position:absolute;" />
+    input#pname(type="text", style="position:absolute;")
+    
+    select#psize(style="position:absolute;")
+      option(value="small") Dwarf
+      option(value="medium") Terrestrial
+      option(value="large") Giant
+    
+    select#pkind(style="position:absolute;")
+      option(value="factory") Factory
+      option(value="agricultural") Agricultural
+      option(value="mining") Mining
+    
+    input#pdeut(type="text", style="position:absolute;")
+    input#pfood(type="text", style="position:absolute;")
+    input#pgold(type="text", style="position:absolute;")
     

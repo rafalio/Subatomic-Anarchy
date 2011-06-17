@@ -1,12 +1,32 @@
+#logout_confirm(title="Logout?")
+  p 
+    span(class="ui-icon ui-icon-alert", style="float:left; margin:0 7px 20px 0;")
+    |Are you sure you want to log out ?
+
+#generate_random(title="Generate Random Map")
+  input#pnum(placeholder="Number of Planets to Generate")
+  #mm
+    //label Deuterium:
+    input#dmin(placeholder="min")
+    input#dmax(placeholder="max")
+  #mm
+    //label Food:
+    input#fmin(placeholder="min")
+    input#fmax(placeholder="max")
+  #mm
+    //label Gold:
+    input#gmin(placeholder="min")
+    input#gmax(placeholder="max")
+
 #header  
   #title Awesome Game : Map Editor
   
   menu
-    |Welcome #{session.user.username}
-    li
-      a(id="message_link") Compose Message
+    |Welcome #{user.getName()}
     li 
-      a(id="profile_link") Profile
+      a(id="export_link") Export
+    li 
+      a(id="random_link") Random
     li 
       a(id="logout_link") Logout
     li
