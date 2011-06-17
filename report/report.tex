@@ -38,16 +38,19 @@
 	
 		\subsection{Game Rules}
 		
-			We have Players who own spaceships and travel from Planet to Planet, by clicking on their ship, and then selecting a board position to move to. When that is done, the player's ship is animated towards its new destination.
+			We have Players who own spaceships and travel from planet to planet, by clicking on their ship, and then selecting a board position to move to. When that is done, the player's ship is animated towards its new destination.
 		
 			After registering at the registration screen (username, password, email), each user starts out with a certain amount of each resource. The resources in our game include Gold, Food, and Deuterium. Each player starts out with 100 of each resource. Additionally, a player's ship has a capacity so that at any one time he cannot carry more resources than his capacity. One can buy a capacity upgrade when one has enough resources.
 		
 			The universe also consists of planets, each of which has resources, a type (Agricultural, Mining, or Factory), a size (Dwarf, Terrestrial, or Giant), and an exchange rate. Planets that produce a certain resource sell it for less. Every minute the prices get updated according to our algorithm. Also, every 5 minutes, planets produce resources.
 		
-			The objective is for Players to travel around from Planet to Planet, and to trade resources to their advantage, ie to end up with the largest amount of resources. Whenever a player arrives at a grid square that has a planet in it, the trade screen pops up and the player can decide what to trade based on a barter system. The player has to select which resource he/she wants to buy from the planet, and which resource he wants it trade it for. He can then do the trade, leave the trade screen, and keep on travelling around the universe. The game is currently open ended, and there is no finish. Our goal at the beginning was to have a larger amount of features such as owning multiple ships, owning a specific planet, or having fights with other ships, but we did not have the time to implement this.
+			The objective is for players to travel around from planet to planet, and to trade resources to their advantage, ie to end up with the largest amount of resources. Whenever a player arrives at a grid square that has a planet in it, the trade screen pops up and the player can decide what to trade based on a barter system. The player has to select which resource he/she wants to buy from the planet, and which resource he wants it trade it for. He can then do the trade, leave the trade screen, and keep on travelling around the universe. The game is currently open ended, and there is no finish. Our goal at the beginning was to have a larger amount of features such as owning multiple ships, owning a specific planet, or having fights with other ships, but we did not have the time to implement this.
 			
 			Additionally, travelling uses up Deuterium, which is used as fuel. In the current version, the user must be careful not to run out of deuterium in the middle of space, or he will not be able to move and do anything. In a future version, we plan to add inter-ship trading, so that two ships can trade together in case one runs out of fuel.
 			
+		
+		\subsection{Registration/Login system}
+			We have a simple login and registration system. All we need from the user is a username, password and their email. Email is used to send confirmation emails and in case a user forgets their password. The passwords are securely stored in our database, using the bcrypt algorithm. Bcrypt uses hashing with salts and takes more time on each failed identification attempt, this prevents brute force attacks. 
 		
 		\subsection{Minimap}
 			
@@ -66,14 +69,13 @@
 			
 			
 		\subsection{Chat}
-			
 			We have also implemented a simple chat application. Upon login, the chat application is at all times present in the bottom left corner of the game. Players can type chat messages, and upon submitting the message, the message is distributed and shown to all clients currently connected to the server and playing the game. Additionally, this chat box also informs players of other people who have just logged in, or that have disconnected.
 			
 		\subsection{Map Editor and Generator}
 		
 		The map editor, as the name indicates, is a tool which allows an administrator to create or edit a universe in which players move around and interact. The editor, due to it's interactive nature, uses the same front-end technologies as the game itself. For consistency, we use EaselJS for handling the HTML5 canvas and JQuery for certain inputs and advanced functions.
 
-		Thanks to the efficient way we structured our game, we were able to reuse resources such as the Map, Planet and Minimap elements as well as stylesheets, all of which which helped keep things consistant and made debugging easier.
+		Thanks to the efficient way we structured our game, we were able to reuse resources such as the Map, Planet and Minimap elements as well as stylesheets, all of which which helped keep things consistent and made debugging easier.
 		
 		\begin{figure}[htb]
 		\begin{center}
@@ -84,7 +86,7 @@
 		\label{fig:mapedit}
 		\end{figure}
 
-		A lot of effort went into making the map editor comprehensive and easy to use. Once the page has loaded, the administrator has a "Planet Palette" available to him which follows his cursor location. On clicking on an empty grid position, the palette expands, allowing the selection of a planet image to use for creating a new planet. Once a planet has been created, the planet's general information can be editted using the convenient text boxes that appear next to the planet. Focussing a particular text box pushes a description of the selected field. This allows for a clean looking interface which stays functional and conveys all necessary information as needed. Deleting a planet is done by clearing the planet's name and saving its information (clicking on the planet once again).
+		A lot of effort went into making the map editor comprehensive and easy to use. Once the page has loaded, the administrator has a ``Planet Palette'' available to him which follows his cursor location. On clicking on an empty grid position, the palette expands, allowing the selection of a planet image to use for creating a new planet. Once a planet has been created, the planet's general information can be editted using the convenient text boxes that appear next to the planet. Focussing a particular text box pushes a description of the selected field. This allows for a clean looking interface which stays functional and conveys all necessary information as needed. Deleting a planet is done by clearing the planet's name and saving its information (clicking on the planet once again).
 
 		As well as individual planet creating and editing capabilities, the map edit also allows for generating entire maps procedurally. The administrator just has to specify the number of planets to be generated and the min/max resources a planet can have. Planet names are selected from a list of actual planets; this is a small example of how games employ tangential learning to educate their players without them necessarily knowing.
 
@@ -98,13 +100,13 @@
 		Our initial design was to have the inbox as a seperate page from the game, but as we started development we realised that it would be better to include it as part of the main page and hence chose the design of the messaging centre as a dialog box that comes up when playing the game.
 		The dialog box was implemented with the help of the jQuery javascript library.
 
-		When the dialog box is called then the list of messages that the user has are loaded. This is done by invoking a get request to the server which then queries our database to retrive the messages. Careful consideration had to be taken here as not all of the message content is loaded, only the essential "header" information (i.e. who the message is from and whether it has been read).
+		When the dialog box is called then the list of messages that the user has are loaded. This is done by invoking a get request to the server which then queries our database to retrieve the messages. Careful consideration had to be taken here as not all of the message content is loaded, only the essential ``header'' information (i.e. who the message is from and whether it has been read).
 
 		When the user wants to select a particular message then they click on it and in turn the content of the message is retrieved using a post request with the unique identifier of the message. The unique identifier is used to retrieve the message content from our database and returns it to the client. The message is also marked as 'read' at this point.
 
 		As far as rendering the message content is concerned, we only had one place to do this, so manipulation of the Document Object Model (DOM) was required, and again this was done using jQuery, which dynamically changed the message being selected and also changed the message content of the current message being selected.
 
-		In addition to this we also created a real time notification service, so that if a user recieves a message whilst playing the game then they get a notification on the game canvas that they recieved a message.
+		In addition to this we also created a real time notification service, so that if a user receives a message whilst playing the game then they get a notification on the game canvas that they received a message.
 		
 		
 	
@@ -128,7 +130,7 @@
 			
 			On the whole, it is very cool and exciting, and we will probably use it in the future for other projects.
 			
-			One problem/inconvenience with using this type of asynchronous event based server, and the fact that it's written in Javascript, is that that many times you have many nested callback functions that are to be executed when the parent function finishes. Due to this, writing code that interacts with the database is not particularly easy, since you have to care about the asynchronous nature, and pass callbacks. This is unlike in languages such as PHP, where if in line x you execute a database query and assign the result to some variable, you are expecting that variable to be available in the next line due to the threaded and blocking nature of Apache/PHP. This is not the case in Node.js, which took some time getting used to.
+			One problem/inconvenience with using this type of asynchronous event based server, and the fact that it's written in Javascript, is that that many times you have many nested callback functions that are to be executed when the parent function finishes. Due to this, writing code that interacts with the database is not particularly easy, since you have to care about the asynchronous nature, and pass callbacks. This is unlike in languages such as PHP, where if in line x you execute a database query and assign the result to some variable, you are expecting that variable to be available in the next line due to the threaded and blocking nature of Apache/PHP. This is not the case in Node.js, which took some time getting used to. On the other hand this means race conditions don't appear.
 			
 			Nevertheless, Node.js is a very exciting project, and we are very glad we have decided to learn and use it.		
 		
@@ -141,9 +143,9 @@
 		\subsection{Data Storage using MongoDB}
 			At first, we were using MySQL, then switched to PostgreSQL, but we didn't like the Node libraries available to handle both MySQL and PostgreSQL, so we decided to use something different.
 			 
-			Since we have never had any experience using NoSQL data storage solutions, we decided now it's the time to try one out, and we settled on MongoDB.
+			Since we have never had any experience using NoSQL data storage solutions, we decided now it's the time to try one out, and we settled on MongoDB. It's generally believed, that NoSQL solution are more efficient than their SQL equivalents, when not using transactions or very complicated SQL queries. Since we're only using the DB for simple data storage MongoDB seemed to be a great solution.
 			
-			Node.js has an ORM for MongoDB called Mongoose, which we used extensively throughout the project. With it, we can define models, such as a User model:
+			Node.js has an ORM for MongoDB called Mongoose, which we used extensively throughout the project. With it, we can define schemas, such as a User schema:
 			
 			\begin{verbatim}
 var UserSchema = new Schema({
@@ -163,8 +165,7 @@ var UserSchema = new Schema({
 });
 			\end{verbatim}
 		
-			Then, we can use this model to get back data about the user, or write data back to the Mongo store.
-			A consideration is that MongoDB should always be ran with a secondary DB server in order for backup, but we are running it only on one server due to the fact we don't have more than one server.
+			Then, we can use this schema to create a model, which is then used to get back data about the user, or write data back to the Mongo store. A consideration is that MongoDB should always be ran with a secondary DB server in order for backup, but we are running it only on one server due to the fact we only have one server. Clearly, in a true production environment this would not be the case.
 			
 	
 	\section{Libraries and Content Used}
@@ -173,7 +174,7 @@ var UserSchema = new Schema({
 		\subsection{Content Used}
 			\begin{itemize}
 				\item Planet images taken from here\footnote{\url{http://icones.pro/en/internet-network-connections-planet-png-image.html}} and here\footnote{\url{http://www.softicons.com/free-icons/object-icons/solar-system-icons-by-parthiban-mohanraj}}
-				\item Ship images from WHEREWOIRHWEHRHWER
+				\item Ship images from here\footnote{\url{http://www.pixeljoint.com/pixelart/48537.htm}}
 				\item The site background was created by us in Photoshop
 			\end{itemize}
 			
@@ -196,7 +197,6 @@ var UserSchema = new Schema({
 			\end{itemize}
 	
 	\section{Conclusion}
-	
 	Overall, we are quite happy with the result of our project. We have managed to learn many new technologies, since no one from the group has ever used any of the technologies we decided to use, so we are finishing the project with a good knowledge of Javascript, Node.JS, MongoDB, and HTML5 canvas.
 	
 	We are very fond of the networking aspect of our game, since this is the first real time networked application that we have written. As soon as someone connects/disconnects/moves, the change is propagate by the server to all the clients, and we have a real-time looking game. 
@@ -204,7 +204,4 @@ var UserSchema = new Schema({
 	We seem to have a slight problem with synchronising movement animations because different people run the game at different frame rates, but we are currently working on a way to fix this.
 	
 	We didn't have the time to implement all the features that we wanted, such as inter-ship trading. Another aspect we are not that happy about is the performance of the graphics in the canvas. The rendering is very slow, peaking at around 20 FPS even on quite good and recent computers. This comes most likely from our misunderstanding of how to properly use the EaselJS library, but even after communicating on the EaselJS group, we didn't seem to be able to optimize the rendering.
-	
-	
-	
 \end{document}
