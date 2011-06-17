@@ -9,7 +9,7 @@ Player.prototype.getBasicData = function() {
 }
 
 Player.prototype.getMainData = function() {
-  return helpers.arrayFilter(["username", "position", "rotation", "resources", "shipType", "capactiy"], this.source);
+  return helpers.arrayFilter(["username", "position", "rotation", "resources", "shipType", "capacity"], this.source);
 }
 
 Player.prototype.getName = function() {
