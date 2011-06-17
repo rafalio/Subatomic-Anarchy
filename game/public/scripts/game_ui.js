@@ -2,9 +2,7 @@ var whatBuy = '';
 var whatSell = '';
 var sellAmount;
 var buyAmount;
-
-var planet = null;    // planet data we received for Trading
-
+var tPlanet = null; //planet pointer
 
 $(function(){
   
@@ -105,6 +103,8 @@ $(function(){
       socket.send({
         type: "endTrade"
       })
+      me.exitPlanet(tPlanet);
+      socket.send(me.generateUpdatePacket());
     },
     
     buttons : {
@@ -171,7 +171,7 @@ function hookTrading(){
       $("#buy_amount").html(ui.value + " Units");
       buyAmount = ui.value;
       
-      var rate = getRes(whatSell,planet.prices) / getRes(whatBuy,planet.prices);
+      var rate = getRes(whatSell,tPlanet.prices) / getRes(whatBuy,tPlanet.prices);
       
       sliderValueUpdate("#slider_sell", ui.value * rate);
       
@@ -183,7 +183,7 @@ function hookTrading(){
       $("#sell_amount").html(ui.value + " Units");
       sellAmount = ui.value;
       
-      var rate = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+      var rate = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
       sliderValueUpdate("#slider_buy", ui.value * rate);
     }
   });
@@ -209,27 +209,27 @@ function hookUI(){
 }
 
 function updateTradingUI(tData){
-  planet = tData.planet;
-  var localPlanet = planets[planet.name];
+  tPlanet = tData.planet;
+  var localPlanet = planets[tPlanet.name];
   
-  $("#planet_name").html(planet.name);
+  $("#planet_name").html(tPlanet.name);
   $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)
   
-  updatePlanetResources();
+  updatePlanetResourcesUI(tPlanet);
   
 }
 
 
-function updatePlanetResources(){
+function updatePlanetResourcesUI(p){
   var ulbox = $("#top_planet #res_box ul")
   ulbox.html("");
-  ulbox.append("<li>Gold: {0}</li>".format(planet.resources.gold) )
-  ulbox.append("<li>Food: {0}</li>".format(planet.resources.food) )
-  ulbox.append("<li>Deuterium: {0}</li>".format(planet.resources.deuterium) )
+  ulbox.append("<li>Gold: {0}</li>".format(p.resources.gold) )
+  ulbox.append("<li>Food: {0}</li>".format(p.resources.food) )
+  ulbox.append("<li>Deuterium: {0}</li>".format(p.resources.deuterium) )
   ulbox.append("<li>Exchange: G{0} | F{1} | D{2}</li>".format(
-    planet.prices.gold,
-    planet.prices.food,
-    planet.prices.deuterium
+    p.prices.gold,
+    p.prices.food,
+    p.prices.deuterium
     ) 
   )
 }
@@ -267,7 +267,7 @@ function onBothResourcesSelect(){
     var maxSell = getRes(whatSell,me.resources)
     $("#slider_sell").slider("option","max",maxSell);
     
-    var multiplier = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+    var multiplier = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
     var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
     
     $("#slider_buy").slider("option","max",maxBuy);
@@ -314,7 +314,4 @@ function updateResourcesUI(selector,ptr){
   $(selector).append("<li>Deuterium: " + ptr.deuterium + "</li>");
   $(selector).append("<li>Food: " + ptr.food + "</li>");
 }
-
-
-
 

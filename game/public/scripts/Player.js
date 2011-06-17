@@ -56,10 +56,15 @@
   
   
   // We exit from planets on the left hand side, so don't put them on the rightmost border!
-  Player.prototype.exitPlanet = function(pPos){
-    this.position.x = pData.position.x;
-    this.position.y = pData.position.y;
+  Player.prototype.exitPlanet = function(pData){
+    var planet = planets[pData.name];
+    this.position.x = planet.position.x + 1;
+    this.position.y = planet.position.y;
     this.syncBitmap();
+  }
+  
+  Player.prototype.resourcesTotal = function(){
+    return this.resources
   }
   
   /*

@@ -102,8 +102,9 @@ function messageHandler(msg){
     });
   }
   
-  else if(msg.type == 'updateResources') {
+  else if(msg.type == 'updateResources'){
     me.resources = msg.res;
+    updateResourcesUI("#right_trade.box #res ul", me.resources);  
     updateResourcesUI("#resources ul", me.resources);
   }
   
@@ -127,12 +128,17 @@ function messageHandler(msg){
   }
   
   else if(msg.type == 'showShip'){
-    me.showShip();
+    //me.showShip();
   }
   
   else if(msg.type == 'hideShip'){
-    me.hideShip();    
+    //me.hideShip();    
   }
   
+  // Update planet prices/resources on trading screen
+  else if(msg.type == 'updateTrade'){
+    tPlanet = msg.planet;
+    updatePlanetResourcesUI(msg.planet);
+  }
   
 }
