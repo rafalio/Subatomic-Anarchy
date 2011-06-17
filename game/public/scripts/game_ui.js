@@ -114,7 +114,6 @@ $(function(){
         type: "endTrade"
       })
       me.exitPlanet(tPlanet);
-      socket.send(me.generateUpdatePacket());
     },
     
     buttons : {

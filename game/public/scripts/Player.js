@@ -59,9 +59,16 @@
   // We exit from planets on the left hand side, so don't put them on the rightmost border!
   Player.prototype.exitPlanet = function(pData){
     var planet = planets[pData.name];
-    this.position.x = planet.position.x + 1;
-    this.position.y = planet.position.y;
-    this.syncBitmap();
+    this.doMove({
+      x: planet.position.x + 1,
+      y: planet.position.y
+    });
+    // Notify the server to start the animation for other people connected
+    var control = this.control;
+    socket.send({
+      type: 'initMovement',
+      move_to: control.move_to
+    });
   }
   
   Player.prototype.resourcesTotal = function(){

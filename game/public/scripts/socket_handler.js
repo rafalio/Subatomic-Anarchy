@@ -128,11 +128,11 @@ function messageHandler(msg){
   }
   
   else if(msg.type == 'showShip'){
-    //me.showShip();
+    players[msg.username].showShip();
   }
   
   else if(msg.type == 'hideShip'){
-    //me.hideShip();    
+    players[msg.username].hideShip();    
   }
   
   // Update planet prices/resources on trading screen

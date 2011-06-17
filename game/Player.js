@@ -189,10 +189,8 @@ Player.prototype.tradeCorrect = function() {
 Player.prototype.verifyTrade = function(tData) {
   //check capacity
   var capacity = (this.getResourcesAmount() - tData.sell.amount + tData.buy.amount) <= this.getCapacity();
-  console.log("Player: capacity: " + this.getCapacity() + " sell: " + (this.getResourcesAmount() - tData.sell.amount + tData.buy.amount));
   //check availability of sell
   var sell = this.getResource(tData.sell.resource) >= tData.sell.amount;
-  console.log("Player: capacity: " + capacity + " sell: " + sell);
   return capacity && sell;
 }
 
