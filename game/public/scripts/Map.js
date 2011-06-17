@@ -149,6 +149,22 @@
       document.removeEventListener("mousemove",scroll_listener);
     }) 
   }
+  
+  Map.prototype.drawLabels = function(){
+    labels = new Container();
+    
+    for(var i = 0; i < this.grid_num.x; i++){
+      for(var j = 0; j < this.grid_num.y; j++){
+        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
+        txt.x = i * this.grid_size + this.grid_size/2;
+        txt.y = j * this.grid_size + this.grid_size/2;
+        labels.addChild(txt);
+      }
+    }
+    
+    labels.cache(0,0,this.dim.width,this.dim.height);
+    stage.addChild(labels);
+  }
 
   Map.prototype.drawGrid = function(){
     var g = new Shape();
@@ -167,19 +183,7 @@
 
     g.cache(0,0,this.dim.width,this.dim.height);
 
-    labels = new Container();
-
-    for(var i = 0; i < this.grid_num.x; i++){
-      for(var j = 0; j < this.grid_num.y; j++){
-        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
-        txt.x = i * this.grid_size + this.grid_size/2;
-        txt.y = j * this.grid_size + this.grid_size/2;
-        labels.addChild(txt);
-      }
-    }
-
-    labels.cache(0,0,this.dim.width,this.dim.height);
-    stage.addChild(labels);
+    //drawLabels();
   }
   
   // Register for everyone
