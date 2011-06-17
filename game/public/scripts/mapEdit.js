@@ -201,7 +201,7 @@ function generate_map(n, d, f, g){
       index = Math.floor(Math.random() * pnames.length);
     }while(nused[index] != undefined);
     do{
-      px = Math.floor((Math.random()*(map.dim.width-grid_size))/map.grid_size);
+      px = Math.floor((Math.random()*(map.dim.width-map.grid_size))/map.grid_size);
       py = Math.floor((Math.random()*map.dim.height)/map.grid_size);
     }while(pused[py*(map.dim.width/map.grid_size)+px] != undefined);
     switch(Math.floor(Math.random()*3)){
