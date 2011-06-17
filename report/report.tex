@@ -4,8 +4,8 @@
 \usepackage{url}
 \usepackage{graphicx}
 
-\title{'Awesome Game' Report}
-\author{Rafal Szymanski, Maciej Albin, Suhaib Sarmad, Maciej Albin}
+\title{'Subatomic Anarchy' Report}
+\author{Maciej Albin, Jamal Khan, Suhaib Sarmad, Rafal Szymanski}
 
 
 \begin{document} 
@@ -21,7 +21,9 @@
 		Because of this, we decided to take a very novel approach, and use very new technologies that are still in active development, but are nevertheless incredibly interesting. Our game/project does not utilize the departments database servers or Apache/Tomcat servers. We decided to deploy the project on our own VPS server.
 
 		We have had a number of problems using our chosen technologies due to the fact how new they are and the fact that bug fixes are pretty much released every day. Nevertheless, we have managed to create a usable and playable game using client side technologies such as the HTML5 canvas, JS, and websockets, and server side technologies that include Node.Js, MongoDB, and websockets.
-	
+		
+	\section{Group Organisation}
+	We divided our group into two people working mostly on the front end and two people taking care of the backend. Towards the end of the project one of the backend people moved to the front end development, this was mostly due to our problems with front end optimazation, we simple needed to put more people on the job.
 		
 	\section{Game Idea and Mechanics}
 	
@@ -67,6 +69,7 @@
 			\label{fig:minimap}
 			\end{figure}
 			
+			\pagebreak
 			
 		\subsection{Chat}
 			We have also implemented a simple chat application. Upon login, the chat application is at all times present in the bottom left corner of the game. Players can type chat messages, and upon submitting the message, the message is distributed and shown to all clients currently connected to the server and playing the game. Additionally, this chat box also informs players of other people who have just logged in, or that have disconnected.
@@ -204,4 +207,6 @@ var UserSchema = new Schema({
 	We seem to have a slight problem with synchronising movement animations because different people run the game at different frame rates, but we are currently working on a way to fix this.
 	
 	We didn't have the time to implement all the features that we wanted, such as inter-ship trading. Another aspect we are not that happy about is the performance of the graphics in the canvas. The rendering is very slow, peaking at around 20 FPS even on quite good and recent computers. This comes most likely from our misunderstanding of how to properly use the EaselJS library, but even after communicating on the EaselJS group, we didn't seem to be able to optimize the rendering.
+	
+	In hindsight we should have settled on the game idea earlier, so we wouldn't have had to change so many things throughout the development. The extra time would have also enabled us to balance all the aspects of the game more.
 \end{document}
