@@ -74,6 +74,15 @@
 		The map editor, as the name indicates, is a tool which allows an administrator to create or edit a universe in which players move around and interact. The editor, due to it's interactive nature, uses the same front-end technologies as the game itself. For consistency, we use EaselJS for handling the HTML5 canvas and JQuery for certain inputs and advanced functions.
 
 		Thanks to the efficient way we structured our game, we were able to reuse resources such as the Map, Planet and Minimap elements as well as stylesheets, all of which which helped keep things consistant and made debugging easier.
+		
+		\begin{figure}[htb]
+		\begin{center}
+		\leavevmode
+		\includegraphics[scale=0.6]{mapedit.png}
+		\end{center}
+		\caption{Map Editor}
+		\label{fig:mapedit}
+		\end{figure}
 
 		A lot of effort went into making the map editor comprehensive and easy to use. Once the page has loaded, the administrator has a "Planet Palette" available to him which follows his cursor location. On clicking on an empty grid position, the palette expands, allowing the selection of a planet image to use for creating a new planet. Once a planet has been created, the planet's general information can be editted using the convenient text boxes that appear next to the planet. Focussing a particular text box pushes a description of the selected field. This allows for a clean looking interface which stays functional and conveys all necessary information as needed. Deleting a planet is done by clearing the planet's name and saving its information (clicking on the planet once again).
 
