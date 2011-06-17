@@ -86,7 +86,17 @@ $(function(){
     buttons : {
       "Close" : function(){
         $(this).dialog("close");
+      },
+      "Apply" : function(){
+        var type = $("#profile li.ui-selected").attr('id');
+        socket.send({
+          type: "shipUpdate",
+          shipType: type
+        })
+        me.changeShipType(type);
+        $(this).dialog("close");
       }
+      
     }
   });
   
@@ -304,11 +314,14 @@ function sliderValueUpdate(id, value){
 
 
 function hookImagesToProfile(){
+  var i = 1;
   Object.keys(ship_images).forEach(function(e){
     var el = document.createElement("li");
     el.setAttribute("class","ui-state-default");
+    el.setAttribute("id",i)
     el.innerHTML = ship_images[e].outerHTML
     $("#ship_choose").append(el);
+    i++;
   });
 	$("#ship_choose" ).selectable();
 }

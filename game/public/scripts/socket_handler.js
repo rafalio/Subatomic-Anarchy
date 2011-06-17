@@ -141,4 +141,8 @@ function messageHandler(msg){
     updatePlanetResourcesUI(msg.planet);
   }
   
+  else if(msg.type == 'shipUpdate'){
+    players[msg.username].changeShipType(msg.shipType);
+  }
+  
 }

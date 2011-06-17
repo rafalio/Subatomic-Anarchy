@@ -181,6 +181,14 @@
     
   }
   
+  Player.prototype.changeShipType = function(type){
+    stage.removeChild(this.shipBitmap);
+    this.shipType = type;
+    this.initBitmap();
+    if(me.username == this.username)
+      this.hookControls();
+  }
+  
   /*
     The position attribute of the player will change. We must reflect this in the bitmap.
     This function will synchronize the bitmap with the player's attributes.
