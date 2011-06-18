@@ -52,6 +52,7 @@
         planets[pName] = new Planet(map[pName]);
       })
       
+      loaded = true;
       if(done != null){
         done();
       }

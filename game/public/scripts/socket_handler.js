@@ -1,6 +1,9 @@
 var socket = null;
 var map;
 
+var socketBuffer = [];
+var loaded = false;
+
 // Connect when we loaded all the required things
 
 function socket_init(map_){
@@ -51,6 +54,21 @@ function messageHandler(msg){
   // Only to be called whenever we connect as a new client
   if(msg.type == 'onNewConnect'){
     
+    
+    // To buffer the initTrade
+    (function timeloop(){
+       setTimeout(function(){
+         if(loaded && socketBuffer.length == 0){
+           return;
+         }
+         else if (loaded && socketBuffer.length > 0){
+           messageHandler(socketBuffer.pop())
+         }
+         timeloop();
+      }, 100);
+    })();
+    
+    
     // Synchronize everyone, and add myself to the board!
     Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
       addPlayer(msg.everyone[pUsername]);
@@ -68,6 +86,7 @@ function messageHandler(msg){
     chat.setupChat(msg.chatBuf);
     
     hookUI();   // hook the UI functions that require the player data
+    
     
   }
 
@@ -107,7 +126,10 @@ function messageHandler(msg){
   }
   
   else if(msg.type == 'initTrade'){
-    openTradingUI(msg);
+    if(loaded)
+      openTradingUI(msg);
+    else
+      socketBuffer.push(msg);
   }
   
   else if(msg.type == 'tradeResponse'){
