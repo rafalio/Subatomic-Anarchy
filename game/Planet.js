@@ -157,7 +157,8 @@ Planet.prototype.verifyTrade = function(tData) {
 }
 
 Planet.prototype.genPrices = function() {
-//toDo
+  //toDo
+  return {gold: 1, deuterium: 2, food: 3};
 }
 
 Planet.prototype.priceMatch = function(iData) {
