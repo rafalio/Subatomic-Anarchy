@@ -4,6 +4,8 @@ function Player(playermodel) {
   this.source = playermodel;
 }
 
+
+//Getters
 Player.prototype.getId = function(){
   return this.source._id;
 }
@@ -56,6 +58,10 @@ Player.prototype.getCapacity = function() {
   return parseInt(this.source.capacity.toString());
 }
 
+Player.prototype.getTrade = function() {
+  return this.currTrade;
+}
+
 //Socket
 Player.prototype.connectSocket = function(client) {
   this.client = client;
@@ -86,6 +92,10 @@ Player.prototype.broadcastPositionUpdate = function() {
       rotation: this.getRot()
     }
   });
+}
+
+Player.prototype.send = function(msg) {
+  this.client.send(msg);
 }
 
 Player.prototype.broadcastShipChange = function() {

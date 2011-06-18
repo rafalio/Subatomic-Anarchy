@@ -55,6 +55,15 @@ function addPlayer(player, client, chatBuf) {
    // console.log(getPlanets());
     checkTrade(player.getName());
     
+    //Very inefficient, but works
+    _.forEach(players, function(player_, key) {
+      if(player_ != player && player_.getTrade() != undefined)
+        player.send({
+          type: 'hideShip',
+          username: player_.getName()
+        });
+    });
+    
   } else {
     console.log("player %s tried to connect to the game a second time", player.getName());
   }
