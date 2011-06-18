@@ -92,14 +92,15 @@ Player.prototype.broadcastShipChange = function() {
 }
 
 //Updating
-Player.prototype.updateResource = function(incdec, res, am) {
+Player.prototype.updateResource = function(incdec, res, am, update) {
   if(incdec == 'increase')
     this.source.resources[res] += am;
   else if(incdec == 'decrease')
     this.source.resources[res] -= am;
   else
     return;
-  this.sendResourceUpdate();
+  if(update)
+    this.sendResourceUpdate();
   this.save();
 }
 
@@ -127,6 +128,8 @@ Player.prototype.initTrade = function(planet) {
     console.log("Player %s is already trading on %s. Can't initiate trade with %s!", this.getName(), this.currTrade.getName(), planet.getName());
   } else {
     this.currTrade = planet;
+    console.log("sending inittrade");
+    console.log(this.currTrade.getTradeData());
     //send info about the trading planet
     this.client.send({
       type: "initTrade",
@@ -144,8 +147,8 @@ Player.prototype.initTrade = function(planet) {
 Player.prototype.doTrade = function(tData) {
   //send trade confirmation. Don't remember the format
   this.tradeCorrect();
-  this.updateResource('decrease', tData.sell.resource, tData.sell.amount);
-  this.updateResource('increase', tData.buy.resource, tData.buy.amount);
+  this.updateResource('decrease', tData.sell.resource, tData.sell.amount, false);
+  this.updateResource('increase', tData.buy.resource, tData.buy.amount, true);
   this.currTrade.doTrade(tData);
 }
 

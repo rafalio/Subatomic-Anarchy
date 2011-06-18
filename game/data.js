@@ -1,3 +1,6 @@
+var _ = require('underscore');
+var helpers = require('./helpers.js');
+
 // Shared data
 
 // Arrays to keep players and planets. Synchronizes with client side.
@@ -21,11 +24,20 @@ function loadPlanets(cb) {
       res.forEach(function(e){
         planets[e["name"]] = new Planet.Planet(e);
       });
+      setUpGenerateResources();
       cb();
     } else {
       console.log("Massive fucking error. Go and fix right now!");
     }
   });
+}
+
+function setUpGenerateResources() {
+  setInterval(function(){
+    _.forEach(planets, function(planet, key) {
+      planet.produceResources();
+    });
+  }, 300000);//every five minutes!
 }
 
 function addPlayer(player, client, chatBuf) {
