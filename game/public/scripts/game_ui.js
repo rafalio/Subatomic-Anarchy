@@ -224,6 +224,8 @@ function updateTradingUI(tData){
   $("#planet_name").html(tPlanet.name);
   $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)
   
+  $("#planet_subtitle").html("{0} {1} Planet".format(localPlanet.size.capitalize(), localPlanet.kind.capitalize()));
+  
   updatePlanetResourcesUI(tPlanet);
   
 }
@@ -232,9 +234,9 @@ function updateTradingUI(tData){
 function updatePlanetResourcesUI(p){
   var ulbox = $("#top_planet #res_box ul")
   ulbox.html("");
-  ulbox.append("<li>Gold: {0}</li>".format(p.resources.gold) )
-  ulbox.append("<li>Food: {0}</li>".format(p.resources.food) )
-  ulbox.append("<li>Deuterium: {0}</li>".format(p.resources.deuterium) )
+  ulbox.append("<li>Gold: {0}</li>".format(p.resources.gold.round2(2)) )
+  ulbox.append("<li>Food: {0}</li>".format(p.resources.food.round2(2)) )
+  ulbox.append("<li>Deuterium: {0}</li>".format(p.resources.deuterium.round2(2)) )
   ulbox.append("<li>Exchange: G{0} | F{1} | D{2}</li>".format(
     p.prices.gold,
     p.prices.food,
@@ -302,11 +304,11 @@ function sliderValueUpdate(id, value){
   $(id).slider("option","value",value);
   
   if(id == "#slider_sell"){
-    $("#sell_amount").html(value + " Units");
+    $("#sell_amount").html(value.round2(2) + " Units");
     sellAmount = value;
   }
   else if(id == "#slider_buy"){
-    $("#buy_amount").html(value + " Units");
+    $("#buy_amount").html(value.round2(2) + " Units");
     buyAmount = value;;
   } 
 }
@@ -326,9 +328,9 @@ function hookImagesToProfile(){
 }
 
 function updateResourcesUI(selector,ptr){
-  $(selector).html("<li>Gold: " + ptr.gold + "</li>");
-  $(selector).append("<li>Deuterium: " + ptr.deuterium + "</li>");
-  $(selector).append("<li>Food: " + ptr.food + "</li>");
-  $(selector).append("<li>Capacity: " + me.resourcesTotal() + "/" + me.capacity + "</li>");
+  $(selector).html("<li>Gold: " + ptr.gold.round2(2) + "</li>");
+  $(selector).append("<li>Deuterium: " + ptr.deuterium.round2(2) + "</li>");
+  $(selector).append("<li>Food: " + ptr.food.round2(2) + "</li>");
+  $(selector).append("<li>Capacity: " + me.resourcesTotal().round2(2) + "/" + me.capacity + "</li>");
 }
 

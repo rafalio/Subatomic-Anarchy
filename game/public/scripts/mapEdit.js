@@ -205,9 +205,9 @@ function generate_map(n, d, f, g){
       py = Math.floor((Math.random()*map.dim.height)/map.grid_size);
     }while(pused[py*(map.dim.width/map.grid_size)+px] != undefined);
     switch(Math.floor(Math.random()*3)){
-      case 0: size = "small";  break;
-      case 1: size = "medium"; break;
-      case 2: size = "large";  break;
+      case 0: size = "dwarf";  break;
+      case 1: size = "terrestrial"; break;
+      case 2: size = "giant";  break;
     }
     switch(Math.floor(Math.random()*3)){
       case 0: kind = "factory";      break;

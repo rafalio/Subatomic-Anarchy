@@ -118,3 +118,11 @@ String.prototype.format = function() {
     }
     return formatted;
 };
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+Number.prototype.round2 = function(dec){
+  return Math.round(this*Math.pow(10,dec))/Math.pow(10,dec);
+}

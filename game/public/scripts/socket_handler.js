@@ -51,8 +51,6 @@ function messageHandler(msg){
   // Only to be called whenever we connect as a new client
   if(msg.type == 'onNewConnect'){
     
-    console.log(msg);
-    
     // Synchronize everyone, and add myself to the board!
     Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
       addPlayer(msg.everyone[pUsername]);
