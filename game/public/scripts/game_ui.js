@@ -4,6 +4,10 @@ var planet = null;    // planet data we received for Trading
 var msgheadersLoaded = false;
 var selectedMessage = '';
 var latestmsg = ''; // Used to store the id of the latest message
+var sellAmount;
+var buyAmount;
+var tPlanet = null; //planet pointer
+
 
 $(function(){
   
@@ -140,7 +144,17 @@ $(function(){
     buttons : {
       "Close" : function(){
         $(this).dialog("close");
+      },
+      "Apply" : function(){
+        var type = $("#profile li.ui-selected").attr('id');
+        socket.send({
+          type: "shipUpdate",
+          shipType: type
+        })
+        me.changeShipType(type);
+        $(this).dialog("close");
       }
+      
     }
   });
   
@@ -152,6 +166,14 @@ $(function(){
     autoOpen: false,
     width: 1000,
     height: 600,
+    
+    close: function(event,ui){
+      socket.send({
+        type: "endTrade"
+      })
+      me.exitPlanet(tPlanet);
+    },
+    
     buttons : {
       "Leave Planet" : function(){
         $(this).dialog("close");
@@ -159,13 +181,11 @@ $(function(){
       "Trade" : function(){
         if( (whatBuy == '' || whatSell == '') || whatBuy == whatSell){
           $("#info_box").html("You need to select the resources, and make sure they are different!");
+          $("#info_box").dialog("open");
         }
         else{
-          $("#info_box").html("Not implemented :(");
+          sendTradePacket(whatBuy, buyAmount, whatSell, sellAmount);
         }
-        
-        $("#info_box").dialog("open");
-        
       }
     }
   });
@@ -180,6 +200,19 @@ $(function(){
   
 });
 
+function sendTradePacket(tBuy, bAmount, tSell, sAmount){
+  socket.send({
+    type: "trade",
+    buy: {
+      resource: tBuy.toLowerCase(),
+      amount: bAmount
+    },
+    sell: {
+      resource: tSell.toLowerCase(),
+      amount: sAmount
+    }
+  })
+}
 
 /* Gets a list of messages from the database
  * Need to give it a call-back function
@@ -340,8 +373,6 @@ function hookTrading(){
     "<img src=images/spaceship{0}.png></img>".format(me.shipType)
   )
   
-  
-  
   $("#buy_choose").selectable({
     stop : function(event, ui){
       whatBuy = $("#buy_choose li.ui-selected p").html();
@@ -360,8 +391,10 @@ function hookTrading(){
   $("#slider_buy").slider({
     slide: function(event,ui){
       $("#buy_amount").html(ui.value + " Units");
+      buyAmount = ui.value;
       
-      var rate = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
+      var rate = getRes(whatSell,tPlanet.prices) / getRes(whatBuy,tPlanet.prices);
+      
       sliderValueUpdate("#slider_sell", ui.value * rate);
       
     }
@@ -370,8 +403,9 @@ function hookTrading(){
   $("#slider_sell").slider({
     slide: function(event,ui){
       $("#sell_amount").html(ui.value + " Units");
+      sellAmount = ui.value;
       
-      var rate = getRes(whatSell,planet.prices) / getRes(whatBuy,planet.prices);
+      var rate = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
       sliderValueUpdate("#slider_buy", ui.value * rate);
     }
   });
@@ -399,15 +433,31 @@ function hookUI(){
 }
 
 function updateTradingUI(tData){
-  planet = tData.planet;
-  var localPlanet = planets[planet.name];
+  tPlanet = tData.planet;
+  var localPlanet = planets[tPlanet.name];
   
-  console.log(planet);
-  console.log(localPlanet);
+  $("#planet_name").html(tPlanet.name);
+  $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)
   
-  $("#planet_name").html(planet.name);
-  $("#top_planet").children("img")[0].src = "images/planets/{0}".format(localPlanet.src)  
+  $("#planet_subtitle").html("{0} {1} Planet".format(localPlanet.size.capitalize(), localPlanet.kind.capitalize()));
   
+  updatePlanetResourcesUI(tPlanet);
+  
+}
+
+
+function updatePlanetResourcesUI(p){
+  var ulbox = $("#top_planet #res_box ul")
+  ulbox.html("");
+  ulbox.append("<li>Gold: {0}</li>".format(p.resources.gold.round2(2)) )
+  ulbox.append("<li>Food: {0}</li>".format(p.resources.food.round2(2)) )
+  ulbox.append("<li>Deuterium: {0}</li>".format(p.resources.deuterium.round2(2)) )
+  ulbox.append("<li>Exchange: G{0} | F{1} | D{2}</li>".format(
+    p.prices.gold,
+    p.prices.food,
+    p.prices.deuterium
+    ) 
+  )
 }
 
 function openTradingUI(tData){
@@ -415,6 +465,8 @@ function openTradingUI(tData){
   updateResourcesUI("#res ul", me.resources);
   $("#trade").dialog("open");
 }
+
+
 
 // gets the amount of resource given as a string, and a pointer
 function getRes(str, ptr){
@@ -438,11 +490,16 @@ function onBothResourcesSelect(){
     
     resetSliders();
     
+    var available = me.capacity - me.resourcesTotal();
+    
     var maxSell = getRes(whatSell,me.resources)
     $("#slider_sell").slider("option","max",maxSell);
     
-    var multiplier = getRes(whatBuy,planet.prices) / getRes(whatSell,planet.prices);
-    var maxBuy = Math.floor( getRes(whatSell,me.resources) / multiplier );
+    var multiplier = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
+    var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
+    
+    maxBuy = Math.min(maxBuy,available);
+    
     $("#slider_buy").slider("option","max",maxBuy);
     
   } else{
@@ -460,29 +517,35 @@ function resetSliders(){
 
 function sliderValueUpdate(id, value){
   $(id).slider("option","value",value);
-  if(id == "#slider_sell")
-    $("#sell_amount").html(value + " Units");
-  else if(id == "#slider_buy")
-    $("#buy_amount").html(value + " Units");
+  
+  if(id == "#slider_sell"){
+    $("#sell_amount").html(value.round2(2) + " Units");
+    sellAmount = value;
+  }
+  else if(id == "#slider_buy"){
+    $("#buy_amount").html(value.round2(2) + " Units");
+    buyAmount = value;;
+  } 
 }
 
 
 function hookImagesToProfile(){
+  var i = 1;
   Object.keys(ship_images).forEach(function(e){
     var el = document.createElement("li");
     el.setAttribute("class","ui-state-default");
+    el.setAttribute("id",i)
     el.innerHTML = ship_images[e].outerHTML
     $("#ship_choose").append(el);
+    i++;
   });
 	$("#ship_choose" ).selectable();
 }
 
 function updateResourcesUI(selector,ptr){
-  $(selector).html("<li>Gold: " + ptr.gold + "</li>");
-  $(selector).append("<li>Deuterium: " + ptr.deuterium + "</li>");
-  $(selector).append("<li>Food: " + ptr.food + "</li>");
+  $(selector).html("<li>Gold: " + ptr.gold.round2(2) + "</li>");
+  $(selector).append("<li>Deuterium: " + ptr.deuterium.round2(2) + "</li>");
+  $(selector).append("<li>Food: " + ptr.food.round2(2) + "</li>");
+  $(selector).append("<li>Capacity: " + me.resourcesTotal().round2(2) + "/" + me.capacity + "</li>");
 }
-
-
-
 

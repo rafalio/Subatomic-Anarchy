@@ -1,6 +1,9 @@
 var socket = null;
 var map;
 
+var socketBuffer = [];
+var loaded = false;
+
 // Connect when we loaded all the required things
 
 function socket_init(map_){
@@ -51,7 +54,20 @@ function messageHandler(msg){
   // Only to be called whenever we connect as a new client
   if(msg.type == 'onNewConnect'){
     
-    console.log(msg);
+    
+    // To buffer the initTrade
+    (function timeloop(){
+       setTimeout(function(){
+         if(loaded && socketBuffer.length == 0){
+           return;
+         }
+         else if (loaded && socketBuffer.length > 0){
+           messageHandler(socketBuffer.pop())
+         }
+         timeloop();
+      }, 100);
+    })();
+    
     
     // Synchronize everyone, and add myself to the board!
     Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
@@ -70,6 +86,7 @@ function messageHandler(msg){
     chat.setupChat(msg.chatBuf);
     
     hookUI();   // hook the UI functions that require the player data
+    
     
   }
 
@@ -102,13 +119,50 @@ function messageHandler(msg){
     });
   }
   
-  else if(msg.type == 'updateResources') {
+  else if(msg.type == 'updateResources'){
     me.resources = msg.res;
+    updateResourcesUI("#right_trade.box #res ul", me.resources);  
     updateResourcesUI("#resources ul", me.resources);
   }
   
   else if(msg.type == 'initTrade'){
-    openTradingUI(msg);
+    if(loaded)
+      openTradingUI(msg);
+    else
+      socketBuffer.push(msg);
+  }
+  
+  else if(msg.type == 'tradeResponse'){
+    var response = ''
+    
+    if(msg.success){
+      response = "Trade was succesful!";
+    }
+      
+    else{
+      response = "Trading was unsuccesful! :(";
+    }
+      
+    $("#info_box").html(response);
+    $("#info_box").dialog("open");
+  }
+  
+  else if(msg.type == 'showShip'){
+    players[msg.username].showShip();
+  }
+  
+  else if(msg.type == 'hideShip'){
+    players[msg.username].hideShip();    
+  }
+  
+  // Update planet prices/resources on trading screen
+  else if(msg.type == 'updateTrade'){
+    tPlanet = msg.planet;
+    updatePlanetResourcesUI(msg.planet);
+  }
+  
+  else if(msg.type == 'shipUpdate'){
+    players[msg.username].changeShipType(msg.shipType);
   }
   
 }

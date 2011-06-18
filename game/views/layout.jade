@@ -1,7 +1,7 @@
 !!! 5
 html(lang="en")
   head
-    title= "AwesomeGame | " + title
+    title= "Subatomic Anarchy | " + title
     link(rel="stylesheet", href="stylesheets/screen.css")
     link(rel="stylesheet", href="stylesheets/main.css")
     
@@ -9,9 +9,4 @@ html(lang="en")
     != partial(head)
     
   body
-    - if(session && session.user)
-      #header
-        #logout
-          |Logged in as #{session.user.username}
-          a(href='/logout') Logout
     !{body}

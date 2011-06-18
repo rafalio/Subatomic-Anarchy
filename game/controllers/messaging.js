@@ -17,7 +17,7 @@ function start(forms_, models_, pdata_) {
 function getNewMessages(req, res){
   var id = req.body.id;
   var msgBuf = [];
-  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+  models.Message.find({to: req.user.getId()}).sort('date', -1).each(function(err,msg,next){
     if(msg.id != id){
       models.User.findOne({_id: msg.from}, function(err, result){
         sender = result.username;                
@@ -37,13 +37,17 @@ function getNewMessages(req, res){
 }
 
 
-//For getting the messages
+/* Used to fetch all the message headers for a user */
 function getMessages(req,res){
+
   var msgBuf = [];
   // call 'next' to advance the Mongo streaming cursor manually
-  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+  models.Message.find({to: req.user.getId()}).sort('date', -1).each(function(err,msg,next){
     if(msg){
+      console.log(msg.from)
       models.User.findOne({_id: msg.from}, function(err, result){
+        console.log(result)
+        console.log(msg);
         sender = result.username;                
         msgBuf.push({
           "id"      : msg._id,
@@ -92,7 +96,7 @@ function inbox(req,res){
   
   // call 'next' to advance the Mongo streaming cursor manually
   
-  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+  models.Message.find({to: req.user._id}).sort('date', -1).each(function(err,msg,next){
     if(msg){
       models.User.findOne({_id: msg.from}, function(err, result){
         msg.sender = result.username;
@@ -101,7 +105,7 @@ function inbox(req,res){
       })
     }
     else{
-      models.Message.find({from: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+      models.Message.find({from: req.user._id}).sort('date', -1).each(function(err,msg,next){
         if(msg){
           models.User.findOne({_id: msg.to}, function(err, result){
             msg.receiver = result.username;
@@ -177,7 +181,7 @@ function sendMessage(req,res){
     else{
       var to_id = result._id;
       var msg = new models.Message({
-        from: req.session.user._id,
+        from: req.user.getId(),
         to: to_id,
         content: data.message
       });

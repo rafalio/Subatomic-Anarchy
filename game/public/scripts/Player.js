@@ -28,6 +28,7 @@
     this.control = {};
     
     this.initBitmap();
+    console.log(this);
   }
   
   
@@ -40,15 +41,45 @@
     this.rotation   = pData.rotation;
     
     this.syncBitmap();
-  }  
+  }
   
   
+  // Hides a player from the view
+  Player.prototype.hideShip = function(){
+    this.shipBitmap.x = -100;
+    this.shipBitmap.y = -100;
+    
+  }
+  
+  Player.prototype.showShip = function(){
+    this.syncBitmap();
+  }
+  
+  
+  // We exit from planets on the left hand side, so don't put them on the rightmost border!
+  Player.prototype.exitPlanet = function(pData){
+    var planet = planets[pData.name];
+    this.doMove({
+      x: planet.position.x + 1,
+      y: planet.position.y
+    });
+    // Notify the server to start the animation for other people connected
+    var control = this.control;
+    socket.send({
+      type: 'initMovement',
+      move_to: control.move_to
+    });
+  }
+  
+  Player.prototype.resourcesTotal = function(){
+    return _.map(this.resources, function(value,key){ return value; }).reduce(function(pValue,cValue){ 
+      return pValue + cValue});
+  }
   
   /*
     Hooks control to the current player. This is only called for the player
     that is connected, as in P1 cannot control P2.
   */
-  
   Player.prototype.hookControls = function(){
     var bitmap  = this.shipBitmap;
     var player  = this;
@@ -64,6 +95,12 @@
           
           stage.onMouseDown = function(e){
             var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
+            if(typeof minimap != "undefined"){
+              if(minimap.mouseOver()){
+                return;
+              }
+            }
+            
             if(_.isEqual(player.position, move_to_grid)) {
               player.setBitmapScale(1);
               pressed1 = false;
@@ -155,6 +192,14 @@
     
     stage.addChild(this.shipBitmap);
     
+  }
+  
+  Player.prototype.changeShipType = function(type){
+    stage.removeChild(this.shipBitmap);
+    this.shipType = type;
+    this.initBitmap();
+    if(me.username == this.username)
+      this.hookControls();
   }
   
   /*

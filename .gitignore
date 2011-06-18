@@ -5,3 +5,9 @@ psd/
 node_modules
 .DS_Store
 *\.css
+*.aux
+*.log
+*.pdf
+*.gz
+*.out
+*.toc

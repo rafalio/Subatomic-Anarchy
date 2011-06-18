@@ -21,6 +21,7 @@
   Map.prototype.loadPlanetImages = function(map, done){
     var sources = [];
     
+    console.log(map);
     Object.keys(map).forEach(function(p){
       sources.push(map[p].src);
     });
@@ -51,6 +52,7 @@
         planets[pName] = new Planet(map[pName]);
       })
       
+      loaded = true;
       if(done != null){
         done();
       }
@@ -89,11 +91,17 @@
     this.fpsLabel.y = -stage.y + 15;
   }
   
-  Map.prototype.registerMapControls = function(){    
+  Map.prototype.registerMapControls = function(){
     var scroll_listener;
     var me = this;
     
     canvas.addEventListener("mousedown", function(evt){
+      if(typeof minimap != "undefined"){
+        if(minimap.mouseOver()){
+          minimap.onMouse(evt);
+        }
+      }
+    
       var off_x = evt.offsetX;
       var off_y = evt.offsetY;
     
@@ -103,6 +111,12 @@
       }
     
       scroll_listener = function(e){
+        if(typeof minimap != "undefined"){
+          if(minimap.mouseOver()){
+            minimap.onMouse(e);
+            return;
+          }
+        }
     
         var newCoords = {
           x: st.x - (off_x - e.offsetX),
@@ -126,9 +140,7 @@
         }
         
         if(typeof minimap != "undefined"){
-          minimap.redraw();
-          minimap.shape.x = minimap.pos.x - stage.x;
-          minimap.shape.y = minimap.pos.y - stage.y;
+          minimap.updatePos();
         }
       }
       document.addEventListener("mousemove", scroll_listener); 
@@ -137,6 +149,22 @@
     document.addEventListener("mouseup", function(evt){
       document.removeEventListener("mousemove",scroll_listener);
     }) 
+  }
+  
+  Map.prototype.drawLabels = function(){
+    labels = new Container();
+    
+    for(var i = 0; i < this.grid_num.x; i++){
+      for(var j = 0; j < this.grid_num.y; j++){
+        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
+        txt.x = i * this.grid_size + this.grid_size/2;
+        txt.y = j * this.grid_size + this.grid_size/2;
+        labels.addChild(txt);
+      }
+    }
+    
+    labels.cache(0,0,this.dim.width,this.dim.height);
+    stage.addChild(labels);
   }
 
   Map.prototype.drawGrid = function(){
@@ -156,19 +184,7 @@
 
     g.cache(0,0,this.dim.width,this.dim.height);
 
-    labels = new Container();
-
-    for(var i = 0; i < this.grid_num.x; i++){
-      for(var j = 0; j < this.grid_num.y; j++){
-        var txt   = new Text("({0},{1})".format(i,j), "12px Arial", Graphics.getRGB(0xFF,0xFF,0xFF,0.7));
-        txt.x = i * this.grid_size + this.grid_size/2;
-        txt.y = j * this.grid_size + this.grid_size/2;
-        labels.addChild(txt);
-      }
-    }
-
-    labels.cache(0,0,this.dim.width,this.dim.height);
-    stage.addChild(labels);
+    //drawLabels();
   }
   
   // Register for everyone

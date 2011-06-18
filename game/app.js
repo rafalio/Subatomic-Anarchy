@@ -11,6 +11,8 @@ var models        = require('./models/models.js');
 var route         = require('./controllers/route.js');
 var session_store = new express.session.MemoryStore();
 var socket        = require('./socket.js');
+var player        = require('./Player.js');
+var planet        = require('./Planet.js');
 
 auth.start(models.User);
 
@@ -36,27 +38,15 @@ app.configure('production', function(){
 });
 
 app.dynamicHelpers({
-  session: function(req, res) {
-    return req.session
-  }//,
-  //players: function(req,res){
-  //  return data.players
-  //},
-  //me: function(req,res){
-  //  if(req.session.user){
-  //    console.log(req.session.user)
-  //    console.log(data.players)
-  //    return data.players[req.session.user.username]
-  //  }
-  //  else
-  //    return null;
-  //}
+  user: function(req, res) {
+    return req.user
+  }
 });
 
 // Routes
-route.start(app,auth,data,forms,models);
+route.start(app,auth,data,forms,models,player);
 
-data.start(models, socket, function(){
+data.start(models, socket, planet, function(){
   app.listen(3000);
   console.log("Express server listening on port %d", app.address().port);
   socket.start(data, app, session_store);

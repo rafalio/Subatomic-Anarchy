@@ -1,9 +1,9 @@
 require('./db.js');
 
 var resources = {
-  deuterium: {type: Number, min:0, default: 0},
-  food:      {type: Number, min:0, default: 0},
-  gold:      {type: Number, min:0, default: 0}
+  deuterium: {type: Number, min:0, default: 100},
+  food:      {type: Number, min:0, default: 100},
+  gold:      {type: Number, min:0, default: 100}
 }
 
 var UserSchema = new Schema({
@@ -19,7 +19,7 @@ var UserSchema = new Schema({
   rotation: {type: Number, default: 0},
   shipType: {type: Number, default: 1},
   resources: resources,
-  capacity: {type: Number, min: 0}
+  capacity: {type: Number, min: 0, default: 500}
 });
 
 mongoose.model('User', UserSchema);
@@ -48,9 +48,11 @@ var PlanetSchema = new Schema({
     x: Number,
     y: Number
   },
+  size: String,
   kind: String,
   resources: resources,
-  src: String
+  src: String,
+  size: {type: String, default: "small"}
 });
 
 mongoose.model('Planet', PlanetSchema);
