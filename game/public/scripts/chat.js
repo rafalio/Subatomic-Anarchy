@@ -7,7 +7,7 @@
   }
   
   Chat.prototype.message = function(obj){
-    var el = document.createElement('li');
+    var el = document.createElement('p');
     el.innerHTML = '<b>' + this.esc(obj.from) + ':</b> ' + this.esc(obj.txt);
     document.getElementById('chatBox').appendChild(el);
     document.getElementById('chatBox').scrollTop = 1000000;

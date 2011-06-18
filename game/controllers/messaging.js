@@ -11,8 +11,80 @@ function start(forms_, models_, pdata_) {
   pdata = pdata_;
 }
 
-// GET
+/* Used to fetch messages that are newer than the one that is specified
+ * in the post request
+ */
+function getNewMessages(req, res){
+  var id = req.body.id;
+  var msgBuf = [];
+  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+    if(msg.id != id){
+      models.User.findOne({_id: msg.from}, function(err, result){
+        sender = result.username;                
+        msgBuf.push({
+          "id"      : msg._id,
+          "date"    : msg.date,
+          "sender"  : result.username,
+          "read"    : msg.read
+        });
+        next();
+      })
+    }
+    else{
+      res.send(msgBuf);
+    }
+  });
+}
 
+
+//For getting the messages
+function getMessages(req,res){
+  var msgBuf = [];
+  // call 'next' to advance the Mongo streaming cursor manually
+  models.Message.find({to: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+    if(msg){
+      models.User.findOne({_id: msg.from}, function(err, result){
+        sender = result.username;                
+        msgBuf.push({
+          "id"      : msg._id,
+          "date"    : msg.date,
+          "sender"  : result.username,
+          "read"    : msg.read
+        });
+        
+        next();
+      })
+    }
+    else{
+      res.send(msgBuf);
+    }
+  });
+}
+
+function getSent(req, res){
+  var sentBuf = [];
+  models.Message.find({from: req.session.user._id}).sort('date', -1).each(function(err,msg,next){
+    if(msg){
+      models.User.findOne({_id: msg.to}, function(err, result){
+        msg.receiver = result.username;
+        console.log(msg);
+        sentBuf.push({
+          "id"      : msg._id,
+          "date"    : msg.date,
+          "receiver": result.username,
+          "content" : msg.content,
+          "read"    : msg.read,
+        });
+        next();
+      })
+    }
+    else{
+      res.send(sentBuf);
+    }
+  });
+}
+
+// GET
 function inbox(req,res){
   
   var msgBuf = [];
@@ -38,15 +110,48 @@ function inbox(req,res){
           });
         }
         else{
+          res.send(msgBuf);        
+          
           res.render('inbox',{
             head: 'inbox_head',
             title: 'Messages',
             message_form: forms.message_form.toHTML(Forms.render.p),
             messages: msgBuf,
             sent_messages: sentBuf
-          });
+          }); 
         }
+        
       });
+    }
+  });
+}
+
+
+//POST
+/* Used to get the content of a particular message
+ */
+function getMessage(req, res){
+  var id = req.body.id;
+  //Getting the message
+  models.Message.findOne({_id: id}, function(err, msg){
+    if (msg){
+      models.User.findOne({_id: msg.from}, function(err, result){
+        sender = result.username;                
+
+        //We now need to update that the message was read        
+        msg.read = true;
+        msg.save();
+        
+        //Send the content of the message back to client
+        res.send({
+          "date"    : msg.date,
+          "sender"  : result.username,
+          "content" : msg.content,
+        });
+      });
+    }
+    else {
+      console.log("Message could not be found! Help!");
     }
   });
 }
@@ -93,6 +198,8 @@ function sendMessage(req,res){
   
 }
 
+
+
 // For the autocomplete!
 function getUsernames(req,res){
   console.log(req.query);
@@ -127,3 +234,7 @@ exports.start = start;
 exports.inbox = inbox;
 exports.sendMessage = sendMessage;
 exports.getUsernames = getUsernames;
+exports.getMessages = getMessages;
+exports.getSent = getSent;
+exports.getMessage = getMessage;
+exports.getNewMessages = getNewMessages;

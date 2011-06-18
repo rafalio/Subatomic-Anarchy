@@ -1,7 +1,9 @@
 var whatBuy = '';
 var whatSell = '';
 var planet = null;    // planet data we received for Trading
-
+var msgheadersLoaded = false;
+var selectedMessage = '';
+var latestmsg = ''; // Used to store the id of the latest message
 
 $(function(){
   
@@ -9,6 +11,16 @@ $(function(){
   
   $("#tabs").tabs({
   });
+
+  
+  
+  $("#messages_tab").tabs({
+    
+  });
+
+  $('#inbox_link').click(function(){
+    console.log("Inbox Link Clicked");
+  })
   
   $(".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *")
   .removeClass("ui-corner-all ui-corner-top")
@@ -18,9 +30,9 @@ $(function(){
     $("#compose").dialog('open');
   });
   
-  $("messages_link").click(function(){
-    document.write("Jamal Khan");
+  $("#messages_link").click(function(){
     $("#messages").dialog('open');
+    msgheadersLoaded = true;
   });
 
   $("#logout_link").click(function(){
@@ -47,10 +59,34 @@ $(function(){
   });
     
   $("#messages").dialog({
+    open: function(){
+      if (!msgheadersLoaded){ 
+        getMessages(function(data){
+          if (data.length > 0) latestmsg = data[0].id;
+          for (i = 0 ; i < data.length; i++){
+            renderList(data[i]);
+          }
+        });
+      }
+      else getNewMessages();
+      
+    },
     autoOpen: false,
     height: 600,
-    width: 700,
+    width: 800,
     modal: true,
+    hide: "fadeOut",
+    show: "puff",
+    buttons: {
+      "+Compose Message": function(){
+        $(this).dialog('close');
+        $("#compose").dialog('open');
+      },
+      "Close": function(){
+        $(this).dialog('close');
+      }
+    
+    }
   }),
 
   
@@ -62,6 +98,9 @@ $(function(){
     modal: true,
     resizable: false,
     draggable: false,
+    hide: "explode",
+    show: "puff",
+    
     // Clear value on close
     close : function(event,ui){
       $(this).find('div, input, textarea').each(function(i){
@@ -77,6 +116,10 @@ $(function(){
       },
       "Close": function() {
           $("#compose").dialog('close');
+      },
+      "Messages": function(){
+          $("#compose").dialog('close');
+          $("#messages").dialog('open');
       }
     }
   });
@@ -132,8 +175,163 @@ $(function(){
     event.preventDefault();
     chat.send();
   });
+    
+
   
 });
+
+
+/* Gets a list of messages from the database
+ * Need to give it a call-back function
+ */
+function getMessages(f){
+  $.get("/getMessages", function(data){
+    f(data);
+  });
+}
+
+/* Function that checks and gets a list of new
+ * messages from the database, need to give it a call-back function
+ */
+function getNewMessages(){
+  var msg = latestmsg;
+  
+  if (latestmsg == ''){
+    
+    getMessages(function(data){
+      if (data.length > 0) latestmsg = data[0].id;
+      for (i = 0 ; i < data.length; i++) renderList(data[i]);    
+    });
+    
+  }
+  else {
+    var parent = "left_inbox";
+    $.post("/getNewMessages",{id: msg} , function(data){
+      //console.log(data)
+      if (data != '') latestmsg = data[0].id;
+      for (i = 0; i<data.length; i++) renderList(data[i], 'before');
+    });
+  }
+}
+
+
+/* Empties the divs of the particular parent
+ * Warning: only invoke this if the children are non-empty for the moment
+ */
+function flushChildren(parent){
+  var children = document.getElementById(parent).childNodes;
+  for (i=0; i<children.length; i++){
+    var c = [children[i]];
+    $(c).empty();
+  }
+}
+
+
+/* Used to add the list of message headers
+ * have to give it a style of before or after
+ */
+function renderList(msg, position){
+  var type  = "left_inbox"; 
+  var date  = msg.date.substr(0, 10);
+  var field = msg.sender;
+  var id    = msg.id;
+  var read  = msg.read; 
+
+  var el = document.createElement('li');
+
+  var parent = document.getElementById(type);  
+  
+  /* readEl used for styling elements that have not been read */  
+  if (!read){
+    $(el).css('font-weight', 'bold');
+  }
+  el.setAttribute('id', id);
+
+  var fromEl = document.createElement('h3');
+  fromEl.innerHTML = 'From: ' + field
+  var dateEl = document.createElement('p');
+  dateEl.innerHTML = 'Date: ' + date
+
+  el.appendChild(fromEl);
+  el.appendChild(dateEl);  
+  
+  /* Appending to the message header section */
+  if (position != 'before'){
+    parent.appendChild(el);
+  }
+  else {
+    $(parent).prepend(el);
+  }
+
+  document.getElementById(type).scrollTop = 1000000;
+
+  /* Used to associate a clicking event with the message header */
+  hookMessageClicks("#"+msg.id);
+}
+
+/* What happens when a message header is clicked on */
+function hookMessageClicks(id){
+  $(id).click(function(){ 
+    var msgid = id.substr(1, id.length);
+    $.post("/getMessage", {id: msgid}, function(data){
+      renderContent(data); 
+      highlightMessage(msgid);
+    });
+  });
+}
+
+/* Called when message is clicked on and uses global variable
+ * selectedMessage for making sure only one has been selected
+ */
+function highlightMessage(msgid){
+  var background = "#1464F4"; /* Nice blue color */
+  if (selectedMessage != '') {
+    $('#'+selectedMessage).css('background-color', '');
+  }
+  selectedMessage = msgid;
+  $('#' + msgid).css('background-color', background);
+
+  /* Also change the styling so that it is no longer bold */
+  $('#' + msgid).css('font-weight', 'normal');
+  
+}
+
+
+/* Called when a message is clicked on and renders the message
+ * that was clicked on
+ */
+function renderContent(data){
+
+  //Rendering date properly
+  var date    = data.date.substr(0, 10);
+  var time    = data.date.substring(11,19);
+  var msg     = data.content;
+  var sender  = data.sender; 
+  
+  //Getting the children of the parent and flushing them
+  var parent   = "message";
+  flushChildren(parent);
+
+  //Creating the message elements
+  var fromEl = document.createElement('h3'); 
+  fromEl.innerHTML = 'From: ' + sender;
+
+  var dateEl = document.createElement('h3');
+  dateEl.innerHTML = 'Date: ' + date + ' ' + time;
+
+  var preMessageEl = document.createElement('h3');
+  preMessageEl.innerHTML = 'Message: ';
+
+  var messageEl = document.createElement('p');
+  messageEl.innerHTML = msg;
+
+  //Appending to the message div so that we can see full message
+  $('#from').append(fromEl);
+  $('#date').append(dateEl);
+  $('#msgcontent').append(preMessageEl);
+  $('#msgcontent').append(messageEl);
+}
+
 
 
 function hookTrading(){
@@ -193,6 +391,8 @@ function hookTrading(){
     }
   })
 }
+
+
 
 function hookUI(){
   hookTrading();

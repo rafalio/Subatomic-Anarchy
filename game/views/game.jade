@@ -9,8 +9,24 @@
   h2 Ships
   ol(id="ship_choose")
 
+
+
+
 #messages(title="Messages")
-  p Hello i want to try
+  
+  #left_inbox.box
+  
+  #right_message.box
+    #message
+      #from
+        
+      #date 
+        
+      #msgcontent
+      
+      #notice
+        p Please select a message from the left
+      
 
 #compose(title="Send a message")
   form.pretty(method="post", action="/sendMessage", id="messageForm")
@@ -106,16 +122,11 @@
   #resources
     ul
       
-      
   
   #tabs(class="tabs-bottom")
     ul
       li
         a(href="#chat") Chat
-      li
-        a(href="#inbox") Inbox
-      li
-        a(href="#sent") Sent
         
     #chat
       #chat_wrap
@@ -125,9 +136,3 @@
           input(type="text", id="chatInput", autocomplete="off")
           //button(type="submit", class="slick-black") Send!
     
-    #inbox
-      p inbox here
-    
-    #sent
-      p sent messages here
-

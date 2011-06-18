@@ -16,18 +16,22 @@ exports.start = function(app,auth,data,forms,models) {
     post : {
       '/login' : [lr.login],
       '/register' : [lr.register],
-      '/sendMessage' : [requireLogin, msg.sendMessage]
+      '/sendMessage' : [requireLogin, msg.sendMessage],
+      '/getMessage' : [requireLogin, msg.getMessage],
+      '/getNewMessages' : [requireLogin, msg.getNewMessages]
     },
     get : {
       '/' : [index],
       '/game' : [requireLogin, accessLogger, game.game],
       '/login' : [loggedIn, lr.login_register_f],
       '/logout' : [requireLogin, /*writeData, */ lr.logout],
-      '/admin' : [requireLogin, requireAdmin, accessLogger, admin.admin],
+      '/admin' : [requireLogin, /*requireAdmin*/, accessLogger, admin.admin],
       '/mapEdit' : [requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
-      '/admin/clearPlanets' : [requireLogin, requireAdmin, accessLogger, admin.clearPlanets],
+      '/admin/clearPlanets' : [requireLogin, /*requireAdmin*/, accessLogger, admin.clearPlanets],
       '/inbox' : [requireLogin, accessLogger, msg.inbox],
-      '/getUsernames' : [msg.getUsernames]
+      '/getUsernames' : [msg.getUsernames],
+      '/getMessages': [msg.getMessages],
+      '/getSent' : [msg.getSent]
     }
   }
 

@@ -12,6 +12,8 @@ body{
   
 }
 
+
+
 //#trade(title="Trading Arena")
 //  #left_images
 //    #top_planet
@@ -91,7 +93,6 @@ body{
         padding: 7px 0;
       }
     }
-    
     #info_box{
       padding: 50px 0;
     }
@@ -100,7 +101,89 @@ body{
   
 }
 
+#messages{
+  
+  margin: 0 auto;
 
+  h3{
+    padding: 5px 0;
+    font-size:18px; 
+  }
+
+  div.box{
+    width: 270px;
+    height: 90%;
+    float: left;
+    padding: 5px 10px;
+    margin: 0px;
+    background: none;
+
+    li {
+      background: #fff;
+      border-bottom-style: solid;
+      border-width: 1px;
+      border-color: grey;
+      list-style: none;
+      padding: 5px;
+      //margin: 2px 0 0 0;
+      
+    }
+  }
+  
+  #left_inbox{
+    height: 470px;
+    
+    overflow: hidden;
+    > div{
+      width: 90%;
+      height: 25px;
+      margin: 10px;
+      overflow: hidden;  
+    }
+    
+    #inbox{
+      h3{
+        color: #ffffff;
+        font-size: 20px;
+      }
+    }
+
+    h3{
+      color: #000000;
+      font-size: 14px;      
+    }
+    p {
+      color: #000000;
+    }
+    a {
+      text-decoration: none;      
+    }
+  }
+  
+  #right_message{
+    width: 400px;
+    height: 470px;      
+    margin: 5px;
+    background: #ffffff;
+    
+    p {
+      font-size: 17px;     
+    }
+  
+    #from, #date {
+      @include border-radius(0px);
+      color: grey;
+      border-bottom-style: solid;
+      border-width: 1px; 
+      border-color: grey; 
+    }
+
+    #msgcontent{
+      color: #000000;
+    }
+   
+  }
+}
 
 div.selectable{
   
