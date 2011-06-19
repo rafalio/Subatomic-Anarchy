@@ -125,6 +125,10 @@ function endTrade(username) {
   players[username].endTrade();
 }
 
+function newMessageNotify(count, username){
+  players[username].sendNotification(count);
+}
+
 function shipUpdate(msg, username) {
   players[username].updateShipType(msg.shipType);
 }

@@ -13,9 +13,9 @@ exports.start = function(app,auth,data,forms,models,player) {
   msg.start(forms, models, data);
   var routes = {
     post : {
-      '/login' : [getUser, lr.login],
-      '/register' : [getUser, lr.register],
-      '/sendMessage' : [getUser, requireLogin, msg.sendMessage],
+      '/login'              : [getUser, lr.login],
+      '/register'           : [getUser, lr.register],
+      '/sendMessage'        : [getUser, requireLogin, msg.sendMessage],
       '/admin/clearPlanets' : [getUser, requireLogin, admin.clearPlanets],
       '/getMessage' : [getUser, requireLogin, msg.getMessage],
       '/getNewMessages' : [getUser, requireLogin, msg.getNewMessages],
@@ -32,8 +32,13 @@ exports.start = function(app,auth,data,forms,models,player) {
       '/inbox' : [getUser, requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [getUser, msg.getUsernames],
       '/getMessages': [getUser, msg.getMessages],
-      '/getPrices' : [getUser, requireLogin, game.getPrices]
-    }
+      '/getPrices' : [getUser, requireLogin, game.getPrices],
+      '/getMessage'         : [getUser, requireLogin, msg.getMessage],
+      '/getNewMessages'     : [getUser, requireLogin, msg.getNewMessages],
+      '/getUnread'          : [getUser, msg.getUnread]
+    }, 
+
+    
   }
 
   // Routing functions

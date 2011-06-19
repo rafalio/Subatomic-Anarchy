@@ -1,7 +1,7 @@
 var Forms = require('forms')
 var forms;
 var models;
-var pdata;
+
 
 var sys = require('sys');
   
@@ -9,6 +9,18 @@ function start(forms_, models_, pdata_) {
   forms = forms_;
   models = models_;
   pdata = pdata_;
+}
+
+/* Used to get the number of unread messages */
+function getUnread(req, res){
+  var count = 0;
+  models.Message.find({to: req.user.getId()}).sort('date', -1).each(function(err,msg,next){
+  if(msg){
+    if (msg.read == false) count++;
+    next();
+  }
+  else{ res.send(count.toString()) };
+  });
 }
 
 /* Used to fetch messages that are newer than the one that is specified
@@ -189,7 +201,13 @@ function sendMessage(req,res){
         if(!err){
           res.send({type: "success", message: "Your message has been succesfuly sent!"});
           
-          // Maybe do dynamic notificaiton here if person is logged in!
+          /* Dynamic Notification */
+          var toClient = pdata.players[data.to];
+          if (toClient && toClient.client !== undefined){
+              toClient.client.send({
+                type: "msgNotification"
+              });
+          }
         }
         else{
           res.send({type: "fail", message: "There has been an error sending your message. Try again later!"});
@@ -241,3 +259,4 @@ exports.getMessages = getMessages;
 exports.getSent = getSent;
 exports.getMessage = getMessage;
 exports.getNewMessages = getNewMessages;
+exports.getUnread = getUnread;

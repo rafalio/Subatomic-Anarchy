@@ -7,9 +7,12 @@ var latestmsg = ''; // Used to store the id of the latest message
 var sellAmount;
 var buyAmount;
 var tPlanet = null; //planet pointer
+var unread = '0';
 
 
 $(function(){
+  
+  setUnread();  
   
   $("menu a").button();
 
@@ -47,6 +50,8 @@ $(function(){
     
   $("#messages").dialog({
     open: function(){
+      getNewMessages();
+      /*
       if (!msgheadersLoaded){ 
         getMessages(function(data){
           if (data.length > 0) latestmsg = data[0].id;
@@ -55,12 +60,14 @@ $(function(){
           }
         });
       }
-      else getNewMessages();
+      else getNewMessages(); */
       
     },
     autoOpen: false,
     height: 600,
     width: 740,
+    resizable: false,
+    draggable: false,
     modal: true,
     buttons: {
       "+Compose Message": function(){
@@ -207,6 +214,7 @@ $(function(){
   
 });
 
+
 function updateShopPricesUI(){
    $.get("/getPrices", function(prices){
         $("p#capacity span").html(prices.capacity + " Gold");
@@ -224,6 +232,29 @@ function buyStuff(){
     })
 }
 
+
+/* Used to flash the inbox when new messages
+ * have been recieved
+ */
+function inboxNotification(){
+  //Flashing effect
+  var blinks = 2;
+  for (i = 0; i<blinks; i++){
+    $("#messages_link").fadeOut("Slow");
+    $("#messages_link").fadeIn("Slow");
+  }
+  setUnread();
+}
+
+/* Used for getting the number of unread messages in the database
+ * and and updating it in the button 
+*/
+function setUnread(){
+  $.get("/getUnread", function(data){
+    unread = data;
+    $("#messages_link").html('<span class="ui-button-text">Inbox (' + unread +')</span>');
+  });  
+}
 
 
 function sendTradePacket(tBuy, bAmount, tSell, sAmount){
@@ -335,6 +366,7 @@ function hookMessageClicks(id){
     $.post("/getMessage", {id: msgid}, function(data){
       renderContent(data); 
       highlightMessage(msgid);
+      setUnread();
     });
   });
 }

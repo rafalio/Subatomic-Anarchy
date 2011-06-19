@@ -118,12 +118,14 @@ Player.prototype.sendResourceUpdate = function() {
   });
 }
 
+
 Player.prototype.sendCapacityUpdate = function() {
   this.client.send({
     type: 'updateCapacity',
     capacity: this.getCapacity()
   });
 }
+
 
 Player.prototype.broadcastPositionUpdate = function() {
   this.client.broadcast({

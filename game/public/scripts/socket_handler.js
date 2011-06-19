@@ -136,6 +136,10 @@ function messageHandler(msg){
       txt: msg.txt
     });
   }
+
+  else if(msg.type == 'msgNotification'){
+    inboxNotification();
+  }
   
   else if(msg.type == 'updateResources'){
     me.resources = msg.res;
