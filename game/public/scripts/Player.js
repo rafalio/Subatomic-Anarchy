@@ -244,6 +244,10 @@
   
   
   Player.prototype.tick = function(){
+
+    this.R_PER_TICK = 200 / Ticker.getMeasuredFPS();
+    this.M_PER_TICK = 1 / Ticker.getMeasuredFPS(); 
+
     var control = this.control;
     minimap.redraw();
     
