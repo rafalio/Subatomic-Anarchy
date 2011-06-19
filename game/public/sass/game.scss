@@ -293,11 +293,13 @@ form.pretty{
   
   #resources{
     position: absolute;
-    top: 535px;
-    left: 1040px;
-    background: #222;
+    top: 503px;
+    left: 1030px;
+    line-height: 1.1em;
+    color: #BBB;
+    background-color: rgba(41,36,33,0.8);
     @include border-radius(8px);
-    padding:4px;
+    padding:10px;
     width: 150px;
     
   }

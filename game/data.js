@@ -50,7 +50,7 @@ function setUpGeneratePrices() {
     _.forEach(planets, function(planet, key) {
       planet.genPrices();
     });
-  }, 1000);
+  }, 120000);
 }
 
 function addPlayer(player, client, chatBuf) {

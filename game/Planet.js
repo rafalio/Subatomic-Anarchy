@@ -25,6 +25,8 @@ Planet.prototype.produceResources = function() {
     console.log("error size");
     return;  
   }
+  var num = helpers.normal();
+
   var food = Math.floor((Math.abs(num[0])*sd+mean)/10);
   var deuterium = Math.floor((Math.abs(num[1])*sd+mean)/10);
   var gold = Math.floor(Math.abs((helpers.normal()[0])*sd+mean)/10);
@@ -41,10 +43,9 @@ Planet.prototype.produceResources = function() {
     deuterium = deuterium*10;
   } else if(kind == "mining") {
     golddi = "increase";
-    mining = mining*10;
+    gold = gold*10;
   }
 
-  var num = helpers.normal();
 
   this.updateResource(fooddi, "food", food);
   this.updateResource(deuteriumdi, "deuterium", deuterium);
