@@ -25,6 +25,7 @@ function loadPlanets(cb) {
         planets[e["name"]] = new Planet.Planet(e);
       });
       setUpGenerateResources();
+      setUpGeneratePrices();
       cb();
     } else {
       console.log("Massive fucking error. Go and fix right now!");
@@ -38,6 +39,18 @@ function setUpGenerateResources() {
       planet.produceResources();
     });
   }, 300000);//every five minutes!
+}
+
+function setUpGeneratePrices() {
+  _.forEach(planets, function(planet, key) {
+    planet.genPrices();
+    console.log(planet.getPrices());
+  });
+  setInterval(function(){
+    _.forEach(planets, function(planet, key) {
+      planet.genPrices();
+    });
+  }, 1000);
 }
 
 function addPlayer(player, client, chatBuf) {

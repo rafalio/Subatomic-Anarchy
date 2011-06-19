@@ -25,22 +25,26 @@ Planet.prototype.produceResources = function() {
     console.log("error size");
     return;  
   }
+  var food = Math.floor((Math.abs(num[0])*sd+mean)/10);
+  var deuterium = Math.floor((Math.abs(num[1])*sd+mean)/10);
+  var gold = Math.floor(Math.abs((helpers.normal()[0])*sd+mean)/10);
   
   var fooddi = "decrease";
   var deuteriumdi = "decrease";
   var golddi = "decrease";
   
-  if(kind == "agricultural")
+  if(kind == "agricultural") {
     fooddi = "increase";
-  else if(kind == "factory")
+    food = food*10
+  } else if(kind == "factory") {
     deuteriumdi ="increase";
-  else if(kind == "mining")
+    deuterium = deuterium*10;
+  } else if(kind == "mining") {
     golddi = "increase";
+    mining = mining*10;
+  }
 
   var num = helpers.normal();
-  var food = Math.floor(Math.abs(num[0])*sd+mean);
-  var deuterium = Math.floor(Math.abs(num[1])*sd+mean);
-  var gold = Math.floor(Math.abs(helpers.normal()[0])*sd+mean);
 
   this.updateResource(fooddi, "food", food);
   this.updateResource(deuteriumdi, "deuterium", deuterium);
@@ -63,6 +67,18 @@ Planet.prototype.canProduce = function() {
     return food && deuterium;
   else
     return false;
+}
+
+Planet.prototype.genPrices = function() {
+  var gold = 1/(1+this.getResource("gold"));
+  var deuterium = 1/(1+this.getResource("deuterium"));
+  var food = 1/(1+this.getResource("food"));
+  
+  var min = Math.min(gold, deuterium, food);
+  
+  this.prices = {gold: Math.floor(gold/min), deuterium: Math.floor(deuterium/min), food: Math.floor(food/min)};
+  
+  this.updateTradingPlayers();
 }
 
 //Getters
@@ -93,6 +109,10 @@ Planet.prototype.getKind = function() {
   return this.source.kind.toString();
 }
 
+Planet.prototype.getPrices = function() {
+  return this.prices;
+}
+
 //Updating
 Planet.prototype.updateResource = function(incdec, res, am) {
   if(incdec == 'increase') {
@@ -121,7 +141,7 @@ Planet.prototype.getTradeData = function() {
   ret = {};
   ret.name = this.getName();
   ret.resources = this.source.resources;
-  ret.prices = this.genPrices();
+  ret.prices = this.getPrices();
   return ret;
 }
 
@@ -153,16 +173,11 @@ Planet.prototype.verifyTrade = function(tData) {
   var price = this.priceMatch(tData);
   //check amount of selling stuff
   var sell = this.getResource(tData.buy.resource) >= tData.buy.amount
+  
   return price && sell;
 }
 
-Planet.prototype.genPrices = function() {
-  //toDo
-  return {gold: 1, deuterium: 2, food: 3};
-}
-
 Planet.prototype.priceMatch = function(iData) {
-  //toDo
   return true;
 }
 
