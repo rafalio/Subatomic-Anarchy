@@ -3,6 +3,7 @@
   Map.prototype.grid_size   = 100;
   Map.prototype.dim         = {width: 5000, height: 5000};
   Map.prototype.grid_num    = {x: 50, y: 50};
+  Map.prototype.dragged     = false;
   
   // Constructor
   function Map(w, h){
@@ -117,7 +118,7 @@
             return;
           }
         }
-    
+        me.dragged = true;
         var newCoords = {
           x: st.x - (off_x - e.offsetX),
           y: st.y - (off_y - e.offsetY)

@@ -23,6 +23,7 @@ var rot = 0;
 function init(){
   canvas  = document.getElementById("canvas");
 	stage   = new Stage(canvas);
+	stage.enableMouseOver();
   map     = new Map(5000,5000);
   minimap = new Minimap(975, 25, 200, 200);
   
@@ -62,6 +63,12 @@ function tick(){
 }
 
 function onClick(){
+  if(typeof minimap != "undefined"){
+    if(minimap.mouseOver()){
+      return;
+    }
+  }
+
   // Move selected planet
   if(tplanet != undefined && selstate == 1){
     var pt = map.snapToGrid({x: stage.mouseX, y: stage.mouseY});

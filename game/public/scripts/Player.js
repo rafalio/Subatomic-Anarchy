@@ -96,26 +96,33 @@
           pressed_obj = player;
           
           stage.onMouseDown = function(e){
-            var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
-            if(typeof minimap != "undefined"){
-              if(minimap.mouseOver()){
-                return;
+            map.dragged = false;
+            stage.onMouseUp = function(e){
+              var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
+              if(typeof minimap != "undefined"){
+                if(minimap.mouseOver()){
+                  return;
+                }
               }
-            }
-            
-            if(_.isEqual(player.position, move_to_grid)) {
-              player.setBitmapScale(1);
-              pressed1 = false;
-              stage.onMouseDown = null;  // unhook events
-              document.onkeydown = null;
-            } else {
-              player.doMove(move_to_grid);
+              
+              if(_.isEqual(player.position, move_to_grid)) {
+                player.setBitmapScale(1);
+                pressed1 = false;
+                pressed2 = false;
+                stage.onMouseDown = null;  // unhook events
+                stage.onMouseUp = null;
+                document.onkeydown = null;
+              } else {
+                if(!map.dragged){
+                  player.doMove(move_to_grid);
 
-              // Notify the server to start the animation for other people connected
-              socket.send({
-                type: 'initMovement',
-                move_to: control.move_to
-              });
+                  // Notify the server to start the animation for other people connected
+                  socket.send({
+                    type: 'initMovement',
+                    move_to: control.move_to
+                  });
+                }
+              }
             }
           }
           
@@ -125,6 +132,7 @@
               pressed1 = false;
               pressed2 = false;
               stage.onMouseDown = null; // unhook events
+              stage.onMouseUp = null;
               document.onkeydown = null;
             }
           }

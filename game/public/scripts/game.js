@@ -24,6 +24,7 @@ var me            = null;       // My player object. It resides inside 'players'
 function game_init(){
   canvas  = document.getElementById('canvas');
   stage   = new Stage(canvas)
+  stage.enableMouseOver();
   map     = new Map(5000,5000);
   minimap = new Minimap(975,25,200,200);
   chat    = new Chat();

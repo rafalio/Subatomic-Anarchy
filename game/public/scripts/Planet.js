@@ -20,6 +20,10 @@
     this.planetBitmap.regY = img.height / 2;
     this.setBitmapScale(0.55);
     
+    this.planetBitmap.onMouseOver = function(e){
+      // TODO: Show label
+    }
+    
     this.syncBitmap();
     stage.addChild(this.planetBitmap);
   }
