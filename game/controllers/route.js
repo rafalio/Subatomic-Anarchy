@@ -23,7 +23,7 @@ exports.start = function(app,auth,data,forms,models,player) {
 
     get : {
       '/' : [getUser, index],
-      '/game' : [getUser, requireLogin, accessLogger, game.game],
+      '/game' : [getUser, requireLogin, noMultipleLogins, accessLogger, game.game],
       '/login' : [getUser, loggedIn, lr.login_register_f],
       '/logout' : [getUser, requireLogin, lr.logout],
       '/admin' : [getUser, requireLogin, requireAdmin, accessLogger, admin.admin],
@@ -111,19 +111,4 @@ exports.start = function(app,auth,data,forms,models,player) {
       req.user = data.users[req.session.username];
     next();
   }
-  
-  // TEMPORARY: Writes player data back to backing store
-  /*function writeData(req,res,next){
-    models.User.findById(req.user._id, function(err, user){
-      console.log(user);
-      
-      var p = data.players[user.username];
-      user.position.x = p.position.x;
-      user.position.y = p.position.y;
-      
-      user.rotation = p.rotation;
-      user.save(function(err){});
-    });
-    next();
-  }*/
 }
