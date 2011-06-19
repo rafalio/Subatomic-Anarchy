@@ -28,22 +28,40 @@ function socket_init(map_){
 }
 
 function connectHandler(){
+  chat.message({
+    from: "",
+    txt: "Welcome to Subatomic Anarchy!"
+  });
   console.log("i've connected!!");
 }
 
 function disconnectHandler(){
+  chat.message({
+    from: "",
+    txt: "Disconnected from server!"
+  });
   console.log("disconnected :(");
 }
 
 function reconnectHandler(){
-
+  chat.message({
+    from: "",
+    txt: "Reconnected to server!"
+  });
 }
 
 function reconnectingHandler(nextRetry){
-
+  chat.message({
+    from: "",
+    txt: "Trying to reconnect. Next retry in " + nextRetry/1000 + " seconds."
+  });
 }
 
 function reconnect_failedHandler(){
+  chat.message({
+    from: "",
+    txt: "Reconnect failed. Sorry!"
+  });
 
 }
 

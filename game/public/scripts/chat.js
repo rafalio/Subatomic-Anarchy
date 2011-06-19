@@ -7,26 +7,36 @@
   }
   
   Chat.prototype.message = function(obj){
-    var el = document.createElement('p');
-    el.innerHTML = '<b>' + this.esc(obj.from) + ':</b> ' + this.esc(obj.txt);
+    var el = document.createElement('div');
+    if (obj.from.length == 0) {
+      el.setAttribute("class", "notification");
+      el.innerHTML =  obj.txt;
+    } else if(obj.from == me.username) {
+      el.setAttribute("class", "message");
+      el.innerHTML = '<span class="me">' + obj.from + ':</span> ' + obj.txt; 
+    } else {
+      el.setAttribute("class", "message");
+      el.innerHTML = '<span class="them">' + obj.from + ':</span> ' + obj.txt;
+    }
     document.getElementById('chatBox').appendChild(el);
     document.getElementById('chatBox').scrollTop = 1000000;
   }
 
   Chat.prototype.send = function(){
     var val = document.getElementById('chatInput').value;
-
-    socket.send({
-      type: "chat",
-      txt: val
-    });
-
-    this.message({
-      from: me.username,
-      txt: val
-    });
     
-    document.getElementById('chatInput').value = '';
+    if(val.length != 0) {
+      socket.send({
+        type: "chat",
+        txt: val
+      });
+
+      this.message({
+        from: me.username,
+        txt: val
+      });
+      document.getElementById('chatInput').value = '';
+    }
   }
 
   Chat.prototype.esc = function(msg){

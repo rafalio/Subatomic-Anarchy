@@ -279,79 +279,56 @@ form.pretty{
   }
 
   
-  #tabs:hover{
-    //opacity: 1.0;
-    //background: none;
-  }
 
-  #tabs{
+  #chat{
     position: absolute;
-    top: 395px;
-    left: 2px;
-    height: 200px;
-    width: 300px;
-    //opacity: 0.1;
-    background: none;
+    top: 385px;
+    left: 10px;
+    background-color: rgb(41,36,33);
+    background-color: rgba(41,36,33,0.8);
+    padding: 10px;
     
-    
-    
-    #chat{
+    @include border-radius(8px);
 
-      #chat_wrap{
-        margin: -1.0em -1.3em;
-        list-style:none;        
-
-        #chatBox{
-          padding: 2px;
-          width: 290px;
-          height: 137px;
-          overflow: auto;               
-          
-          li:nth-child(odd){
-            background: none;
-          }          
-        }
-
-        form{
-          input{
-            width: 290px;
-            background: #222;
-            border: 1px solid #AAA;
-            height: 20px;
-            color: #BBB;
-            margin-bottom: -20px;
-          }
-        }         
-      } 
-    }
-  }
-  
-  .tabs-bottom{
-    position:relative;
-    
-    .ui-tabs-panel{
-      height: 140px; 
-      overflow: auto;
-    }
-    
-    .ui-tabs-nav{
-      position: absolute !important; 
-      left: 0; 
-      bottom: 0; 
-      right:0; 
-      padding: 0 0.2em 0.2em 0;
+    #chatBox{
+      font-family: arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.3em;
+      width: 310px;
+      height: 150px;
+      overflow: hidden;     
+      margin-bottom: 5px;
       
-      li{
-        margin-top: -2px !important; 
-        margin-bottom: 1px !important; 
-        border-top: none; 
-        border-bottom-width: 1px;
+      .me {
+        color: green;
+        margin-left:-1em;
+        font-weight: bold;
+      }
+      .them {
+        color: red;
+        margin-left:-1em;
+        font-weight: bold;
+      }
+      
+      div.message {
+        margin-left:1em;
+      }
+      div.notification {
+        color: dimgray;
+        font-style: italic;
+        text-align: center;
       }
     }
-  }
-  
-  .ui-tabs-selected{ 
-    margin-top: -3px !important; 
+
+    form{
+      input{
+        width: 310px;
+        background: #222;
+        border: 1px solid #AAA;
+        height: 20px;
+        color: #BBB;
+      }
+    }          
   }
 }
 
@@ -359,7 +336,6 @@ form.pretty{
 #header{
   height: 40px;
   padding-bottom:10px;
-  
     
   #title{
     float:left;

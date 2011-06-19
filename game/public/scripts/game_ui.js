@@ -12,24 +12,7 @@ var tPlanet = null; //planet pointer
 $(function(){
   
   $("menu a").button();
-  
-  $("#tabs").tabs({
-  });
 
-  
-  
-  $("#messages_tab").tabs({
-    
-  });
-
-  $('#inbox_link').click(function(){
-    console.log("Inbox Link Clicked");
-  })
-  
-  $(".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *")
-  .removeClass("ui-corner-all ui-corner-top")
-  .addClass("ui-corner-bottom");
-  
   $("#compose_link").click(function(){
     $("#compose").dialog('open');
   });
@@ -100,6 +83,7 @@ $(function(){
     modal: true,
     resizable: false,
     draggable: false,
+
     
     // Clear value on close
     close : function(event,ui){

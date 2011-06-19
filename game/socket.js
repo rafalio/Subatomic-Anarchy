@@ -62,11 +62,11 @@ exports.start = function(data, server, session_store) {
                   from: uname,
                   txt: msg.txt
                 }
-                
-                buffer.push(p);
-                
-                if(buffer.length > 15) buffer.shift();
-                client.broadcast(p);
+                if(p.txt.length > 0) {
+                  buffer.push(p);
+                  if(buffer.length > 15) buffer.shift();
+                  client.broadcast(p);
+                }
                 break;
                     
               case 'trade':
