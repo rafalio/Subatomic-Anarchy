@@ -145,26 +145,25 @@ body{
   
   margin: 0 auto;
 
-  h3{
-    padding: 5px 0;
-    font-size:18px; 
-  }
 
   div.box{
     width: 270px;
     height: 90%;
     float: left;
-    padding: 5px 10px;
+    //padding: 5px 10px;
     margin: 0px;
-    background: #fff;
+    border-style: solid;
+    border-color: #fff;
+    border-width: 1px;
+    
 
     li {
-      background: #fff;
+      //background: #fff;
       border-bottom-style: solid;
       border-width: 1px;
       border-color: grey;
       list-style: none;
-      padding: 5px;
+      padding: 5px 10px;
       //margin: 2px 0 0 0;
       
     }
@@ -172,28 +171,28 @@ body{
   
   #left_inbox{
     height: 470px;
+    border-right-style: none;
     
-    overflow: hidden;
+    
     > div{
       width: 90%;
       height: 25px;
       margin: 10px;
       //overflow: hidden;  
     }
-    
-    #inbox{
-      h3{
-        color: #ffffff;
-        font-size: 20px;
-      }
+    li {
+      padding: 25px, 25px;
     }
 
+
     h3{
-      color: #000000;
+      color: #fff;
       font-size: 14px;      
+      
     }
     p {
-      color: #000000;
+      color: #fff;
+      
     }
     a {
       text-decoration: none;      
@@ -204,27 +203,31 @@ body{
     width: 400px;
     height: 470px;      
     margin: 0px;
-    background: #ffffff;
     
-    p {
-      font-size: 17px;     
-    }
-  
     #from, #date {
+      h3 {
+        padding: 5px 10px;
+        font-size: 18px;
+      }
+
       @include border-radius(0px);
-      color: grey;
+      color: #fff;
       border-bottom-style: solid;
       border-width: 0px; 
       border-color: grey; 
     }
 
     #msgcontent{
-      color: #000;
+      color: #fff;
+      font-size: 17px;     
+      padding: 5px 10px;      
     }
 
     #notice{
-      padding: 50px;
-      color: #000;
+      //padding: 50px;
+      color: #fff;
+      text-align: center;
+      font-size: 15px;
     }
    
   }

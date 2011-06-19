@@ -51,21 +51,11 @@ $(function(){
   $("#messages").dialog({
     open: function(){
       getNewMessages();
-      /*
-      if (!msgheadersLoaded){ 
-        getMessages(function(data){
-          if (data.length > 0) latestmsg = data[0].id;
-          for (i = 0 ; i < data.length; i++){
-            renderList(data[i]);
-          }
-        });
-      }
-      else getNewMessages(); */
       
     },
     autoOpen: false,
     height: 600,
-    width: 740,
+    width: 720,
     resizable: false,
     draggable: false,
     modal: true,
@@ -286,11 +276,16 @@ function getMessages(f){
 function getNewMessages(){
   var msg = latestmsg;
   
-  if (latestmsg == ''){
-    
+  if (latestmsg == ''){    
     getMessages(function(data){
-      if (data.length > 0) latestmsg = data[0].id;
-      for (i = 0 ; i < data.length; i++) renderList(data[i]);    
+      if (data.length > 0){
+        $("#notice").html("<p>Please select a message from the left<p>"); 
+        latestmsg = data[0].id;
+        for (i = 0 ; i < data.length; i++) renderList(data[i]); 
+      }
+      else {
+        $("#notice").html("<p>There are no messages to display</p>");
+      }   
     });
     
   }
@@ -302,6 +297,8 @@ function getNewMessages(){
       for (i = 0; i<data.length; i++) renderList(data[i], 'before');
     });
   }
+
+
 }
 
 
@@ -418,7 +415,7 @@ function renderContent(data){
   dateEl.innerHTML = 'Date: ' + date + ' ' + time;
 
   var preMessageEl = document.createElement('h3');
-  preMessageEl.innerHTML = 'Message: ';
+  preMessageEl.innerHTML = '';
 
   var messageEl = document.createElement('p');
   messageEl.innerHTML = msg;
