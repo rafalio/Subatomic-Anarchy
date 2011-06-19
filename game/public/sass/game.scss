@@ -297,12 +297,12 @@ form.pretty{
   #resources{
     position: absolute;
     top: 503px;
-    left: 1030px;
+    left: 1020px;
     line-height: 1.1em;
     color: #BBB;
-    background-color: rgba(41,36,33,0.8);
+    background-color: rgba(0,0,0,0.3);
     @include border-radius(8px);
-    padding:10px;
+    padding: 10px;
     width: 150px;
     
   }
@@ -313,8 +313,8 @@ form.pretty{
     position: absolute;
     top: 385px;
     left: 10px;
-    background-color: rgb(41,36,33);
-    background-color: rgba(41,36,33,0.8);
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.3);
     padding: 10px;
     
     @include border-radius(8px);
