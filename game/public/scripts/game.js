@@ -79,9 +79,9 @@ function unloadPlayer(pname){
 function tick(){
   
   // Tick on all the players
-  Object.keys(players).forEach(function(player,index,array){
-    players[player].tick();
-  })
+  _.forEach(players, function(player,key) {
+    player.tick();
+  });
   
   map.updateFPS();  
   stage.update();

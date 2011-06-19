@@ -58,16 +58,16 @@
     var me = this;
     
     if(typeof planets != "undefined"){ // Planets (red)
-      Object.keys(planets).forEach(function(i){
-        me.shape.graphics.beginStroke().beginFill(color3).rect(planets[i].position.x*me.dim.width/map.grid_num.x,
-                                                               planets[i].position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
+      _.forEach(planets, function(planet, i) {
+        me.shape.graphics.beginStroke().beginFill(color3).rect(planet.position.x*me.dim.width/map.grid_num.x,
+                                                               planet.position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
                                                                me.dim.height/map.grid_num.y);
       });
     }
     if(typeof players != "undefined"){ // Players (blue)
-      Object.keys(players).forEach(function(i){
-        me.shape.graphics.beginStroke().beginFill(color5).rect(players[i].position.x*me.dim.width/map.grid_num.x,
-                                                               players[i].position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
+      _.forEach(players, function(player, i) {
+        me.shape.graphics.beginStroke().beginFill(color5).rect(player.position.x*me.dim.width/map.grid_num.x,
+                                                               player.position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
                                                                me.dim.height/map.grid_num.y);
       });
     }

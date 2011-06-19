@@ -593,11 +593,11 @@ function sliderValueUpdate(id, value){
 
 function hookImagesToProfile(){
   var i = 1;
-  Object.keys(ship_images).forEach(function(e){
+  _.forEach(ship_images, function(image, key){
     var el = document.createElement("li");
     el.setAttribute("class","ui-state-default");
     el.setAttribute("id",i)
-    el.innerHTML = ship_images[e].outerHTML
+    el.innerHTML = image.outerHTML
     $("#ship_choose").append(el);
     i++;
   });

@@ -20,11 +20,10 @@ function socket_init(map_){
    ,'message' : messageHandler
   }
 
-  Object.keys(socket_events).forEach( function(event, index, arr){
-    var f = socket_events[event];
-    if(!f) console.log("Cannot find " + fname + 'function. Please create it!' );
-    else socket.on(event,f);
-  })
+  _.forEach(socket_events, function(func, event) {
+    if(!func) console.log("Cannot find " + event + 'function. Please create it!' );
+    else socket.on(event,func);
+  });
 }
 
 function connectHandler(){
@@ -88,8 +87,8 @@ function messageHandler(msg){
     
     
     // Synchronize everyone, and add myself to the board!
-    Object.keys(msg.everyone).forEach(function(pUsername, index, arr){
-      addPlayer(msg.everyone[pUsername]);
+    _.forEach(msg.everyone, function(pUsername, index) {
+      addPlayer(msg.everyone[index]);
     });
     
     map.loadMap(msg.planets);

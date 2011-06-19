@@ -23,8 +23,8 @@
     var sources = [];
     
     console.log(map);
-    Object.keys(map).forEach(function(p){
-      sources.push(map[p].src);
+    _.forEach(map, function(p, key) {
+      sources.push(p.src);
     });
     
     sources = _.uniq(sources);  
@@ -49,9 +49,10 @@
   
   Map.prototype.loadMap = function(map, done){
     this.loadPlanetImages(map, function(){
-      Object.keys(map).forEach(function(pName){
-        planets[pName] = new Planet(map[pName]);
-      })
+      _.forEach(map, function(planet, pName) {
+        planets[pName] = new Planet(planet);
+      });
+
       
       loaded = true;
       if(done != null){
@@ -144,12 +145,12 @@
           minimap.updatePos();
         }
       }
-      document.addEventListener("mousemove", scroll_listener); 
-    })
+      document.addEventListener("mousemove", scroll_listener, false); 
+    }, false);
     
     document.addEventListener("mouseup", function(evt){
-      document.removeEventListener("mousemove",scroll_listener);
-    }) 
+      document.removeEventListener("mousemove",scroll_listener, false);
+    }, false);
   }
   
   Map.prototype.drawLabels = function(){

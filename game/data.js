@@ -44,7 +44,6 @@ function setUpGenerateResources() {
 function setUpGeneratePrices() {
   _.forEach(planets, function(planet, key) {
     planet.genPrices();
-    console.log(planet.getPrices());
   });
   setInterval(function(){
     _.forEach(planets, function(planet, key) {

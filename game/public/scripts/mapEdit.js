@@ -175,14 +175,14 @@ function setPlanetModel(i){
 
 // Export Planets
 function export_map(){
-  Object.keys(planets).forEach(function(i){
-    exp_planets[planets[i].name] =  {
-                                      name: planets[i].name,
-                                      position: planets[i].position,
-                                      size: planets[i].size,
-                                      kind: planets[i].kind,
-                                      resources: planets[i].resources,
-                                      src: planets[i].src
+  _.forEach(planets, function(p,i) {
+    exp_planets[p.name] =  {
+                                      name: p.name,
+                                      position: p.position,
+                                      size: p.size,
+                                      kind: p.kind,
+                                      resources: p.resources,
+                                      src: p.src
                                     }
   });
   console.log(exp_planets);
@@ -245,7 +245,7 @@ function generate_map(n, d, f, g){
 
 // Load planets and link mousevents for editing
 function planetsLoaded(ps){
-  Object.keys(ps).forEach(function(i){
+  _.forEach(ps, function(el, i) {
     (function(target) {
 		  ps[i].planetBitmap.onPress = function(evt) {
 		    // Select and edit a planet's info
@@ -386,10 +386,9 @@ function editBoxesSetData(){
     }
     else{
       stage.removeChild(tplanet.planetBitmap);
-      Object.keys(planets).forEach(function(i){
-        if(tplanet.name == planets[i].name){
+      _.forEach(planets, function(planet, key) {
+        if(tplanet.name == planets[i].name)
           delete planets[i];
-        }
       });
       tplanet = undefined;
       minimap.redraw();

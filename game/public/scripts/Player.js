@@ -18,9 +18,9 @@
     var ptr = this;
     
     // cloning properties
-    Object.keys(pData).forEach( function(d, index, arr){
-      ptr[d] = pData[d];
-    })
+    _.forEach(pData, function(element, index) {
+      ptr[index] = pData[index];
+    });
 
     this.R_PER_TICK = 10;
     this.M_PER_TICK = 0.05;

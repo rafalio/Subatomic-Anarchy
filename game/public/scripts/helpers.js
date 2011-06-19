@@ -33,13 +33,7 @@ function hookEvent(target, evt, fn){
 
 function unhookEvent(target, evt, fn){
   target.removeEventListener(evt, fn);
-}  
-
-function assocForEach(obj,fn){
-  Object.keys(obj).forEach(fn);
 }
-
-
 
 
 // Registers a global array key

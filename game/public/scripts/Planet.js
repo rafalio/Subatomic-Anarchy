@@ -11,10 +11,9 @@
     this.label_description.textAlign = "center";
     
     // Clone properties
-    Object.keys(pData).forEach( function(d){
-      ptr[d] = pData[d];
-    })
-    
+    _.forEach(pData, function(data, d) {
+      ptr[d] = data;
+    });
     this.initBitmap();
   }
 
