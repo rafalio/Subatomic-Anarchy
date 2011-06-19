@@ -36,7 +36,6 @@ function getNewMessages(req, res){
   });
 }
 
-
 /* Used to fetch all the message headers for a user */
 function getMessages(req,res){
 

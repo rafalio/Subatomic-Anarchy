@@ -60,7 +60,7 @@ $(function(){
     },
     autoOpen: false,
     height: 600,
-    width: 800,
+    width: 740,
     modal: true,
     buttons: {
       "+Compose Message": function(){
@@ -263,7 +263,7 @@ function renderList(msg, position){
   var fromEl = document.createElement('h3');
   fromEl.innerHTML = 'From: ' + field
   var dateEl = document.createElement('p');
-  dateEl.innerHTML = 'Date: ' + date
+  dateEl.innerHTML = /*'Date: '*/ date
 
   el.appendChild(fromEl);
   el.appendChild(dateEl);  
@@ -299,13 +299,20 @@ function hookMessageClicks(id){
 function highlightMessage(msgid){
   var background = "#1464F4"; /* Nice blue color */
   if (selectedMessage != '') {
-    $('#'+selectedMessage).css('background-color', '');
+    //Packaging the css properties into an object    
+    var cssObj = {
+      'background-color'  : '',
+      'font-color'        : ''
+    };
+    $('#'+selectedMessage).css(cssObj);
+  }
+  var newcssObj = {
+    'background-color'  : background,
+    'color'             : '#fff',
+    'font-weight'       : 'normal' /* Changing the style so no longer bold */
   }
   selectedMessage = msgid;
-  $('#' + msgid).css('background-color', background);
-
-  /* Also change the styling so that it is no longer bold */
-  $('#' + msgid).css('font-weight', 'normal');
+  $('#' + msgid).css(newcssObj);
   
 }
 

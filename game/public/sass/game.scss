@@ -123,6 +123,7 @@ body{
 }
 
 #messages{
+  font: helvetica;
   
   margin: 0 auto;
 
@@ -137,7 +138,7 @@ body{
     float: left;
     padding: 5px 10px;
     margin: 0px;
-    background: none;
+    background: #fff;
 
     li {
       background: #fff;
@@ -159,7 +160,7 @@ body{
       width: 90%;
       height: 25px;
       margin: 10px;
-      overflow: hidden;  
+      //overflow: hidden;  
     }
     
     #inbox{
@@ -184,7 +185,7 @@ body{
   #right_message{
     width: 400px;
     height: 470px;      
-    margin: 5px;
+    margin: 0px;
     background: #ffffff;
     
     p {
@@ -195,12 +196,17 @@ body{
       @include border-radius(0px);
       color: grey;
       border-bottom-style: solid;
-      border-width: 1px; 
+      border-width: 0px; 
       border-color: grey; 
     }
 
     #msgcontent{
-      color: #000000;
+      color: #000;
+    }
+
+    #notice{
+      padding: 50px;
+      color: #000;
     }
    
   }
