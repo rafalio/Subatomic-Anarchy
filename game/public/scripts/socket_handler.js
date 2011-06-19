@@ -139,8 +139,14 @@ function messageHandler(msg){
   
   else if(msg.type == 'updateResources'){
     me.resources = msg.res;
-    updateResourcesUI("#right_trade.box #res ul", me.resources);  
-    updateResourcesUI("#resources ul", me.resources);
+    updateResourcesUI("#right_trade.box #res ul");  
+    updateResourcesUI("#resources ul");
+  }
+  
+  else if(msg.type == 'updateCapacity'){
+    me.capacity = msg.capacity
+    updateResourcesUI("#right_trade.box #res ul");  
+    updateResourcesUI("#resources ul");
   }
   
   else if(msg.type == 'initTrade'){

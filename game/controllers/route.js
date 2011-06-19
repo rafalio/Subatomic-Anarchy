@@ -18,7 +18,8 @@ exports.start = function(app,auth,data,forms,models,player) {
       '/sendMessage' : [getUser, requireLogin, msg.sendMessage],
       '/admin/clearPlanets' : [getUser, requireLogin, admin.clearPlanets],
       '/getMessage' : [getUser, requireLogin, msg.getMessage],
-      '/getNewMessages' : [getUser, requireLogin, msg.getNewMessages]
+      '/getNewMessages' : [getUser, requireLogin, msg.getNewMessages],
+      '/buy' : [getUser, requireLogin, game.buy]
     }, 
 
     get : {
@@ -30,7 +31,8 @@ exports.start = function(app,auth,data,forms,models,player) {
       '/mapEdit' : [getUser, requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
       '/inbox' : [getUser, requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [getUser, msg.getUsernames],
-      '/getMessages': [getUser, msg.getMessages]
+      '/getMessages': [getUser, msg.getMessages],
+      '/getPrices' : [getUser, requireLogin, game.getPrices]
     }
   }
 
@@ -81,7 +83,6 @@ exports.start = function(app,auth,data,forms,models,player) {
 
   // If user is not logged in, redirect to login page
   function requireLogin(req,res,next){
-    console.log(req.user);
     if(req.user) {
       next();
     } else {

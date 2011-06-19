@@ -62,6 +62,41 @@ Player.prototype.getTrade = function() {
   return this.currTrade;
 }
 
+Player.prototype.genUpgradePrices = function() {
+  var ret = {};
+  ret.capacity = this.getCapacity() - 200;
+  ret.strawberries = 1000;
+  return ret;
+}
+
+
+//Buying
+
+Player.prototype.buy = function(what) {
+  if(what == "capacity")
+    return this.buyCapacity();
+  else if(what == "strawberries")
+    return this.buyStrawberries();
+  else
+    return false;
+}
+
+Player.prototype.buyCapacity = function() {
+  if(this.getResource("gold") >= this.getCapacity()-200) {
+    this.updateResource("decrease", "gold", this.getCapacity()-200);
+    this.updateCapacity(500);
+    this.sendResourceUpdate();
+    this.sendCapacityUpdate();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Player.prototype.buyStrawberries = function() {
+  return true;
+}
+
 //Socket
 Player.prototype.connectSocket = function(client) {
   this.client = client;
@@ -80,6 +115,13 @@ Player.prototype.sendResourceUpdate = function() {
   this.client.send({
     type: 'updateResources',
     res: this.source.resources
+  });
+}
+
+Player.prototype.sendCapacityUpdate = function() {
+  this.client.send({
+    type: 'updateCapacity',
+    capacity: this.getCapacity()
   });
 }
 
@@ -107,15 +149,13 @@ Player.prototype.broadcastShipChange = function() {
 }
 
 //Updating
-Player.prototype.updateResource = function(incdec, res, am, update) {
+Player.prototype.updateResource = function(incdec, res, am) {
   if(incdec == 'increase')
     this.source.resources[res] += am;
   else if(incdec == 'decrease')
     this.source.resources[res] -= am;
   else
     return;
-  if(update)
-    this.sendResourceUpdate();
   this.save();
 }
 
@@ -137,6 +177,11 @@ Player.prototype.updateShipType = function(shipType) {
   this.save();
 }
 
+Player.prototype.updateCapacity = function(amount) {
+  this.source.capacity += amount;
+  this.save();
+}
+
 //Trading
 Player.prototype.initTrade = function(planet) {
   if(this.currTrade != undefined) {
@@ -144,7 +189,6 @@ Player.prototype.initTrade = function(planet) {
   } else {
     this.currTrade = planet;
     console.log("sending inittrade");
-    console.log(this.currTrade.getTradeData());
     //send info about the trading planet
     this.client.send({
       type: "initTrade",
@@ -162,8 +206,9 @@ Player.prototype.initTrade = function(planet) {
 Player.prototype.doTrade = function(tData) {
   //send trade confirmation. Don't remember the format
   this.tradeCorrect();
-  this.updateResource('decrease', tData.sell.resource, tData.sell.amount, false);
-  this.updateResource('increase', tData.buy.resource, tData.buy.amount, true);
+  this.updateResource('decrease', tData.sell.resource, tData.sell.amount);
+  this.updateResource('increase', tData.buy.resource, tData.buy.amount);
+  this.sendResourceUpdate();
   this.currTrade.doTrade(tData);
 }
 

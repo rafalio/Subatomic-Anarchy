@@ -70,11 +70,9 @@ $(function(){
       "Close": function(){
         $(this).dialog('close');
       }
-    
     }
   }),
 
-  
   // Message composition
   $("#compose").dialog({
     autoOpen: false,
@@ -216,9 +214,9 @@ function updateShopPricesUI(){
 function buyStuff(){
     var toBuy = $("#shop li.ui-selected p").attr('id');
     console.log("Buying " + toBuy);
-    $.post("/buy", toBuy, function(data){
+    $.post("/buy", {item: toBuy}, function(data){
       console.log(data);
-      $("#shop #result").html(data);
+      $("#shop #response").html(data);
       updateShopPricesUI();
     })
 }
@@ -574,10 +572,10 @@ function hookImagesToProfile(){
 	$("#ship_choose" ).selectable();
 }
 
-function updateResourcesUI(selector,ptr){
-  $(selector).html("<li>Gold: " + ptr.gold.round2(2) + "</li>");
-  $(selector).append("<li>Deuterium: " + ptr.deuterium.round2(2) + "</li>");
-  $(selector).append("<li>Food: " + ptr.food.round2(2) + "</li>");
+function updateResourcesUI(selector){
+  $(selector).html("<li>Gold: " + me.resources.gold.round2(2) + "</li>");
+  $(selector).append("<li>Deuterium: " + me.resources.deuterium.round2(2) + "</li>");
+  $(selector).append("<li>Food: " + me.resources.food.round2(2) + "</li>");
   $(selector).append("<li>Capacity: " + me.resourcesTotal().round2(2) + "/" + me.capacity + "</li>");
 }
 
