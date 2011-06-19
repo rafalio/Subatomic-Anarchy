@@ -79,8 +79,6 @@ $(function(){
     height: 600,
     width: 800,
     modal: true,
-    hide: "fadeOut",
-    show: "puff",
     buttons: {
       "+Compose Message": function(){
         $(this).dialog('close');
@@ -102,8 +100,6 @@ $(function(){
     modal: true,
     resizable: false,
     draggable: false,
-    hide: "explode",
-    show: "puff",
     
     // Clear value on close
     close : function(event,ui){
