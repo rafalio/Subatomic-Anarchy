@@ -150,6 +150,9 @@ $(function(){
         type: "endTrade"
       })
       me.exitPlanet(tPlanet);
+
+      resetSliders();
+
     },
     
     buttons : {
@@ -520,7 +523,7 @@ function onBothResourcesSelect(){
     
     resetSliders();
     
-    var available = me.capacity - me.resourcesTotal();
+    var capacity_available = me.capacity - me.resourcesTotal();
     
     var maxSell = getRes(whatSell,me.resources)
     $("#slider_sell").slider("option","max",maxSell);
@@ -528,7 +531,7 @@ function onBothResourcesSelect(){
     var multiplier = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
     var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
     
-    maxBuy = Math.min(maxBuy,available);
+    maxBuy = Math.min(maxBuy,capacity_available, getRes(whatSell,tPlanet.resources));
     
     $("#slider_buy").slider("option","max",maxBuy);
     
