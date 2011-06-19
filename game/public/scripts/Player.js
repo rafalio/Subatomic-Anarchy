@@ -87,60 +87,52 @@
     var player  = this;
     var control = this.control;
     
+    
     bitmap.onPress = function(e){
-      if(!pressed1) {
-        if(!pressed2) {
-          player.setBitmapScale(1.3);
-          pressed1 = true;
+      if(!pressed1){
+        player.setBitmapScale(1.3);
+        pressed1 = true;
+        
+        stage.onMouseDown = function(e){
+          map.dragged = false;
           pressed2 = true;
-          pressed_obj = player;
-          
-          stage.onMouseDown = function(e){
-            map.dragged = false;
-            stage.onMouseUp = function(e){
-              var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
-              if(typeof minimap != "undefined"){
-                if(minimap.mouseOver()){
-                  return;
-                }
-              }
-              
-              if(_.isEqual(player.position, move_to_grid)) {
-                player.setBitmapScale(1);
-                pressed1 = false;
-                pressed2 = false;
-                stage.onMouseDown = null;  // unhook events
-                stage.onMouseUp = null;
-                document.onkeydown = null;
-              } else {
-                if(!map.dragged){
-                  player.doMove(move_to_grid);
-
-                  // Notify the server to start the animation for other people connected
-                  socket.send({
-                    type: 'initMovement',
-                    move_to: control.move_to
-                  });
-                }
+          stage.onMouseUp = function(e){
+            if(typeof minimap != "undefined"){
+              if(minimap.mouseOver()){
+                return;
               }
             }
-          }
-          
-          document.onkeydown = function(e){
-            if(e.keyCode == KEY.ESCAPE) {
+            var move_to_grid = map.snapToGrid({x: e.stageX, y: e.stageY});
+            
+            if(_.isEqual(player.position, move_to_grid)){
               player.setBitmapScale(1);
               pressed1 = false;
-              pressed2 = false;
-              stage.onMouseDown = null; // unhook events
+              stage.onMouseDown = null;
               stage.onMouseUp = null;
-              document.onkeydown = null;
+            }
+            else {
+              if(!map.dragged && pressed2){
+                player.doMove(move_to_grid);
+
+                // Notify the server to start the animation for other people connected
+                socket.send({
+                  type: 'initMovement',
+                  move_to: control.move_to
+                });
+                pressed2 = false;
+              }
             }
           }
-        } else {
-          pressed2 = false;
         }
       }
+      else{
+        player.setBitmapScale(1);
+        pressed1 = false;
+        stage.onMouseDown = null;
+        stage.onMouseUp = null;
+      }
     }
+    
   }
   
   // Sets up the control datastructure that says where the ship will go.
