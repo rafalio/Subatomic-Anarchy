@@ -175,10 +175,55 @@ $(function(){
     event.preventDefault();
     chat.send();
   });
-    
 
+
+  $("ol#shopping_selectable").selectable();
+
+  $("#open_shop").click(function(){
+    $("#shop").dialog("open"); 
+  })
+
+  $("#shop").dialog({
+    resizable: false,
+    draggable: false,
+    modal: true,
+    autoOpen: false,
+    width: 400,
+    height: 400,
+    open: function(event,ui){
+      updateShopPricesUI();
+    },
+    buttons : {
+      "Leave Shop" : function(){
+        $(this).dialog("close")
+      },
+      "Buy" : function(){
+        buyStuff();
+      }
+
+    }
+  })
   
 });
+
+function updateShopPricesUI(){
+   $.get("/getPrices", function(prices){
+        $("p#capacity span").html(prices.capacity + " Gold");
+        $("p#strawberries span").html(prices.strawberries + " Gold");
+      })
+}
+
+function buyStuff(){
+    var toBuy = $("#shop li.ui-selected p").attr('id');
+    console.log("Buying " + toBuy);
+    $.post("/buy", toBuy, function(data){
+      console.log(data);
+      $("#shop #result").html(data);
+      updateShopPricesUI();
+    })
+}
+
+
 
 function sendTradePacket(tBuy, bAmount, tSell, sAmount){
   socket.send({

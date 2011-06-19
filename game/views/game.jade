@@ -10,7 +10,16 @@
   ol(id="ship_choose")
 
 
-
+#shop(title="Shop")
+  ol#shopping_selectable
+    li(class="ui-widget-content") 
+      p#capacity Capacity upgrade (+500)
+        span placeholder gold
+    li(class="ui-widget-content")
+      p#strawberries Strawberries
+        span placeholder gold
+  #response
+      
 
 #messages(title="Messages")
   
@@ -106,6 +115,8 @@
       a(id="messages_link") Messages
     li
       a(id="compose_link") Compose Message
+    li
+      a#open_shop Open Shop
     li 
       a(id="profile_link") Profile
     li 

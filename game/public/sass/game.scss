@@ -13,19 +13,37 @@ body{
 }
 
 
+#shop{
 
+  #response{
+    position: relative;
+    top: 200px;
+  }
 
-//#trade(title="Trading Arena")
-//  #left_images
-//    #top_planet
-//    #bottom_ship
-//    
-//  #middle_trade
-//    #top_sell
-//    #bottom_buy
-//    
-//  #right_trade
+  #feedback { font-size: 1.4em; }
+
+  span{
+    float: right;
+  }
+
+  ol{
+    list-style-type: none; margin: 0; padding: 0; width: 100%;
+
+    .ui-selecting { background: #FECA40; }
+    .ui-selected { background: #F39814; color: white; }
+
+    li { 
+      margin: 3px; 
+      padding: 0.4em; 
+      font-size: 1em; 
+      height: 18px; 
+    }
+
+  }
   
+
+}
+
   
 #trade{
   margin: 0 auto;
