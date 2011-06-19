@@ -40,6 +40,8 @@
     this.position.y = pData.position.y;
     this.rotation   = pData.rotation;
     
+    this.control.movement_done = true;
+    
     this.syncBitmap();
   }
   
