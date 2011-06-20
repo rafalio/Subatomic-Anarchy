@@ -59,7 +59,7 @@ $(function(){
     draggable: false,
     modal: true,
     buttons: {
-      "+Compose Message": function(){
+      "Compose Message": function(){
         $("#compose").dialog('open');
       },
       "Close": function(){
