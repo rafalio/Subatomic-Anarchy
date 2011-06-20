@@ -150,7 +150,7 @@ function setPlanetModel(i){
                                 x: nplanet.x,
                                 y: nplanet.y
                               },
-                              size: "medium",
+                              size: "terrestrial",
                               kind: "factory",
                               resources: {
                                 deuterium: 0,
@@ -177,13 +177,13 @@ function setPlanetModel(i){
 function export_map(){
   _.forEach(planets, function(p,i) {
     exp_planets[p.name] =  {
-                                      name: p.name,
-                                      position: p.position,
-                                      size: p.size,
-                                      kind: p.kind,
-                                      resources: p.resources,
-                                      src: p.src
-                                    }
+                             name: p.name,
+                             position: p.position,
+                             size: p.size,
+                             kind: p.kind,
+                             resources: p.resources,
+                             src: p.src
+                           }
   });
   console.log(exp_planets);
   $.post("admin/clearPlanets", {map : exp_planets}, function(d){
@@ -207,10 +207,13 @@ function generate_map(n, d, f, g){
     do{
       index = Math.floor(Math.random() * pnames.length);
     }while(nused[index] != undefined);
+    nused[index] = true;
     do{
       px = Math.floor((Math.random()*(map.dim.width-map.grid_size))/map.grid_size);
       py = Math.floor((Math.random()*map.dim.height)/map.grid_size);
     }while(pused[py*(map.dim.width/map.grid_size)+px] != undefined);
+    pused[py*(map.dim.width/map.grid_size)+px] = true;
+    
     switch(Math.floor(Math.random()*3)){
       case 0: size = "dwarf";       break;
       case 1: size = "terrestrial"; break;
@@ -387,8 +390,8 @@ function editBoxesSetData(){
     else{
       stage.removeChild(tplanet.planetBitmap);
       _.forEach(planets, function(planet, key) {
-        if(tplanet.name == planets[i].name)
-          delete planets[i];
+        if(tplanet.name == planet.name)
+          delete planets[key];
       });
       tplanet = undefined;
       minimap.redraw();

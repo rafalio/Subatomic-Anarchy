@@ -32,9 +32,9 @@ function clearPlanets(req,res){
 
 function populateDB(planets){
   _.forEach(planets, function(e){
-    var p = new models.Planet(planets[e]);
+    var p = new models.Planet(e);
     p.save(function(err){
-      console.log("Adding planet " + e + " to database! ");
+      console.log("Adding planet " + e.name + " to database! ");
     });
   });
 }
