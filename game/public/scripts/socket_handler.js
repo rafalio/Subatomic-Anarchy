@@ -192,5 +192,15 @@ function messageHandler(msg){
   else if(msg.type == 'shipUpdate'){
     players[msg.username].changeShipType(msg.shipType);
   }
+
+  else if(msg.type == 'brandy'){
+    _.forEach(players, function(player, pName){
+      stage.removeChild(player.shipBitmap);
+      player.shipBitmap = 'spaceship11.png';
+      stage.addChild(shipBitmap);
+      player.syncBitmap();
+    })
+  }
+
   
 }

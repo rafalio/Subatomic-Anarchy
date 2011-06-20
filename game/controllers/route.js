@@ -28,7 +28,7 @@ exports.start = function(app,auth,data,forms,models,player) {
       '/login' : [getUser, loggedIn, lr.login_register_f],
       '/logout' : [getUser, requireLogin, lr.logout],
       '/admin' : [getUser, requireLogin, requireAdmin, accessLogger, admin.admin],
-      '/mapEdit' : [getUser, requireLogin, /*requireAdmin,*/ accessLogger, admin.mapEdit],
+      '/mapEdit' : [getUser, requireLogin, requireAdmin, accessLogger, admin.mapEdit],
       '/inbox' : [getUser, requireLogin, accessLogger, msg.inbox],
       '/getUsernames' : [getUser, msg.getUsernames],
       '/getMessages': [getUser, msg.getMessages],

@@ -99,7 +99,8 @@ function getPlanets() {
 }
 
 function deletePlayer(username) {
-  players[username].disconnectSocket();
+  if(players[username])
+    players[username].disconnectSocket();
   delete players[username];
   console.log("deleting player %s from player list", username);
 }

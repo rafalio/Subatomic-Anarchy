@@ -151,7 +151,9 @@ $(function(){
     
     buttons : {
       "Leave Planet" : function(){
-        $(this).dialog("close");
+        if(me.resources.deuterium >= 2)
+          $(this).dialog("close");
+        else return false;
       },
       "Trade" : function(){
         if( (whatBuy == '' || whatSell == '') || whatBuy == whatSell){
@@ -619,4 +621,3 @@ function updateResourcesUI(selector){
   $(selector).append("<li>Food: " + me.resources.food.round2(2) + "</li>");
   $(selector).append("<li>Capacity: " + me.resourcesTotal().round2(2) + "/" + me.capacity + "</li>");
 }
-

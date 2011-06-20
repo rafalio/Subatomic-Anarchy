@@ -70,6 +70,9 @@
   
   // We exit from planets on the left hand side, so don't put them on the rightmost border!
   Player.prototype.exitPlanet = function(pData){
+
+    if(me.resources.deuterium < 2) return;
+
     var planet = planets[pData.name];
     this.doMove({
       x: planet.position.x + 1,
@@ -122,14 +125,19 @@
             }
             else {
               if(!map.dragged && pressed2){
-                player.doMove(move_to_grid);
+                
+                if(player.resources.deuterium >= 2){
+                  player.doMove(move_to_grid);
 
-                // Notify the server to start the animation for other people connected
-                socket.send({
-                  type: 'initMovement',
-                  move_to: control.move_to
-                });
-                pressed2 = false;
+                  // Notify the server to start the animation for other people connected
+                  socket.send({
+                    type: 'initMovement',
+                    move_to: control.move_to
+                  });
+
+                }
+
+                  pressed2 = false;
               }
             }
           }
