@@ -12,45 +12,60 @@ Planet.prototype.produceResources = function() {
   
   if(!this.canProduce())
     return;
-    
-  var sd = 5;
-  var mean
-  if(size == "dwarf")
-    mean = 25;
-  else if(size == "terrestrial")
-    mean = 75;
-  else if(size == "giant")
-    mean = 125;
-  else {
-    console.log("error size");
-    return;  
-  }
-  var num = helpers.normal();
-
-  var food = Math.floor((Math.abs(num[0])*sd+mean)/10);
-  var deuterium = Math.floor((Math.abs(num[1])*sd+mean)/10);
-  var gold = Math.floor(Math.abs((helpers.normal()[0])*sd+mean)/10);
   
-  var fooddi = "decrease";
-  var deuteriumdi = "decrease";
-  var golddi = "decrease";
+  var max = 1000;
+  var scale;
+  
+  if(size == "dwarf") {
+    scale = function(x) {return x/3};
+  } else if(size == "terrestrial") {
+    max = 2*max;
+    scale = function(x) {return x/4};
+  } else if(size == "giant") {
+    max = 3*max;
+    scale = function(x) {return x/5};
+  } else {
+    console.log("size error");
+    return;
+  }
+  
+  var main;
+  var genResources;
+  if(kind == "agricultural") {
+    main = this.getResource("food");
+  } else if(kind == "factory") {
+    main = this.getResource("deuterium");
+  } else if(kind == "mining") {
+    main = this.getResource("gold");
+  } else {
+    return;
+  }
+  
+  var sd = 5;
+  if(! (max >= main))
+    return;
+  var mean = (max-main)/10;
+
+  main = Math.abs(helpers.normal()[0])*sd+mean;
+  var sub = Math.floor(scale(main));
+  main = Math.floor(main);
   
   if(kind == "agricultural") {
-    fooddi = "increase";
-    food = food*10
+    this.updateResource("increase", "food", main);
+    this.updateResource("decrease", "deuterium", sub);
+    this.updateResource("decrease", "gold", sub);
   } else if(kind == "factory") {
-    deuteriumdi ="increase";
-    deuterium = deuterium*10;
+    this.updateResource("decrease", "food", sub);
+    this.updateResource("increase", "deuterium", main);
+    this.updateResource("decrease", "gold", sub);
   } else if(kind == "mining") {
-    golddi = "increase";
-    gold = gold*10;
+    this.updateResource("decrease", "food", sub);
+    this.updateResource("decrease", "deuterium", sub);
+    this.updateResource("increase", "gold", main);
+  } else {
+    return;
   }
-
-
-  this.updateResource(fooddi, "food", food);
-  this.updateResource(deuteriumdi, "deuterium", deuterium);
-  this.updateResource(golddi, "gold", gold);
-
+  
   this.updateTradingPlayers();
 }
 
@@ -74,11 +89,10 @@ Planet.prototype.genPrices = function() {
   var gold = 1/(1+this.getResource("gold"));
   var deuterium = 1/(1+this.getResource("deuterium"));
   var food = 1/(1+this.getResource("food"));
-  
   var min = Math.min(gold, deuterium, food);
-  
-  this.prices = {gold: Math.floor(gold/min), deuterium: Math.floor(deuterium/min), food: Math.floor(food/min)};
-  
+
+  this.prices = {gold: helpers.round2(2,1/(gold/min)), deuterium: helpers.round2(2,1/(deuterium/min)), food: helpers.round2(2,1/(food/min))};
+
   this.updateTradingPlayers();
 }
 

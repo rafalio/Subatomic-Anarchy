@@ -27,3 +27,7 @@ exports.normal = function() {
 	// This function is quite efficient so don't be afraid to throw one away if you don't need both.
 	return [x*c, y*c];
 }
+
+exports.round2 = function(dec, num){
+  return Math.round(num*Math.pow(10,dec))/Math.pow(10,dec);
+}
