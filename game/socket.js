@@ -52,8 +52,10 @@ exports.start = function(data, server, session_store) {
               /*  When a player initiates movement, pass the message on to everyone else,
                   so that animation can start. */
               case 'initMovement':
-                msg.username = uname;
-                client.broadcast(msg);
+                if(data.canMove(uname)) {
+                  msg.username = uname;
+                  client.broadcast(msg);
+                }
                 break;
               
              case 'chat':

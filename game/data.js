@@ -145,6 +145,10 @@ function shipUpdate(msg, username) {
   players[username].updateShipType(msg.shipType);
 }
 
+function canMove(username) {
+  return players[username].canMove();
+}
+
 exports.start = start;
 exports.users = users;
 exports.players = players;
@@ -155,3 +159,4 @@ exports.deletePlayer = deletePlayer
 exports.newPos = newPos;
 exports.doTrade = doTrade;
 exports.shipUpdate = shipUpdate;
+exports.canMove = canMove;

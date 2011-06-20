@@ -1,5 +1,7 @@
 var helpers = require('./helpers.js');
 
+var deuteriumnotmove = 5;
+
 function Player(playermodel) {
   this.source = playermodel;
 }
@@ -67,6 +69,10 @@ Player.prototype.genUpgradePrices = function() {
   ret.capacity = this.getCapacity() - 200;
   ret.brandy = 1000;
   return ret;
+}
+
+Player.prototype.canMove = function() {
+  return this.getResource("deuterium") >= deuteriumnotmove;
 }
 
 
@@ -182,14 +188,20 @@ Player.prototype.updateResource = function(incdec, res, am) {
 }
 
 Player.prototype.updatePosition = function(pData) {
-  if(this.currTrade != undefined) {
+  if(this.currTrade !== undefined) {
     console.log("Player %s is cheating - trying to move when in trade. Or maybe we have an error. I don't know.", this.getName());
   } else {
-    this.source.rotation = pData.rotation;
-    this.source.position.x = pData.position.x;
-    this.source.position.y = pData.position.y;
-    this.broadcastPositionUpdate();
-    this.save();
+    if(this.canMove()) {
+      this.source.rotation = pData.rotation;
+      this.source.position.x = pData.position.x;
+      this.source.position.y = pData.position.y;
+      this.updateResource("decrease", "deuterium", deuteriumnotmove);
+      this.broadcastPositionUpdate();
+      this.sendResourceUpdate();
+      this.save();
+    } else {
+      console.log("Player %s is cheating. Can't move without deuterium.", this.getName());
+    }
   }
 }
 
