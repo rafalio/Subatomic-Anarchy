@@ -1,6 +1,6 @@
 var helpers = require('./helpers.js');
 
-var deuteriumnotmove = 5;
+var deuteriumnotmove = 2;
 
 function Player(playermodel) {
   this.source = playermodel;
