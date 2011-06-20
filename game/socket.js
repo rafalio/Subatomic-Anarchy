@@ -12,11 +12,14 @@ exports.start = function(data, server, session_store) {
   io.on('connection', function(client){
   
     // Get the connection cookie
-    var cookie_string = client.request.headers.cookie;
-    var parsed_cookies = connect.utils.parseCookie(cookie_string);
-    var connect_sid = parsed_cookies['connect.sid'];  
-  
-    if (connect_sid){
+
+    if(client.request){
+      var cookie_string = client.request.headers.cookie;
+      var parsed_cookies = connect.utils.parseCookie(cookie_string);
+      var connect_sid = parsed_cookies['connect.sid'];  
+    } else return;
+
+        if (connect_sid){
       session_store.get(connect_sid, function (error, session) {
         if(error){
           console.log("ERROR FETCHING SESSION!");
