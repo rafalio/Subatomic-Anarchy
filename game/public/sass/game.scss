@@ -147,43 +147,28 @@ body{
 
 
   div.box{
-    width: 270px;
-    height: 90%;
+    height: 470px;
     float: left;
     //padding: 5px 10px;
     margin: 0px;
     border-style: solid;
     border-color: #fff;
     border-width: 1px;
+  }
+  
+  #left_inbox{
+    width: 270px;
+    border-right-style: none;
+    overflow: auto;  
     
-
     li {
-      //background: #fff;
+      padding: 25px, 25px;
       border-bottom-style: solid;
       border-width: 1px;
       border-color: grey;
       list-style: none;
       padding: 5px 10px;
-      //margin: 2px 0 0 0;
-      
     }
-  }
-  
-  #left_inbox{
-    height: 470px;
-    border-right-style: none;
-    
-    
-    > div{
-      width: 90%;
-      height: 25px;
-      margin: 10px;
-      //overflow: hidden;  
-    }
-    li {
-      padding: 25px, 25px;
-    }
-
 
     h3{
       color: #fff;
@@ -201,7 +186,6 @@ body{
   
   #right_message{
     width: 400px;
-    height: 470px;      
     margin: 0px;
     
     #from, #date {

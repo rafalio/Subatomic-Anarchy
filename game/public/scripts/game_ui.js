@@ -51,7 +51,6 @@ $(function(){
   $("#messages").dialog({
     open: function(){
       getNewMessages();
-      
     },
     autoOpen: false,
     height: 600,
@@ -61,7 +60,6 @@ $(function(){
     modal: true,
     buttons: {
       "+Compose Message": function(){
-        $(this).dialog('close');
         $("#compose").dialog('open');
       },
       "Close": function(){
@@ -96,10 +94,6 @@ $(function(){
       "Close": function() {
           $("#compose").dialog('close');
       },
-      "Messages": function(){
-          $("#compose").dialog('close');
-          $("#messages").dialog('open');
-      }
     }
   });
   
@@ -237,6 +231,7 @@ function inboxNotification(){
     $("#messages_link").fadeIn("Slow");
   }
   setUnread();
+  getNewMessages();
 }
 
 /* Used for getting the number of unread messages in the database
@@ -321,7 +316,7 @@ function flushChildren(parent){
  * have to give it a style of before or after
  */
 function renderList(msg, position){
-  var type  = "left_inbox"; 
+  var type  = "left_inbox_list"; 
   var date  = msg.date.substr(0, 10);
   var field = msg.sender;
   var id    = msg.id;
