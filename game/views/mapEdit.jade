@@ -4,19 +4,23 @@
     |Are you sure you want to log out ?
 
 #generate_random(title="Generate Random Map")
+  label Number of Planets:
   input#pnum(placeholder="Number of Planets to Generate")
   #mm
-    //label Deuterium:
-    input#dmin(placeholder="min")
-    input#dmax(placeholder="max")
+    label Dwarf:
+    p
+      input#dmin(placeholder="min")
+      input#dmax(placeholder="max")
   #mm
-    //label Food:
-    input#fmin(placeholder="min")
-    input#fmax(placeholder="max")
+    label Terrestrial:
+    p
+      input#fmin(placeholder="min")
+      input#fmax(placeholder="max")
   #mm
-    //label Gold:
-    input#gmin(placeholder="min")
-    input#gmax(placeholder="max")
+    label Giant:
+    p
+      input#gmin(placeholder="min")
+      input#gmax(placeholder="max")
 
 #header  
   #title Subatomic Anarchy : Map Editor

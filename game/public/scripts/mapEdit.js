@@ -193,7 +193,7 @@ function export_map(){
 }
 
 // Random Map
-function generate_map(n, d, f, g){
+function generate_map(n, d, t, g){
   var nused = [];
   var pused = [];
   var index;
@@ -214,10 +214,11 @@ function generate_map(n, d, f, g){
     }while(pused[py*(map.dim.width/map.grid_size)+px] != undefined);
     pused[py*(map.dim.width/map.grid_size)+px] = true;
     
+    var r;
     switch(Math.floor(Math.random()*3)){
-      case 0: size = "dwarf";       break;
-      case 1: size = "terrestrial"; break;
-      case 2: size = "giant";       break;
+      case 0: size = "dwarf";       r = d; break;
+      case 1: size = "terrestrial"; r = t; break;
+      case 2: size = "giant";       r = g; break;
     }
     switch(Math.floor(Math.random()*3)){
       case 0: kind = "factory";      break;
@@ -235,9 +236,9 @@ function generate_map(n, d, f, g){
                               size: size,
                               kind: kind,
                               resources: {
-                                deuterium: d.min + Math.floor(Math.random()*(d.max-d.min)),
-                                gold:      g.min + Math.floor(Math.random()*(g.max-g.min)),
-                                food:      f.min + Math.floor(Math.random()*(f.max-f.min))
+                                deuterium: r.min + Math.floor(Math.random()*(r.max-r.min)),
+                                gold:      r.min + Math.floor(Math.random()*(r.max-r.min)),
+                                food:      r.min + Math.floor(Math.random()*(r.max-r.min))
                               },
                               src: "planet" + (pi+1) + ".png"
                             });
