@@ -21,27 +21,28 @@
   }
   
   Minimap.prototype.onMouse = function(e){
-    var me = this;
-    stage.x = -((stage.mouseX - me.pos.x)*map.dim.width)/me.dim.width + canvas.width/2;
-    stage.y = -((stage.mouseY - me.pos.y)*map.dim.height)/me.dim.height + canvas.height/2;
+    var ptr = this;
+    stage.x = -((stage.mouseX - ptr.pos.x)*map.dim.width)/ptr.dim.width + canvas.width/2;
+    stage.y = -((stage.mouseY - ptr.pos.y)*map.dim.height)/ptr.dim.height + canvas.height/2;
     
     if(stage.x > 0) stage.x = 0;
     if(stage.y > 0) stage.y = 0;
     if(stage.x < canvas.width-map.dim.width) stage.x = canvas.width-map.dim.width;
     if(stage.y < canvas.height-map.dim.height) stage.y = canvas.height-map.dim.height;
     
-    this.x = me.pos.x - stage.x;
-    this.y = me.pos.y - stage.y;
+    this.x = ptr.pos.x - stage.x;
+    this.y = ptr.pos.y - stage.y;
     
     minimap.updatePos();
   }
   
   Minimap.prototype.redraw = function(){
-  	var color1 = Graphics.getRGB(0xFF,0xFF,0xFF,1);
-  	var color2 = Graphics.getRGB(0x00,0x00,0x00,1);
-  	var color3 = Graphics.getRGB(0xFF,0x00,0x00,1);
-  	var color4 = Graphics.getRGB(0x00,0xFF,0x00,1);
-  	var color5 = Graphics.getRGB(0x00,0x00,0xFF,1);
+  	var color1 = Graphics.getRGB(0xFF,0xFF,0xFF,1); // White
+  	var color2 = Graphics.getRGB(0x00,0x00,0x00,1); // Black
+  	var color3 = Graphics.getRGB(0xFF,0x00,0x00,1); // Red
+  	var color4 = Graphics.getRGB(0x00,0xFF,0x00,1); // Green
+  	var color5 = Graphics.getRGB(0x00,0x00,0xFF,1); // Blue
+  	var color6 = Graphics.getRGB(0xFF,0xFF,0xFF,0.75); // Grey
   	
   	this.shape.graphics.clear();
   	
@@ -55,20 +56,31 @@
                                                              (canvas.height*this.dim.height)/map.dim.height);
     
     // Blips
-    var me = this;
+    var ptr = this;
     
-    if(typeof planets != "undefined"){ // Planets (red)
+    if(typeof planets != "undefined"){ // Planets (grey crosses)
       _.forEach(planets, function(planet, i) {
-        me.shape.graphics.beginStroke().beginFill(color3).rect(planet.position.x*me.dim.width/map.grid_num.x,
-                                                               planet.position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
-                                                               me.dim.height/map.grid_num.y);
+        var pos = {x: planet.position.x*ptr.dim.width/map.grid_num.x  + (ptr.dim.width/map.grid_num.x)/2,
+                   y: planet.position.y*ptr.dim.height/map.grid_num.y + (ptr.dim.height/map.grid_num.y)/2};
+        ptr.shape.graphics.beginStroke(color6).beginFill()
+        ptr.shape.graphics.moveTo(pos.x-(ptr.dim.width/map.grid_num.x)/2, pos.y);
+        ptr.shape.graphics.lineTo(pos.x+(ptr.dim.width/map.grid_num.x)/2, pos.y);
+        ptr.shape.graphics.moveTo(pos.x, pos.y-(ptr.dim.height/map.grid_num.y)/2);
+        ptr.shape.graphics.lineTo(pos.x, pos.y+(ptr.dim.height/map.grid_num.y)/2);
       });
     }
-    if(typeof players != "undefined"){ // Players (blue)
+    if(typeof players != "undefined"){ // Players (you: green, others: blue)
       _.forEach(players, function(player, i) {
-        me.shape.graphics.beginStroke().beginFill(color5).rect(player.position.x*me.dim.width/map.grid_num.x,
-                                                               player.position.y*me.dim.height/map.grid_num.y, me.dim.width/map.grid_num.x,
-                                                               me.dim.height/map.grid_num.y);
+        if(player == me){
+          ptr.shape.graphics.beginStroke().beginFill(color4);
+        }
+        else{
+          ptr.shape.graphics.beginStroke().beginFill(color5);
+        }
+        
+        ptr.shape.graphics.rect(player.position.x*ptr.dim.width/map.grid_num.x,
+                                player.position.y*ptr.dim.height/map.grid_num.y,
+                                ptr.dim.width/map.grid_num.x, ptr.dim.height/map.grid_num.y);
       });
     }
     
@@ -77,10 +89,10 @@
   }
   
   Minimap.prototype.getPos = function(){
-    var me = this;
+    var ptr = this;
     if(this.mouseOver()){
-      var pos = {x: floor((((stage.mouseX - me.pos.x)*map.dim.width)/me.dim.width)/map.grid_size),
-                 y: floor((((stage.mouseY - me.pos.y)*map.dim.height)/me.dim.height)/map.grid_size)};
+      var pos = {x: floor((((stage.mouseX - ptr.pos.x)*map.dim.width)/ptr.dim.width)/map.grid_size),
+                 y: floor((((stage.mouseY - ptr.pos.y)*map.dim.height)/ptr.dim.height)/map.grid_size)};
       return pos;
     }
   }

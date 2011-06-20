@@ -1,6 +1,7 @@
 (function(w){
   
   var proto = Player.prototype;
+  Player.prototype.label;
   
   
   /* 
@@ -16,11 +17,15 @@
   
   function Player(pData){
     var ptr = this;
+    this.label = new Text("","bold 16px Arial","rgba(255,255,255,0.5)");
+    this.label.textAlign = "center";
     
     // cloning properties
     _.forEach(pData, function(element, index) {
       ptr[index] = pData[index];
     });
+    
+    this.label.text = "<" + this.username + ">";
 
     this.R_PER_TICK = 10;
     this.M_PER_TICK = 0.05;
@@ -48,13 +53,18 @@
   
   // Hides a player from the view
   Player.prototype.hideShip = function(){
-    this.shipBitmap.x = -100;
-    this.shipBitmap.y = -100;
-    
+    stage.removeChild(this.shipBitmap);
+    stage.removeChild(this.label);
   }
   
   Player.prototype.showShip = function(){
+    stage.addChild(this.shipBitmap);
+    stage.addChild(this.label);
     this.syncBitmap();
+  }
+  
+  Player.prototype.updateColor = function(){
+    this.label.color = "rgba(0,255,0,1)";
   }
   
   
@@ -193,7 +203,7 @@
     this.syncBitmap();
     
     stage.addChild(this.shipBitmap);
-    
+    stage.addChild(this.label);    
   }
   
   Player.prototype.changeShipType = function(type){
@@ -217,6 +227,8 @@
     this.shipBitmap.x         = newpos.x;
     this.shipBitmap.y         = newpos.y;
     this.shipBitmap.rotation  = this.rotation;
+    this.label.x              = newpos.x;
+    this.label.y              = newpos.y - 52;
   }
   
   

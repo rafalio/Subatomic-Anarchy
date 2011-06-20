@@ -95,6 +95,7 @@ function messageHandler(msg){
     
     addPlayer(msg.me);
     me = players[msg.me.username];
+    me.updateColor();
     
     updateResourcesUI("#resources ul", me.resources);
     

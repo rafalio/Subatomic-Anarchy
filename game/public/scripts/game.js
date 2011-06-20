@@ -68,6 +68,7 @@ function unloadPlayer(pname){
   
   // unload the graphic
   stage.removeChild(p.shipBitmap);
+  stage.removeChild(p.label);
   
   // get rid of the player data
   delete players[pname];
