@@ -77,6 +77,8 @@ Player.prototype.buy = function(what) {
     return this.buyCapacity();
   else if(what == "strawberries")
     return this.buyStrawberries();
+  else if(what == "brandy")
+    return this.buyBrandy();
   else
     return false;
 }
@@ -87,6 +89,20 @@ Player.prototype.buyCapacity = function() {
     this.updateCapacity(500);
     this.sendResourceUpdate();
     this.sendCapacityUpdate();
+    return true;
+  } else {
+    return false;
+  }
+}
+
+Player.prototype.buyBrandy = function() {
+  if(this.getResource("gold") >= 1000) {
+    this.updateResource("decrease", "gold", 1000);
+    this.sendResourceUpdate();
+    this.client.send({
+      type: 'brandy'
+    });
+    this.brandy = true;
     return true;
   } else {
     return false;
@@ -104,6 +120,10 @@ Player.prototype.connectSocket = function(client) {
     type: 'newArrival',
     player: this.getBasicData()
   });
+  if(this.brandy !== undefined)
+    this.client.send({
+      type: 'brandy'
+    });
 }
 
 Player.prototype.disconnectSocket = function() {
