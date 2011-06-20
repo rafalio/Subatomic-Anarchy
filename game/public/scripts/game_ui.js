@@ -149,6 +149,9 @@ $(function(){
       me.exitPlanet(tPlanet);
 
       resetSliders();
+      resetSelects(); 
+      whatBuy = '';
+      whatSell = '';
 
     },
     
@@ -560,7 +563,7 @@ function onBothResourcesSelect(){
     var multiplier = getRes(whatBuy,tPlanet.prices) / getRes(whatSell,tPlanet.prices);
     var maxBuy = Math.floor( getRes(whatSell,me.resources) * multiplier );
     
-    maxBuy = Math.min(maxBuy,capacity_available, getRes(whatSell,tPlanet.resources));
+    maxBuy = Math.min(maxBuy,capacity_available, getRes(whatBuy,tPlanet.resources));
     
     $("#slider_buy").slider("option","max",maxBuy);
     
@@ -575,6 +578,17 @@ function resetSliders(){
   sliderValueUpdate("#slider_sell", 0)
   sliderValueUpdate("#slider_buy", 0)
 }
+
+function resetSelects(){
+  $("#trade #buy_wrap ol").children().each(function(index){
+    $(this).removeClass('ui-selected').addClass('ui-state-default'); 
+  })
+  $("#trade #sell_wrap ol").children().each(function(index){
+    $(this).removeClass('ui-selected').addClass('ui-state-default'); 
+  })
+
+}
+
 
 
 function sliderValueUpdate(id, value){
