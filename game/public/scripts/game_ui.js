@@ -211,7 +211,7 @@ $(function(){
 function updateShopPricesUI(){
    $.get("/getPrices", function(prices){
         $("p#capacity span").html(prices.capacity + " Gold");
-        $("p#strawberries span").html(prices.strawberries + " Gold");
+        $("p#brandy span").html(prices.brandy + " Gold");
       })
 }
 

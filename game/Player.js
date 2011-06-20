@@ -27,7 +27,7 @@ Player.prototype.getPos = function() {
   var ret = {};
   ret.x = parseInt(this.source.position.x.toString());
   ret.y = parseInt(this.source.position.y.toString());
-  return ret;
+  return ret;Strawberries
 }
 
 Player.prototype.getRot = function() {
@@ -65,7 +65,7 @@ Player.prototype.getTrade = function() {
 Player.prototype.genUpgradePrices = function() {
   var ret = {};
   ret.capacity = this.getCapacity() - 200;
-  ret.strawberries = 1000;
+  ret.brandy = 1000;
   return ret;
 }
 
