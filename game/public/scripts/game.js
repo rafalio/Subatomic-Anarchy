@@ -5,7 +5,7 @@ var minimap;
 var chat;
 
 var ship_images   = {};
-var SHIP_TYPES    = 10;          // Number of ship types
+var SHIP_TYPES    = 11;          // Number of ship types
 
 var players       = {};         // Global array to keep all the players. Indexed via username;
 

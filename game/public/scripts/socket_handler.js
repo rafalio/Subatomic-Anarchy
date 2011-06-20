@@ -196,9 +196,9 @@ function messageHandler(msg){
   else if(msg.type == 'brandy'){
     _.forEach(players, function(player, pName){
       stage.removeChild(player.shipBitmap);
-      player.shipBitmap = 'spaceship11.png';
-      stage.addChild(shipBitmap);
-      player.syncBitmap();
+      player.shipType = 11;
+      player.initBitmap();
+      if(player == me) player.hookControls();
     })
   }
 
